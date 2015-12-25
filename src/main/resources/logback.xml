@@ -1,0 +1,25 @@
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://raw.github.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="jndi" level="INFO" />
+	<logger name="de.egore911.capacity" level="DEBUG" />
+	<logger name="org.hibernate.tool.hbm2ddl.SchemaExport" level="OFF" />
+	<logger name="org.hibernate" level="WARN" />
+	<logger name="org.hibernate.SQL" level="WARN" />
+	<logger name="org.hibernate.type" level="WARN" />
+	<logger name="org.eclipse.jetty" level="INFO" />
+	<logger name="com.jcraft.jsch" level="WARN" />
+	<logger name="org.jboss.weld" level="INFO" />
+	<logger name="org.flywaydb.core.internal.dbsupport.SqlScript" level="OFF" />
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

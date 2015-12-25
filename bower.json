@@ -1,0 +1,16 @@
+{
+  "name": "capacity",
+  "authors": [
+    "Christoph Brill <egore911@gmail.com>"
+  ],
+  "description": "Simple web UI to plan employee capacities",
+  "main": "src/main/webapp/index.html",
+  "license": "MIT",
+  "homepage": "https://github.com/egore/capacity",
+  "dependencies": {
+    "angular": "~1.4.8",
+    "bootstrap": "~3.3.6",
+    "angular-resource": "~1.4.8",
+    "font-awesome": "fontawesome#~4.5.0"
+  }
+}
