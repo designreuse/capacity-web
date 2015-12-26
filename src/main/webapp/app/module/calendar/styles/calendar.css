@@ -1,0 +1,19 @@
+a.fc-event.holidays, label.btn-primary.holidays {
+	border: 1px solid #AD3AA4;
+	background-color: #AD3AA4;
+}
+
+label.btn-primary.holidays:hover {
+	background-color: #903088;
+	border-color: #903088;
+}
+
+label.btn-primary.holidays.active:hover {
+	background-color: #6D2467;
+	border-color: #6D2467;
+}
+
+label.btn-primary.holidays.active {
+	background-color: #8A2E83;
+	border-color: #8A2E83;
+}

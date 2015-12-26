@@ -11,4 +11,5 @@ angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calen
 			}
 			return currentPath;
 		}
+
 	}]);

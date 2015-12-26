@@ -1,1 +1,7 @@
-<div ui-calendar ng-model="eventSources"></div>
+<div class="btn-group" data-toggle="buttons">
+	<label class="btn btn-primary active {{calendar.id}}" ng-repeat="calendar in calendars">
+		<input type="checkbox" autocomplete="off"> {{calendar.name}}
+	</label>
+</div>
+
+<div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
