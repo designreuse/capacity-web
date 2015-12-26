@@ -31,9 +31,11 @@
   <script type="text/javascript" src="app/scripts/directive/labelGroup.js"></script>
 
   <script type="text/javascript" src="app/module/home/controller/HomeController.js"></script>
+  <script type="text/javascript" src="app/module/calendar/controller/CalendarController.js"></script>
   <script type="text/javascript" src="app/module/employee/factory/EmployeeFactory.js"></script>
   <script type="text/javascript" src="app/module/employee/controller/EmployeeListController.js"></script>
   <script type="text/javascript" src="app/module/employee/controller/EmployeeDetailController.js"></script>
+  <script type="text/javascript" src="app/module/capacity/controller/CapacityController.js"></script>
 
 </head>
 <body ng-controller="MainCtrl">
@@ -66,11 +68,11 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#/employees"><i class="fa fa-users"></i> Employees <span class="sr-only">(current)</span></a></li>
-            <li><a href="#/calendar"><i class="fa fa-calendar"></i> Calendar</a></li>
+            <li ng-class="{active : currentModule() == 'employees'}"><a href="#/employees"><i class="fa fa-users"></i> Employees <span class="sr-only">(current)</span></a></li>
+            <li ng-class="{active : currentModule() == 'calendar'}"><a href="#/calendar"><i class="fa fa-calendar"></i> Calendar</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href=""><i class="fa fa-line-chart"></i> Capacity</a></li>
+            <li ng-class="{active : currentModule() == 'capacity'}"><a href="#/capacity"><i class="fa fa-line-chart"></i> Capacity</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="page-wrapper" ng-view>
