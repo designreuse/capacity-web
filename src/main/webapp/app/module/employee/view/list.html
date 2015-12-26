@@ -1,0 +1,20 @@
+<h1 class="page-header">Employees</h1>  
+
+<h2 class="sub-header">Listing</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>E-Mail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="employee in employees | filter: search | orderBy: name">
+      <td>{{employee.id}}</td>
+      <td><a href="#employees/{{employee.id}}" ng-bind="employee.name"></a></td>
+      <td>{{employee.email}}</td>
+    </tr>
+  </tbody>
+</table>
+<button ng-click="add()"><i class="fa fa-plus-circle"></i> Add</button>

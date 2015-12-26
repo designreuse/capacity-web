@@ -1,0 +1,16 @@
+<h1 class="page-header">{{!employee.name ? '&nbsp;' : employee.name}}</h1>
+
+<form name="form">
+	<div class="row">
+	<label-group label="ID">
+		<input type="text" ng-model="employee.id" disabled></input>
+	</label-group>
+	<label-group label="Name">
+		<input type="text" ng-model="employee.name"></input>
+	</label-group>
+	<label-group label="E-Mail">
+		<input type="text" ng-model="employee.email"></input>
+	</label-group>
+	<button type="submit" ng-click="save()"><i class="fa fa-floppy-o"></i> Save</button>
+	</div>
+</form>
