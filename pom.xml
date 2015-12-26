@@ -225,6 +225,13 @@
 			<version>3.2.0.GA</version>
 		</dependency>
 
+		<!-- Apache commons -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.0</version>
+		</dependency>
+
 		<!-- APIs -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

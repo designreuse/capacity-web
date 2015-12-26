@@ -1,10 +1,17 @@
 package de.egore911.capacity.ui.dto;
 
+import java.util.Set;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.JoinColumn;
+
 public class Employee {
 
 	private Integer id;
 	private String name;
 	private String email;
+	private Set<Ability> abilities;
 
 	public Integer getId() {
 		return id;
@@ -28,6 +35,16 @@ public class Employee {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@ElementCollection
+	@CollectionTable(name = "ability", joinColumns = @JoinColumn(name = "employee_id") )
+	public Set<Ability> getAbilities() {
+		return abilities;
+	}
+
+	public void setAbilities(Set<Ability> abilities) {
+		this.abilities = abilities;
 	}
 
 }

@@ -12,6 +12,7 @@
     "bootstrap": "~3.3.6",
     "angular-resource": "~1.4.8",
     "font-awesome": "fontawesome#~4.5.0",
-    "angular-route": "~1.4.8"
+    "angular-route": "~1.4.8",
+    "ng-tags-input": "~3.0.0"
   }
 }

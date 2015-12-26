@@ -4,24 +4,29 @@
 <head>
   <meta charset="utf8" />
   <title>Capacity planning tools</title>
-  
+
   <!-- Load jQuery -->
   <script type="text/javascript" src="components/jquery/dist/jquery.min.js"></script>
 
   <!-- Load bootstrap -->
   <script type="text/javascript" src="components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css">
-  
+  <link rel="stylesheet" type="text/css" href="components/bootstrap/dist/css/bootstrap.css">
+
   <!-- Load font-awesome -->
-  <link rel="stylesheet" href="components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css">
 
   <script type="text/javascript" src="components/angular/angular.js"></script>
   <script type="text/javascript" src="components/angular-resource/angular-resource.js"></script>
   <script type="text/javascript" src="components/angular-route/angular-route.js"></script>
+  <script type="text/javascript" src="components/ng-tags-input/ng-tags-input.js"></script>
+  <link rel="stylesheet" type="text/css" href="components/ng-tags-input/ng-tags-input.css">
+
   <script type="text/javascript" src="app/scripts/app.js"></script>
   <script type="text/javascript" src="app/scripts/routes.js"></script>
 
-  <link rel="stylesheet" href="app/styles/dashboard.css">
+  <link rel="stylesheet" type="text/css" href="app/styles/dashboard.css">
+  <link rel="stylesheet" type="text/css" href="app/styles/taginput.css">
+  <link rel="stylesheet" type="text/css" href="app/module/employee/styles/employee.css">
 
   <script type="text/javascript" src="app/scripts/directive/labelGroup.js"></script>
 
@@ -34,7 +39,7 @@
 <body ng-controller="MainCtrl">
 
 <div id="wrapper">
-    
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -69,7 +74,7 @@
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="page-wrapper" ng-view>
-          
+
         </div>
       </div>
     </div>

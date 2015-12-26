@@ -1,9 +1,14 @@
 package de.egore911.capacity.persistence.model;
 
+import java.util.Set;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
-@Entity
+@Entity(name = "Employee")
 @Table(name = "employee")
 public class EmployeeEntity extends IntegerDbObject {
 
@@ -11,6 +16,7 @@ public class EmployeeEntity extends IntegerDbObject {
 
 	private String name;
 	private String email;
+	private Set<AbilityEntity> abilities;
 
 	public String getName() {
 		return name;
@@ -26,5 +32,15 @@ public class EmployeeEntity extends IntegerDbObject {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@ElementCollection
+	@CollectionTable(name = "ability", joinColumns = @JoinColumn(name = "employee_id") )
+	public Set<AbilityEntity> getAbilities() {
+		return abilities;
+	}
+
+	public void setAbilities(Set<AbilityEntity> abilities) {
+		this.abilities = abilities;
 	}
 }

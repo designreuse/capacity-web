@@ -1,0 +1,17 @@
+ul.abilities {
+  display: inline;
+  list-style: none;
+  padding: 0;
+}
+
+ul.abilities li {
+  display: inline;
+}
+
+ul.abilities li:after {
+  content: ", ";
+}
+
+ul.abilities li:last-child:after {
+    content: "";
+}

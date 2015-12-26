@@ -21,12 +21,10 @@ import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.ui.dto.Employee;
 import de.egore911.capacity.ui.exceptions.BadArgumentException;
 import de.egore911.capacity.ui.exceptions.NullArgumentException;
-import de.egore911.capacity.util.listener.StartupListener;
 import de.egore911.persistence.util.EntityManagerUtil;
-import ma.glasnost.orika.MapperFacade;
 
 @Path("employee")
-public class EmployeeService {
+public class EmployeeService extends AbstractService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -104,10 +102,6 @@ public class EmployeeService {
 				em.getTransaction().rollback();
 			}
 		}
-	}
-
-	private MapperFacade getMapper() {
-		return StartupListener.MAPPER_FACTORY.getMapperFacade();
 	}
 
 }

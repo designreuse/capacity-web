@@ -11,6 +11,13 @@
 	<label-group label="E-Mail">
 		<input type="text" ng-model="employee.email"></input>
 	</label-group>
+	<label-group label="Abilities">
+		<tags-input ng-model="employee.abilities" display-property="name" placeholder="..." replace-spaces-with-dashes="false" class="bootstrap">
+      <auto-complete source="loadAbilities($query)"
+                     min-length="2"
+                     max-results-to-show="32"></auto-complete>
+    </tags-input>
+	</label-group>
 	<button type="submit" ng-click="save()"><i class="fa fa-floppy-o"></i> Save</button>
 	</div>
 </form>
