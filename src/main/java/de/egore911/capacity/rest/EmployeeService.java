@@ -13,13 +13,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.sun.jersey.api.NotFoundException;
-
 import de.egore911.capacity.persistence.dao.EmployeeDao;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.ui.dto.Employee;
 import de.egore911.capacity.ui.exceptions.BadArgumentException;
+import de.egore911.capacity.ui.exceptions.NotFoundException;
 import de.egore911.capacity.ui.exceptions.NullArgumentException;
 import de.egore911.persistence.util.EntityManagerUtil;
 
