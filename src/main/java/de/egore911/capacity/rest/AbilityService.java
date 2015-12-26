@@ -29,7 +29,7 @@ public class AbilityService extends AbstractService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Ability> getAbilities() {
 		EntityManager em = EntityManagerUtil.getEntityManager();
-		List<String> abilities = em.createQuery("select distinct a.name from Employee e join e.abilities a", String.class).getResultList();
+		List<String> abilities = em.createQuery("select distinct a.name from Employee e join e.abilities a order by a.name", String.class).getResultList();
 		
 		return CollectionUtils.collect(abilities, TRANSFORMER);
 	}
