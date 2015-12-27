@@ -9,7 +9,9 @@ public class JerseyConfig extends ResourceConfig {
 
 	public JerseyConfig() {
 		JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
-		provider.setMapper(new JodaMapper());
+		JodaMapper jodaMapper = new JodaMapper();
+		jodaMapper.setWriteDatesAsTimestamps(false);
+		provider.setMapper(jodaMapper);
 		register(provider);
 
 		packages("jersey.config.server.provider.packages");
