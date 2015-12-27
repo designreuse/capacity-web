@@ -1,4 +1,4 @@
-package de.egore911.capacity.rest;
+package de.egore911.capacity.ui.rest;
 
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -14,7 +14,6 @@ public class JerseyConfig extends ResourceConfig {
 		provider.setMapper(jodaMapper);
 		register(provider);
 
-		packages("jersey.config.server.provider.packages");
 	}
 
 }

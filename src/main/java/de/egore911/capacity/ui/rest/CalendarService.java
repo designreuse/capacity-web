@@ -1,4 +1,4 @@
-package de.egore911.capacity.rest;
+package de.egore911.capacity.ui.rest;
 
 import java.util.Collections;
 import java.util.List;
