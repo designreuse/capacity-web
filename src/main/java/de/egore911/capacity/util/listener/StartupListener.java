@@ -30,6 +30,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 
+import org.flywaydb.core.Flyway;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -38,10 +41,6 @@ import de.egore911.capacity.persistence.model.EmployeeEntity;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
-
-import org.flywaydb.core.Flyway;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 
 /**
  * Listener executed during startup, responsible for setting up the
@@ -60,6 +59,10 @@ public class StartupListener implements ServletContextListener {
 			.classMap(EmployeeEntity.class, EmployeeEntity.class)
 			.byDefault()
 			.register();
+
+		MAPPER_FACTORY
+			.getConverterFactory()
+			.registerConverter(new PassThroughConverter(DateTime.class));
 
 		MAPPER_FACTORY
 			.getConverterFactory()
