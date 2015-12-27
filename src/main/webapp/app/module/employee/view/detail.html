@@ -2,21 +2,50 @@
 
 <form name="form">
 	<div class="row">
+	<h2 class="sub-header">Personal data</h2>
 	<label-group label="ID">
-		<input type="text" ng-model="employee.id" disabled></input>
+		<p>
+			<input type="text" class="form-control" ng-model="employee.id" disabled></input>
+		</p>
 	</label-group>
 	<label-group label="Name">
-		<input type="text" ng-model="employee.name"></input>
+		<p>
+			<input type="text" class="form-control" ng-model="employee.name"></input>
+		</p>
 	</label-group>
 	<label-group label="E-Mail">
-		<input type="text" ng-model="employee.email"></input>
+		<p>
+			<input type="text" class="form-control" ng-model="employee.email"></input>
+		</p>
 	</label-group>
 	<label-group label="Abilities">
-		<tags-input ng-model="employee.abilities" display-property="name" placeholder="..." replace-spaces-with-dashes="false" class="bootstrap">
-      <auto-complete source="loadAbilities($query)"
-                     min-length="2"
-                     max-results-to-show="32"></auto-complete>
-    </tags-input>
+		<p>
+			<tags-input ng-model="employee.abilities" display-property="name" placeholder="..." replace-spaces-with-dashes="false" class="bootstrap">
+				<auto-complete source="loadAbilities($query)" min-length="2" max-results-to-show="32"></auto-complete>
+			</tags-input>
+		</p>
+	</label-group>
+	<h2 class="sub-header">Contract</h2>
+	<label-group label="Start date">
+		<p class="input-group">
+			<input type="text" class="form-control" ng-model="employee.contract.start" />
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+			</span>
+		</p>
+	</label-group>
+	<label-group label="End date">
+		<p class="input-group">
+			<input type="text" class="form-control" ng-model="employee.contract.end" />
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+			</span>
+		</p>
+	</label-group>
+	<label-group label="Working hours per day">
+		<p>
+			<input type="number" class="form-control" ng-model="employee.contract.workHoursPerDay" ng-required="true"/>
+		</p>
 	</label-group>
 	<button type="submit" ng-click="save()"><i class="fa fa-floppy-o"></i> Save</button>
 	</div>

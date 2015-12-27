@@ -10,6 +10,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class EmployeeEntity_ extends de.egore911.capacity.persistence.model.IntegerDbObject_ {
 
 	public static volatile SetAttribute<EmployeeEntity, AbilityEntity> abilities;
+	public static volatile SingularAttribute<EmployeeEntity, LocationEntity> location;
+	public static volatile SingularAttribute<EmployeeEntity, ContractEntity> contract;
 	public static volatile SingularAttribute<EmployeeEntity, String> email;
 	public static volatile SingularAttribute<EmployeeEntity, String> name;
 

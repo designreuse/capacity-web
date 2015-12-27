@@ -12,6 +12,7 @@ public class Employee {
 	private String name;
 	private String email;
 	private Set<Ability> abilities;
+	private Contract contract;
 
 	public Integer getId() {
 		return id;
@@ -45,6 +46,14 @@ public class Employee {
 
 	public void setAbilities(Set<Ability> abilities) {
 		this.abilities = abilities;
+	}
+
+	public Contract getContract() {
+		return contract;
+	}
+
+	public void setContract(Contract contract) {
+		this.contract = contract;
 	}
 
 }

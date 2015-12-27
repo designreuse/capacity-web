@@ -4,8 +4,10 @@ import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity(name = "Employee")
@@ -17,6 +19,8 @@ public class EmployeeEntity extends IntegerDbObject {
 	private String name;
 	private String email;
 	private Set<AbilityEntity> abilities;
+	private ContractEntity contract;
+	private LocationEntity location;
 
 	public String getName() {
 		return name;
@@ -43,4 +47,24 @@ public class EmployeeEntity extends IntegerDbObject {
 	public void setAbilities(Set<AbilityEntity> abilities) {
 		this.abilities = abilities;
 	}
+
+	@Embedded
+	public ContractEntity getContract() {
+		return contract;
+	}
+
+	public void setContract(ContractEntity contract) {
+		this.contract = contract;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "location_id")
+	public LocationEntity getLocation() {
+		return location;
+	}
+
+	public void setLocation(LocationEntity location) {
+		this.location = location;
+	}
+
 }
