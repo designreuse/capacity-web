@@ -19,6 +19,7 @@ public class AbsenceEntity extends IntegerDbObject {
 	private LocalDate start;
 	private LocalDate end;
 	private String reason;
+	private String externalId;
 
 	@ManyToOne
 	@JoinColumn(name = "employee_id", nullable = false)
@@ -57,6 +58,14 @@ public class AbsenceEntity extends IntegerDbObject {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	public String getExternalId() {
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
 	}
 
 }
