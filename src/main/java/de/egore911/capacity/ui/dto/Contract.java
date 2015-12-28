@@ -9,6 +9,7 @@ public class Contract {
 	private LocalDate start;
 	private LocalDate end;
 	private List<WorkingHours> workingHours;
+	private Integer workingHoursPerWeek;
 
 	public LocalDate getStart() {
 		return start;
@@ -32,6 +33,14 @@ public class Contract {
 
 	public void setWorkingHours(List<WorkingHours> workingHours) {
 		this.workingHours = workingHours;
+	}
+
+	public Integer getWorkingHoursPerWeek() {
+		return workingHoursPerWeek;
+	}
+
+	public void setWorkingHoursPerWeek(Integer workingHoursPerWeek) {
+		this.workingHoursPerWeek = workingHoursPerWeek;
 	}
 
 }

@@ -10,6 +10,7 @@
          <span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span></th>
       <th>E-Mail</th>
       <th>Abilities</th>
+      <th>Working hours</th>
     </tr>
   </thead>
   <tbody>
@@ -18,6 +19,7 @@
       <td><i style="background-color: {{employee.color}}; display: inline-block; vertical-align: middle; width: 16px; height: 16px; margin-right: 3px;"></i><a href="#employees/{{employee.id}}" ng-bind="employee.name"></a></td>
       <td>{{employee.email}}</td>
       <td><ul class="abilities"><li ng-repeat="ability in employee.abilities | orderBy: 'name'" ng-click="searchFilter(ability.name)" style="cursor: pointer;">{{ability.name}}</li></ul></td>
+      <td>{{employee.contract.workingHoursPerWeek}} ({{(employee.contract.workingHoursPerWeek / 40) * 100 | number: 0 }}%)</td>
     </tr>
   </tbody>
 </table>

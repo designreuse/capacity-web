@@ -32,14 +32,20 @@ import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
 import org.joda.time.DateTime;
+import org.joda.time.Hours;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import de.egore911.capacity.persistence.model.ContractEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
+import de.egore911.capacity.persistence.model.WorkingHoursEntity;
+import de.egore911.capacity.ui.dto.Contract;
+import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 
@@ -57,8 +63,20 @@ public class StartupListener implements ServletContextListener {
 
 	static {
 		MAPPER_FACTORY
-			.classMap(EmployeeEntity.class, EmployeeEntity.class)
+		.classMap(ContractEntity.class, Contract.class)
 			.byDefault()
+			.customize(
+					new CustomMapper<ContractEntity, Contract>() {
+						public void mapAtoB(ContractEntity a, Contract b, MappingContext context) {
+							if (a.getWorkingHours() != null) {
+								int workingHoursPerWeek = 0;
+								for (WorkingHoursEntity workingHoursEntity : a.getWorkingHours()) {
+									workingHoursPerWeek += Hours.hoursBetween(workingHoursEntity.getStart(), workingHoursEntity.getEnd()).getHours();
+								}
+								b.setWorkingHoursPerWeek(workingHoursPerWeek);
+							}
+						}
+					})
 			.register();
 
 		MAPPER_FACTORY
