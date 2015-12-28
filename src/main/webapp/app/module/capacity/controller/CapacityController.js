@@ -1,89 +1,110 @@
 'use strict';
 
 angular.module('capacityApp')
-	.controller('CapacityController', ['$scope', function($scope) {
-		/*$scope.chartConfig = {
+	.controller('CapacityController', ['$scope', '$http', 'Employee', function($scope, $http, Employee) {
 
+		$scope.chartConfig = {
 			options: {
 				chart: {
-					type: 'bar'
+					type: 'column'
 				},
-				tooltip: {
-					style: {
-						padding: 10,
-						fontWeight: 'bold'
+				plotOptions: {
+					column: {
+						stacking: 'normal'
+					},
+					series: {
+						animation: false
 					}
 				}
 			},
-
-			series: [{
-				data: [10, 15, 12, 8, 7]
-			}],
-
 			title: {
-				 text: 'Hello'
+				text: 'TODO!!'
 			},
-
-			loading: false,
-				xAxis: {
-				currentMin: 0,
-				currentMax: 4,
-				title: {text: 'values'}
+			xAxis: {
+				categories: []
 			},
-			size: {
-				width: 400,
-				height: 300
+			yAxis: {
+				min: 0
+			},
+			series: [],
+			credits: {
+				enabled: false
 			}
-		};*/
+		};
+
+		$scope.onlyForSelectedAbilities = function(item) {
+			if ($scope.abilities == undefined) {
+				return true;
+			}
+			var found = false;
+			var anySelected = false;
+			$scope.abilities.forEach(function(element, index) {
+				if (element.selected) {
+					anySelected = true;
+					item.abilities.forEach(function(childelement, childindex) {
+						if (element.name == childelement.name) {
+							found = true;
+						}
+					});
+				}
+			});
+			if (!anySelected) {
+				found = true;
+			}
+			console.log(item.name + ": " + found);
+			return found;
+		}
+
+		$scope.loadChart = function() {
+			var url = 'rest/capacity/workinghours';
+			var filteredEmployees = $scope.employees.filter($scope.onlyForSelectedAbilities);
+			if (filteredEmployees.length > 0) {
+				var urlExtra = '';
+				filteredEmployees.forEach(function(element, index) {
+					if (element.selected) {
+						if (urlExtra.length > 0) {
+							urlExtra += '&';
+						}
+						urlExtra += 'employeeIds=' + element.id;
+					}
+				});
+				if (urlExtra.length > 0) {
+					url += '?' + urlExtra;
+				}
+			}
+			$http.get(url).then(function(response) {
+				var categories = [];
+				response.data[0].workingHours.details.forEach(function(element, index) {
+					categories.push(element.date)
+				});
+				var series = [];
+				response.data.forEach(function(element, index) {
+					var seriesvalues = []
+					element.workingHours.details.forEach(function(childelement, childindex) {
+						seriesvalues.push(childelement.hours);
+					});
+					series.push({
+						name: element.employee.name,
+						data: seriesvalues,
+						color: element.employee.color
+					});
+				});
+				$scope.chartConfig.categories = categories;
+				$scope.chartConfig.series = series;
+			});
+		};
 		
-		$scope.chartConfig = {
-				options: {
-		        chart: {
-		        	type: 'column'
-		        },
-		        plotOptions: {
-		            column: {
-		                stacking: 'normal',
-		                dataLabels: {
-		                    enabled: true,
-		                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-		                    style: {
-		                        textShadow: '0 0 3px black'
-		                    }
-		                }
-		            },series: {
-		                animation: false
-		            }
-		        }
-				},
-		        title: {
-		            text: 'Stacked bar chart'
-		        },
-		        xAxis: {
-		            categories: ['2016Q1.1', '2016Q1.2', '2016Q1.3', '2016Q1.4', '2016Q1.5']
-		        },
-		        yAxis: {
-		            min: 0,
-		            title: {
-		                text: 'Total fruit consumption'
-		            },
-		            stackLabels: {
-		                enabled: true,
-		                style: {
-		                    fontWeight: 'bold',
-		                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-		                }
-		            }
-		        },
-		        legend: {
-		            reversed: true
-		        },
-		        series: [{
-		            name: 'Development',
-		            data: [5, 3, 4, 7, 2]
-		        }, {
-		            name: 'Quality assurance',
-		            data: [2, 2, 3, 2, 1]
-		        }]
-		    };
+		$http.get('rest/abilities').then(function(response) {
+			$scope.abilities = response.data;
+		});
+
+		Employee.query(function(employees) {
+			employees.forEach(function(element, index) {
+				element.selected = true;
+			});
+			$scope.employees = employees;
+
+			$scope.loadChart();
+		});
+
 	}]);

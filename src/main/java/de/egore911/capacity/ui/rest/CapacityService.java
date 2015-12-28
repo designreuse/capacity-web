@@ -1,17 +1,16 @@
 package de.egore911.capacity.ui.rest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.joda.time.DateTimeConstants;
@@ -22,36 +21,50 @@ import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.model.HolidayEntity;
 import de.egore911.capacity.persistence.selector.AbsenceSelector;
+import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.persistence.selector.HolidaySelector;
+import de.egore911.capacity.ui.dto.Employee;
 import de.egore911.capacity.ui.dto.WorkingHours;
+import de.egore911.capacity.ui.dto.WorkingHoursDetails;
+import de.egore911.capacity.ui.dto.WorkingHoursPerEmployee;
 import de.egore911.capacity.ui.exceptions.BadArgumentException;
 import de.egore911.capacity.ui.exceptions.NullArgumentException;
 
 @Path("capacity")
-public class CapacityService {
+public class CapacityService extends AbstractService {
+
+	@GET
+	@Path("workinghours")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<WorkingHoursPerEmployee> getWorkingHours(@QueryParam("employeeIds") List<Integer> employeeIds,
+			@DefaultValue("") @QueryParam("start") LocalDate start,
+			@DefaultValue("") @QueryParam("end") LocalDate end) {
+		if (start == null) {
+			start = LocalDate.now().minusDays(10);
+		}
+		if (end == null) {
+			end = LocalDate.now().plusDays(10);
+		}
+
+		List<EmployeeEntity> employees = new EmployeeSelector()
+				.withActiveContract(start, end)
+				.withIds(employeeIds)
+				.findAll();
+
+		List<WorkingHoursPerEmployee> result = new ArrayList<>(employees.size());
+		for (EmployeeEntity employee : employees) {
+			result.add(new WorkingHoursPerEmployee(getMapper().map(employee, Employee.class), getWorkingHoursForEmployee(employee.getId(), start, end)));
+		}
+
+		return result;
+	}
 
 	@GET
 	@Path("workinghours/{employeeId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public WorkingHours getWorkingHours(@PathParam("employeeId") Integer employeeId) {
-		LocalDate from = LocalDate.now().minusDays(10);
-		LocalDate until = LocalDate.now().plusDays(10);
-		return getWorkingHours(employeeId, from, until);
-	}
-
-	/**
-	 * 
-	 * @param start
-	 *            start date (inclusive)
-	 * @param end
-	 *            end date (inclusive)
-	 */
-	@POST
-	@Path("workinghours/{employeeId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public WorkingHours getWorkingHours(@PathParam("employeeId") Integer employeeId, @FormParam("start") LocalDate start,
-			@FormParam("end") LocalDate end) {
+	public WorkingHours getWorkingHoursForEmployee(@PathParam("employeeId") Integer employeeId,
+			@QueryParam("start") LocalDate start,
+			@QueryParam("end") LocalDate end) {
 		if (start == null || end == null) {
 			throw new NullArgumentException("start and end");
 		}
@@ -91,12 +104,12 @@ public class CapacityService {
 			}
 		}
 
-		WorkingHours workinghours = getWorkingHours(start, end, employee, reductions);
+		WorkingHours workinghours = getWorkingHoursForEmployee(start, end, employee, reductions);
 
 		return workinghours;
 	}
 
-	private WorkingHours getWorkingHours(LocalDate start, LocalDate end, EmployeeEntity employee,
+	private WorkingHours getWorkingHoursForEmployee(LocalDate start, LocalDate end, EmployeeEntity employee,
 			Map<LocalDate, Integer> reductions) {
 		int workinghours = 0;
 		List<WorkingHoursDetails> details = new ArrayList<>();
