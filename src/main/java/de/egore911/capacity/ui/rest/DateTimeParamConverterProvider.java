@@ -7,6 +7,7 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
@@ -28,6 +29,9 @@ public class DateTimeParamConverterProvider implements ParamConverterProvider {
 	private static class DateTimeParamConverter implements ParamConverter<DateTime> {
 		@Override
 		public DateTime fromString(String value) {
+			if (StringUtils.isEmpty(value)) {
+				return null;
+			}
 			try {
 				return ISODateTimeFormat.dateTimeNoMillis().parseDateTime(value);
 			} catch (IllegalArgumentException e) {
@@ -45,6 +49,9 @@ public class DateTimeParamConverterProvider implements ParamConverterProvider {
 	private static class LocalDateParamConverter implements ParamConverter<LocalDate> {
 		@Override
 		public LocalDate fromString(String value) {
+			if (StringUtils.isEmpty(value)) {
+				return null;
+			}
 			return ISODateTimeFormat.date().parseLocalDate(value);
 		}
 
