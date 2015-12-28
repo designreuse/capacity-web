@@ -6,12 +6,18 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 
+import de.egore911.capacity.persistence.model.AbsenceEntity;
+import de.egore911.capacity.persistence.model.AbsenceEntity_;
 import de.egore911.capacity.persistence.model.ContractEntity_;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity_;
@@ -25,6 +31,9 @@ public class EmployeeSelector extends AbstractSelector<EmployeeEntity> {
 	private Collection<Integer> ids;
 	private LocalDate contractRangeStartDate;
 	private LocalDate contractRangeEndDate;
+	private String email;
+	private LocalDate availableAt;
+	private LocalDate absentAt;
 
 	@Override
 	protected Class<EmployeeEntity> getEntityClass() {
@@ -76,6 +85,33 @@ public class EmployeeSelector extends AbstractSelector<EmployeeEntity> {
 			);
 		}
 
+		if (StringUtils.isNotEmpty(email)) {
+			predicates.add(builder.equal(from.get(EmployeeEntity_.email), email));
+		}
+
+		if (availableAt != null) {
+
+			Subquery<Integer> subquery = query.subquery(Integer.class);
+			Root<EmployeeEntity> subfrom = subquery.from(EmployeeEntity.class);
+			ListJoin<EmployeeEntity, AbsenceEntity> subfromAbsences = subfrom.join(EmployeeEntity_.absences);
+			subquery.select(subfrom.get(IntegerDbObject_.id));
+			subquery.where(builder.and(
+					builder.lessThanOrEqualTo(subfromAbsences.get(AbsenceEntity_.start), availableAt),
+					builder.greaterThanOrEqualTo(subfromAbsences.get(AbsenceEntity_.end), availableAt)
+				));
+			predicates.add(builder.not(from.get(IntegerDbObject_.id).in(subquery)));
+		}
+
+		if (absentAt != null) {
+			ListJoin<EmployeeEntity, AbsenceEntity> fromAbsences = from.join(EmployeeEntity_.absences);
+			predicates.add(
+				builder.and(
+					builder.lessThanOrEqualTo(fromAbsences.get(AbsenceEntity_.start), absentAt),
+					builder.greaterThanOrEqualTo(fromAbsences.get(AbsenceEntity_.end), absentAt)
+				)
+			);
+		}
+
 		return predicates;
 	}
 
@@ -92,6 +128,21 @@ public class EmployeeSelector extends AbstractSelector<EmployeeEntity> {
 
 	public EmployeeSelector withIds(Collection<Integer> ids) {
 		this.ids = ids;
+		return this;
+	}
+
+	public EmployeeSelector withEmail(String email) {
+		this.email = email;
+		return this;
+	}
+
+	public EmployeeSelector withAvailability(LocalDate availableAt) {
+		this.availableAt = availableAt;
+		return this;
+	}
+
+	public EmployeeSelector withAbsence(LocalDate absentAt) {
+		this.absentAt = absentAt;
 		return this;
 	}
 
