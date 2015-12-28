@@ -24,8 +24,6 @@ package de.egore911.capacity.persistence.model;
 import java.io.Serializable;
 
 import javax.persistence.EntityListeners;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 

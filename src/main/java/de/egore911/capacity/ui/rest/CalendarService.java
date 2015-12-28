@@ -1,7 +1,6 @@
 package de.egore911.capacity.ui.rest;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -12,7 +11,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.joda.time.LocalDate;
-import org.joda.time.format.ISODateTimeFormat;
 
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.HolidayEntity;

@@ -80,7 +80,7 @@ public class JndiFactory implements InitialContextFactory {
 		Mockito.when(context.lookup(Matchers.any(Name.class))).then(new Answer<Object>() {
 
 			@Override
-			public Object answer(InvocationOnMock invocation) throws Throwable {
+			public Object answer(InvocationOnMock invocation) {
 				if (invocation.getArguments()[0] == name) {
 					return jdbcDataSource;
 				}
@@ -91,7 +91,7 @@ public class JndiFactory implements InitialContextFactory {
 		Mockito.when(context.lookup(Matchers.anyString())).then(new Answer<Object>() {
 
 			@Override
-			public Object answer(InvocationOnMock invocation) throws Throwable {
+			public Object answer(InvocationOnMock invocation) {
 				if (DATASOURCE_NAME.equals(invocation.getArguments()[0])) {
 					return jdbcDataSource;
 				}
