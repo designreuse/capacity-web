@@ -1,0 +1,32 @@
+<h1 class="page-header">Absences</h1>
+
+<div class="row">
+  <div class="col-sm-6">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Absent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="employee in absent | filter: search | orderBy: 'name'">
+          <td ng-bind="employee.name"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-6">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Available</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="employee in available | filter: search | orderBy: 'name'">
+          <td ng-bind="employee.name"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

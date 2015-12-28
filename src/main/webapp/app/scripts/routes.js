@@ -19,5 +19,6 @@ angular.module('capacityApp')
 
 		addRoute('/capacity', 'app/module/capacity/view/capacity.html', 'CapacityController');
 
+		addRoute('/absence', 'app/module/absence/view/absence.html', 'AbsenceController');
 
 	}]);
