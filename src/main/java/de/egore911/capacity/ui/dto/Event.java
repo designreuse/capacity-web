@@ -5,7 +5,9 @@ import org.joda.time.LocalDate;
 public class Event {
 
 	private String title;
-	private String start;
+	private LocalDate start;
+	private LocalDate end;
+	private String color;
 
 	public String getTitle() {
 		return title;
@@ -15,12 +17,27 @@ public class Event {
 		this.title = title;
 	}
 
-	public String getStart() {
+	public LocalDate getStart() {
 		return start;
 	}
 
-	public void setStart(String start) {
+	public void setStart(LocalDate start) {
 		this.start = start;
 	}
 
+	public LocalDate getEnd() {
+		return end;
+	}
+
+	public void setEnd(LocalDate end) {
+		this.end = end;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
 }

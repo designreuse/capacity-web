@@ -1,5 +1,6 @@
 package de.egore911.capacity.ui.rest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +14,10 @@ import javax.ws.rs.core.MediaType;
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
 
+import de.egore911.capacity.persistence.model.AbsenceEntity;
+import de.egore911.capacity.persistence.model.HolidayEntity;
+import de.egore911.capacity.persistence.selector.AbsenceSelector;
+import de.egore911.capacity.persistence.selector.HolidaySelector;
 import de.egore911.capacity.ui.dto.Event;
 
 @Path("calendar")
@@ -25,15 +30,33 @@ public class CalendarService {
 			@QueryParam("start") LocalDate start,
 			@QueryParam("end") LocalDate end) {
 		if ("holidays".equals(id)) {
-			Event event = new Event();
-			event.setTitle("Test holiday");
-			event.setStart(ISODateTimeFormat.date().print(LocalDate.now()));
-			return Collections.singletonList(event);
+			List<HolidayEntity> holidays = new HolidaySelector()
+				.withStartInclusive(start)
+				.withEndInclusive(end)
+				.findAll();
+			List<Event> result = new ArrayList<>(holidays.size());
+			for (HolidayEntity holiday : holidays) {
+				Event event = new Event();
+				event.setTitle(holiday.getName());
+				event.setStart(holiday.getDate());
+				result.add(event);
+			}
+			return result;
 		} else {
-			Event event = new Event();
-			event.setTitle("Test employee");
-			event.setStart(ISODateTimeFormat.date().print(LocalDate.now().plusDays(1)));
-			return Collections.singletonList(event);
+			List<AbsenceEntity> absences = new AbsenceSelector()
+				.withStartInclusive(start)
+				.withEndInclusive(end)
+				.findAll();
+			List<Event> result = new ArrayList<>(absences.size());
+			for (AbsenceEntity absence : absences) {
+				Event event = new Event();
+				event.setTitle(absence.getEmployee().getName() + ": " + absence.getReason());
+				event.setStart(absence.getStart());
+				event.setEnd(absence.getEnd());
+				event.setColor(absence.getEmployee().getColor());
+				result.add(event);
+			}
+			return result;
 		}
 	}
 
