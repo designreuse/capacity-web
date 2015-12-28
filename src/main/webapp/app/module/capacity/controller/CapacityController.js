@@ -6,7 +6,8 @@ angular.module('capacityApp')
 		$scope.chartConfig = {
 			options: {
 				chart: {
-					type: 'column'
+					type: 'column',
+					animation: false
 				},
 				plotOptions: {
 					column: {
