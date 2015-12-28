@@ -32,7 +32,7 @@ public class EmployeeSelector extends AbstractSelector<EmployeeEntity> {
 	}
 
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<EmployeeEntity> from) {
+	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<EmployeeEntity> from, CriteriaQuery<?> query) {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (CollectionUtils.isNotEmpty(ids)) {

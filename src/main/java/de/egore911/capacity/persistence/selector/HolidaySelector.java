@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -29,7 +30,7 @@ public class HolidaySelector extends AbstractSelector<HolidayEntity> {
 	}
 
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<HolidayEntity> from) {
+	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<HolidayEntity> from, CriteriaQuery<?> query) {
 		List<Predicate> predicates = new ArrayList<>();
 		if (startInclusive != null) {
 			predicates.add(builder.greaterThanOrEqualTo(from.get(HolidayEntity_.date), startInclusive));
