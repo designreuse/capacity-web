@@ -50,9 +50,10 @@
 			</span>
 		</p>
 	</label-group>
-	<label-group label="Working hours per day">
+	<label-group label="Working hours {{workingHours.dayOfWeek | dayOfWeekToString}}" ng-repeat="workingHours in employee.contract.workingHours">
 		<p>
-			<input type="number" class="form-control" ng-model="employee.contract.workHoursPerDay" ng-required="true"/>
+			<input type="text" class="form-control" ng-model="workingHours.start" ng-required="true"/>
+			<input type="text" class="form-control" ng-model="workingHours.end" ng-required="true"/>
 		</p>
 	</label-group>
 	<button type="submit" ng-click="save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>

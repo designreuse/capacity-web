@@ -1,8 +1,12 @@
-package de.egore911.capacity.ui.dto;
+package de.egore911.capacity.persistence.model;
 
+import javax.persistence.Embeddable;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.LocalTime;
 
-public class WorkingHours {
+@Embeddable
+public class WorkingHoursEntity {
 
 	private int dayOfWeek;
 	private LocalTime start;
@@ -16,6 +20,7 @@ public class WorkingHours {
 		this.dayOfWeek = dayOfWeek;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
 	public LocalTime getStart() {
 		return start;
 	}
@@ -24,6 +29,7 @@ public class WorkingHours {
 		this.start = start;
 	}
 
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
 	public LocalTime getEnd() {
 		return end;
 	}

@@ -33,6 +33,7 @@ import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -67,6 +68,10 @@ public class StartupListener implements ServletContextListener {
 		MAPPER_FACTORY
 			.getConverterFactory()
 			.registerConverter(new PassThroughConverter(LocalDate.class));
+
+		MAPPER_FACTORY
+			.getConverterFactory()
+			.registerConverter(new PassThroughConverter(LocalTime.class));
 	}
 
 	@Override

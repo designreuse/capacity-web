@@ -1,12 +1,14 @@
 package de.egore911.capacity.ui.dto;
 
+import java.util.List;
+
 import org.joda.time.LocalDate;
 
 public class Contract {
 
 	private LocalDate start;
 	private LocalDate end;
-	private int workHoursPerDay;
+	private List<WorkingHours> workingHours;
 
 	public LocalDate getStart() {
 		return start;
@@ -24,12 +26,12 @@ public class Contract {
 		this.end = end;
 	}
 
-	public int getWorkHoursPerDay() {
-		return workHoursPerDay;
+	public List<WorkingHours> getWorkingHours() {
+		return workingHours;
 	}
 
-	public void setWorkHoursPerDay(int workHoursPerDay) {
-		this.workHoursPerDay = workHoursPerDay;
+	public void setWorkingHours(List<WorkingHours> workingHours) {
+		this.workingHours = workingHours;
 	}
 
 }

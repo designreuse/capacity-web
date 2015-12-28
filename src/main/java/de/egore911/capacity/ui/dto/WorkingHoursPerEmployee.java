@@ -3,12 +3,12 @@ package de.egore911.capacity.ui.dto;
 public class WorkingHoursPerEmployee {
 
 	private Employee employee;
-	private WorkingHours workingHours;
+	private WorkingHoursList workingHours;
 
 	public WorkingHoursPerEmployee() {
 	}
 
-	public WorkingHoursPerEmployee(Employee employee, WorkingHours workingHours) {
+	public WorkingHoursPerEmployee(Employee employee, WorkingHoursList workingHours) {
 		this.employee = employee;
 		this.workingHours = workingHours;
 	}
@@ -21,11 +21,11 @@ public class WorkingHoursPerEmployee {
 		this.employee = employee;
 	}
 
-	public WorkingHours getWorkingHours() {
+	public WorkingHoursList getWorkingHours() {
 		return workingHours;
 	}
 
-	public void setWorkingHours(WorkingHours workingHours) {
+	public void setWorkingHours(WorkingHoursList workingHours) {
 		this.workingHours = workingHours;
 	}
 

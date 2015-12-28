@@ -13,18 +13,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.joda.time.DateTimeConstants;
+import org.joda.time.Hours;
 import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.dao.EmployeeDao;
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.model.HolidayEntity;
+import de.egore911.capacity.persistence.model.WorkingHoursEntity;
 import de.egore911.capacity.persistence.selector.AbsenceSelector;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.persistence.selector.HolidaySelector;
 import de.egore911.capacity.ui.dto.Employee;
-import de.egore911.capacity.ui.dto.WorkingHours;
+import de.egore911.capacity.ui.dto.WorkingHoursList;
 import de.egore911.capacity.ui.dto.WorkingHoursDetails;
 import de.egore911.capacity.ui.dto.WorkingHoursPerEmployee;
 import de.egore911.capacity.ui.exceptions.BadArgumentException;
@@ -46,14 +47,13 @@ public class CapacityService extends AbstractService {
 			end = LocalDate.now().plusDays(10);
 		}
 
-		List<EmployeeEntity> employees = new EmployeeSelector()
-				.withActiveContract(start, end)
-				.withIds(employeeIds)
+		List<EmployeeEntity> employees = new EmployeeSelector().withActiveContract(start, end).withIds(employeeIds)
 				.findAll();
 
 		List<WorkingHoursPerEmployee> result = new ArrayList<>(employees.size());
 		for (EmployeeEntity employee : employees) {
-			result.add(new WorkingHoursPerEmployee(getMapper().map(employee, Employee.class), getWorkingHoursForEmployee(employee.getId(), start, end)));
+			result.add(new WorkingHoursPerEmployee(getMapper().map(employee, Employee.class),
+					getWorkingHoursForEmployee(employee.getId(), start, end)));
 		}
 
 		return result;
@@ -62,9 +62,8 @@ public class CapacityService extends AbstractService {
 	@GET
 	@Path("workinghours/{employeeId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public WorkingHours getWorkingHoursForEmployee(@PathParam("employeeId") Integer employeeId,
-			@QueryParam("start") LocalDate start,
-			@QueryParam("end") LocalDate end) {
+	public WorkingHoursList getWorkingHoursForEmployee(@PathParam("employeeId") Integer employeeId,
+			@QueryParam("start") LocalDate start, @QueryParam("end") LocalDate end) {
 		if (start == null || end == null) {
 			throw new NullArgumentException("start and end");
 		}
@@ -93,43 +92,56 @@ public class CapacityService extends AbstractService {
 			}
 		}
 
+		Map<Integer, Hours> durations = getWorkingHourDurations(employee);
+
 		List<AbsenceEntity> absences = new AbsenceSelector().withEmployeeId(employeeId).findAll();
 		for (AbsenceEntity absence : absences) {
 			LocalDate date = absence.getStart();
 			while (date.isBefore(end) && !date.isAfter(absence.getEnd())) {
 				if (!date.isBefore(start)) {
-					reductions.put(date, employee.getContract().getWorkHoursPerDay());
+					Hours hours = durations.get(date.getDayOfWeek());
+					reductions.put(date, hours != null ? hours.getHours() : 0);
 				}
 				date = date.plusDays(1);
 			}
 		}
 
-		WorkingHours workinghours = getWorkingHoursForEmployee(start, end, employee, reductions);
+		WorkingHoursList workinghours = getWorkingHoursForEmployee(start, end, employee, reductions);
 
 		return workinghours;
 	}
 
-	private WorkingHours getWorkingHoursForEmployee(LocalDate start, LocalDate end, EmployeeEntity employee,
+	private WorkingHoursList getWorkingHoursForEmployee(LocalDate start, LocalDate end, EmployeeEntity employee,
 			Map<LocalDate, Integer> reductions) {
 		int workinghours = 0;
 		List<WorkingHoursDetails> details = new ArrayList<>();
 
+		Map<Integer, Hours> durations = getWorkingHourDurations(employee);
+
 		LocalDate date = start;
 		while (date.isBefore(end)) {
-			int workinghoursOfDay;
 			int dayOfWeek = date.getDayOfWeek();
-			if (dayOfWeek != DateTimeConstants.SATURDAY && dayOfWeek != DateTimeConstants.SUNDAY) {
-				workinghoursOfDay = employee.getContract().getWorkHoursPerDay();
-				if (reductions.containsKey(date)) {
-					workinghoursOfDay -= reductions.get(date);
-				}
-			} else {
-				workinghoursOfDay = 0;
+			Hours hours = durations.get(dayOfWeek);
+			int workinghoursOfDay = hours != null ? hours.getHours() : 0;
+
+			if (reductions.containsKey(date)) {
+				workinghoursOfDay -= reductions.get(date);
 			}
+
+			workinghoursOfDay = Math.max(workinghoursOfDay, 0);
 			workinghours += workinghoursOfDay;
 			details.add(new WorkingHoursDetails(date, workinghoursOfDay));
 			date = date.plusDays(1);
 		}
-		return new WorkingHours(start, end, workinghours, details);
+		return new WorkingHoursList(start, end, workinghours, details);
+	}
+
+	private Map<Integer, Hours> getWorkingHourDurations(EmployeeEntity employee) {
+		Map<Integer, Hours> durations = new HashMap<>(7);
+		for (WorkingHoursEntity workingHours : employee.getContract().getWorkingHours()) {
+			durations.put(workingHours.getDayOfWeek(),
+					Hours.hoursBetween(workingHours.getStart(), workingHours.getEnd()));
+		}
+		return durations;
 	}
 }
