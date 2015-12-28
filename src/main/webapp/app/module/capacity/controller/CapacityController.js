@@ -19,7 +19,7 @@ angular.module('capacityApp')
 				}
 			},
 			title: {
-				text: 'TODO!!'
+				text: ''
 			},
 			xAxis: {
 				categories: []
@@ -52,7 +52,6 @@ angular.module('capacityApp')
 			if (!anySelected) {
 				found = true;
 			}
-			console.log(item.name + ": " + found);
 			return found;
 		}
 
@@ -90,8 +89,9 @@ angular.module('capacityApp')
 						color: element.employee.color
 					});
 				});
-				$scope.chartConfig.categories = categories;
+				$scope.chartConfig.xAxis.categories = categories;
 				$scope.chartConfig.series = series;
+				$scope.chartConfig.title.text = 'Capacity for ' + response.data[0].workingHours.from + ' - ' + response.data[0].workingHours.until;
 			});
 		};
 		
