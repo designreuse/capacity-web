@@ -17,7 +17,7 @@
       <td>{{employee.id}}</td>
       <td><a href="#employees/{{employee.id}}" ng-bind="employee.name"></a></td>
       <td>{{employee.email}}</td>
-      <td><ul class="abilities"><li ng-repeat="ability in employee.abilities | orderBy: name" ng-click="searchFilter(ability.name)" style="cursor: pointer;">{{ability.name}}</li></ul></td>
+      <td><ul class="abilities"><li ng-repeat="ability in employee.abilities | orderBy: 'name'" ng-click="searchFilter(ability.name)" style="cursor: pointer;">{{ability.name}}</li></ul></td>
     </tr>
   </tbody>
 </table>
