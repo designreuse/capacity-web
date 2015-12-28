@@ -26,8 +26,11 @@
 		</p>
 	</label-group>
 	<label-group label="Color">
-		<p>
-			<input colorpicker class="form-control" ng-model="employee.color" type="text" ng-required="true">
+		<p class="input-group">
+			<input colorpicker type="text" class="form-control" ng-model="employee.color" ng-required="true"/>
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-default"><i style="background-color: {{employee.color}}; display: inline-block; vertical-align: middle; width: 13px; height: 13px;"></i></button>
+			</span>
 		</p>
 	</label-group>
 	<h2 class="sub-header">Contract</h2>
