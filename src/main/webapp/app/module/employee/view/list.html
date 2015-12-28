@@ -4,14 +4,16 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
+      <th><span ng-click="order('id')">ID</span>
+         <span class="sortorder" ng-show="predicate === 'id'" ng-class="{reverse:reverse}"></span></th>
+      <th><span ng-click="order('name')">Name</span>
+         <span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span></th>
       <th>E-Mail</th>
       <th>Abilities</th>
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="employee in employees | filter: search | orderBy: name">
+    <tr ng-repeat="employee in employees | filter: search | orderBy:predicate:reverse">
       <td>{{employee.id}}</td>
       <td><a href="#employees/{{employee.id}}" ng-bind="employee.name"></a></td>
       <td>{{employee.email}}</td>
