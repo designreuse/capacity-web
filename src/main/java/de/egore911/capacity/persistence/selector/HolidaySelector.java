@@ -21,7 +21,7 @@ public class HolidaySelector extends AbstractSelector<HolidayEntity> {
 
 	private LocalDate startInclusive;
 	private LocalDate endInclusive;
-	private Integer locationId;
+	private LocationEntity location;
 
 	@Override
 	protected Class<HolidayEntity> getEntityClass() {
@@ -37,9 +37,9 @@ public class HolidaySelector extends AbstractSelector<HolidayEntity> {
 		if (endInclusive != null) {
 			predicates.add(builder.lessThanOrEqualTo(from.get(HolidayEntity_.date), endInclusive));
 		}
-		if (locationId != null) {
+		if (location != null) {
 			ListJoin<HolidayEntity, LocationEntity> fromHoliday = from.join(HolidayEntity_.locations);
-			predicates.add(builder.equal(fromHoliday.get(HolidayEntity_.id), locationId));
+			predicates.add(builder.equal(fromHoliday, location));
 		}
 		return predicates;
 	}
@@ -54,8 +54,8 @@ public class HolidaySelector extends AbstractSelector<HolidayEntity> {
 		return this;
 	}
 
-	public HolidaySelector withLocationId(Integer locationId) {
-		this.locationId = locationId;
+	public HolidaySelector withLocation(LocationEntity location) {
+		this.location = location;
 		return this;
 	}
 

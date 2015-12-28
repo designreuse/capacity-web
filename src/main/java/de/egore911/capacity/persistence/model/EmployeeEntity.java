@@ -1,5 +1,6 @@
 package de.egore911.capacity.persistence.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -8,6 +9,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity(name = "Employee")
@@ -21,6 +23,7 @@ public class EmployeeEntity extends IntegerDbObject {
 	private Set<AbilityEntity> abilities;
 	private ContractEntity contract;
 	private LocationEntity location;
+	private List<AbsenceEntity> absences;
 
 	public String getName() {
 		return name;
@@ -65,6 +68,15 @@ public class EmployeeEntity extends IntegerDbObject {
 
 	public void setLocation(LocationEntity location) {
 		this.location = location;
+	}
+
+	@OneToMany(mappedBy = "employee")
+	public List<AbsenceEntity> getAbsences() {
+		return absences;
+	}
+
+	public void setAbsences(List<AbsenceEntity> absences) {
+		this.absences = absences;
 	}
 
 }
