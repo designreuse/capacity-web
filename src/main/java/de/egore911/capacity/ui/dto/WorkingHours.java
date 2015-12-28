@@ -1,6 +1,6 @@
 package de.egore911.capacity.ui.dto;
 
-import java.util.Map;
+import java.util.List;
 
 import org.joda.time.LocalDate;
 
@@ -8,12 +8,12 @@ public class WorkingHours {
 	private LocalDate from;
 	private LocalDate until;
 	private int hours;
-	private Map<LocalDate, Integer> details;
+	private List<WorkingHoursDetails> details;
 
 	public WorkingHours() {
 	}
 
-	public WorkingHours(LocalDate from, LocalDate until, int hours, Map<LocalDate, Integer> details) {
+	public WorkingHours(LocalDate from, LocalDate until, int hours, List<WorkingHoursDetails> details) {
 		this.from = from;
 		this.until = until;
 		this.hours = hours;
@@ -44,11 +44,11 @@ public class WorkingHours {
 		this.hours = hours;
 	}
 	
-	public Map<LocalDate, Integer> getDetails() {
+	public List<WorkingHoursDetails> getDetails() {
 		return details;
 	}
 	
-	public void setDetails(Map<LocalDate, Integer> details) {
+	public void setDetails(List<WorkingHoursDetails> details) {
 		this.details = details;
 	}
 }

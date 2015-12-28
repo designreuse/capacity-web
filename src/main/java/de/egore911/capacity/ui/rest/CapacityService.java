@@ -99,7 +99,7 @@ public class CapacityService {
 	private WorkingHours getWorkingHours(LocalDate start, LocalDate end, EmployeeEntity employee,
 			Map<LocalDate, Integer> reductions) {
 		int workinghours = 0;
-		Map<LocalDate, Integer> details = new LinkedHashMap<>();
+		List<WorkingHoursDetails> details = new ArrayList<>();
 
 		LocalDate date = start;
 		while (date.isBefore(end)) {
@@ -114,7 +114,7 @@ public class CapacityService {
 				workinghoursOfDay = 0;
 			}
 			workinghours += workinghoursOfDay;
-			details.put(date, workinghoursOfDay);
+			details.add(new WorkingHoursDetails(date, workinghoursOfDay));
 			date = date.plusDays(1);
 		}
 		return new WorkingHours(start, end, workinghours, details);
