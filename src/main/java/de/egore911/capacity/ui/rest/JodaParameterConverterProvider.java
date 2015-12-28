@@ -10,10 +10,11 @@ import javax.ws.rs.ext.Provider;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.joda.time.format.ISODateTimeFormat;
 
 @Provider
-public class DateTimeParamConverterProvider implements ParamConverterProvider {
+public class JodaParameterConverterProvider implements ParamConverterProvider {
 
 	@Override
 	public <T> ParamConverter<T> getConverter(Class<T> type, Type genericType, Annotation[] annotations) {
@@ -21,6 +22,8 @@ public class DateTimeParamConverterProvider implements ParamConverterProvider {
 			return (ParamConverter<T>) new DateTimeParamConverter();
 		} else if (type.equals(LocalDate.class)) {
 			return (ParamConverter<T>) new LocalDateParamConverter();
+		} else if (type.equals(LocalTime.class)) {
+			return (ParamConverter<T>) new LocalTimeParamConverter();
 		} else {
 			return null;
 		}
@@ -58,6 +61,22 @@ public class DateTimeParamConverterProvider implements ParamConverterProvider {
 		@Override
 		public String toString(LocalDate value) {
 			return ISODateTimeFormat.date().print(value);
+		}
+
+	}
+
+	private static class LocalTimeParamConverter implements ParamConverter<LocalTime> {
+		@Override
+		public LocalTime fromString(String value) {
+			if (StringUtils.isEmpty(value)) {
+				return null;
+			}
+			return ISODateTimeFormat.time().parseLocalTime(value);
+		}
+
+		@Override
+		public String toString(LocalTime value) {
+			return ISODateTimeFormat.time().print(value);
 		}
 
 	}
