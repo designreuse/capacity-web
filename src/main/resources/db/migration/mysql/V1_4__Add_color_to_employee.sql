@@ -1,0 +1,2 @@
+ALTER TABLE employee
+ADD COLUMN color varchar(7) NOT NULL DEFAULT '#FF00FF';

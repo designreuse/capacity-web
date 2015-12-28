@@ -13,6 +13,7 @@ public class Employee {
 	private String email;
 	private Set<Ability> abilities;
 	private Contract contract;
+	private String color;
 
 	public Integer getId() {
 		return id;
@@ -54,6 +55,14 @@ public class Employee {
 
 	public void setContract(Contract contract) {
 		this.contract = contract;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 }

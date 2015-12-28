@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -24,6 +25,7 @@ public class EmployeeEntity extends IntegerDbObject {
 	private ContractEntity contract;
 	private LocationEntity location;
 	private List<AbsenceEntity> absences;
+	private String color;
 
 	public String getName() {
 		return name;
@@ -77,6 +79,15 @@ public class EmployeeEntity extends IntegerDbObject {
 
 	public void setAbsences(List<AbsenceEntity> absences) {
 		this.absences = absences;
+	}
+
+	@Column(nullable = false)
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 }
