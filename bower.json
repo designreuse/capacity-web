@@ -16,6 +16,7 @@
     "ng-tags-input": "~3.0.0",
     "angular-ui-calendar": "~1.0.1",
     "highcharts-ng": "~0.0.11",
-    "highcharts": "~4.2.1"
+    "highcharts": "~4.2.1",
+    "angular-bootstrap-colorpicker": "~3.0.22"
   }
 }
