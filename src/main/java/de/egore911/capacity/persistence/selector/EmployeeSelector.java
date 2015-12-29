@@ -1,8 +1,5 @@
 package de.egore911.capacity.persistence.selector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,7 +10,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 
@@ -24,13 +20,11 @@ import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity_;
 import de.egore911.capacity.persistence.model.IntegerDbObject_;
 import de.egore911.capacity.persistence.model.WorkingHoursEntity_;
-import de.egore911.persistence.selector.AbstractSelector;
 
-public class EmployeeSelector extends AbstractSelector<EmployeeEntity> {
+public class EmployeeSelector extends AbstractResourceSelector<EmployeeEntity> {
 
 	private static final long serialVersionUID = -4834238226605804927L;
 
-	private Collection<Integer> ids;
 	private LocalDate contractRangeStartDate;
 	private LocalDate contractRangeEndDate;
 	private String email;
@@ -44,11 +38,7 @@ public class EmployeeSelector extends AbstractSelector<EmployeeEntity> {
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<EmployeeEntity> from, CriteriaQuery<?> query) {
-		List<Predicate> predicates = new ArrayList<>();
-
-		if (CollectionUtils.isNotEmpty(ids)) {
-			predicates.add(from.get(IntegerDbObject_.id).in(ids));
-		}
+		List<Predicate> predicates = super.generatePredicateList(builder, from, query);
 
 		if (contractRangeStartDate != null && contractRangeEndDate != null) {
 			predicates.add(
@@ -160,19 +150,9 @@ public class EmployeeSelector extends AbstractSelector<EmployeeEntity> {
 		return subqueryAbsence;
 	}
 
-	public EmployeeSelector withId(Integer id) {
-		this.ids = Collections.singleton(id);
-		return this;
-	}
-
 	public EmployeeSelector withActiveContract(LocalDate contractRangeStartDate, LocalDate contractRangeEndDate) {
 		this.contractRangeStartDate = contractRangeStartDate;
 		this.contractRangeEndDate = contractRangeEndDate;
-		return this;
-	}
-
-	public EmployeeSelector withIds(Collection<Integer> ids) {
-		this.ids = ids;
 		return this;
 	}
 

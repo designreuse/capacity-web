@@ -6,22 +6,14 @@ import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.JoinColumn;
 
-public class Employee {
+public class Employee extends AbstractDto {
 
-	private Integer id;
 	private String name;
 	private String email;
 	private Set<Ability> abilities;
 	private Contract contract;
 	private String color;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	private int velocity;
 
 	public String getName() {
 		return name;
@@ -63,6 +55,14 @@ public class Employee {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public int getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(int velocity) {
+		this.velocity = velocity;
 	}
 
 }

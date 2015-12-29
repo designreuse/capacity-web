@@ -11,6 +11,7 @@
       <th>E-Mail</th>
       <th>Abilities</th>
       <th>Working hours</th>
+      <th>Velocity</th>
     </tr>
   </thead>
   <tbody>
@@ -20,6 +21,7 @@
       <td>{{employee.email}}</td>
       <td><ul class="abilities"><li ng-repeat="ability in employee.abilities | orderBy: 'name'" ng-click="searchFilter(ability.name)" style="cursor: pointer;">{{ability.name}}</li></ul></td>
       <td>{{employee.contract.workingHoursPerWeek}} ({{(employee.contract.workingHoursPerWeek / 40) * 100 | number: 0 }}%)</td>
+      <td>{{employee.velocity}}%</td>
     </tr>
   </tbody>
 </table>
