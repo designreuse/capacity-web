@@ -1,0 +1,33 @@
+<h1 class="page-header">{{!episode.name ? '&nbsp;' : episode.name}}</h1>
+
+<form name="form">
+	<div class="row">
+	<label-group label="ID">
+		<p>
+			<input type="text" class="form-control" ng-model="episode.id" disabled></input>
+		</p>
+	</label-group>
+	<label-group label="Name">
+		<p>
+			<input type="text" class="form-control" ng-model="episode.name"></input>
+		</p>
+	</label-group>
+	<label-group label="Start date">
+		<p class="input-group">
+			<input type="text" class="form-control" ng-model="episode.start" />
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+			</span>
+		</p>
+	</label-group>
+	<label-group label="End date">
+		<p class="input-group">
+			<input type="text" class="form-control" ng-model="episode.end" />
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+			</span>
+		</p>
+	</label-group>
+	<button type="submit" ng-click="save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
+	</div>
+</form>

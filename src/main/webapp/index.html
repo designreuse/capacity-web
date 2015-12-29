@@ -48,6 +48,9 @@
   <script type="text/javascript" src="app/module/employee/controller/EmployeeDetailController.js"></script>
   <script type="text/javascript" src="app/module/capacity/controller/CapacityController.js"></script>
   <script type="text/javascript" src="app/module/absence/controller/AbsenceController.js"></script>
+  <script type="text/javascript" src="app/module/episode/factory/EpisodeFactory.js"></script>
+  <script type="text/javascript" src="app/module/episode/controller/EpisodeListController.js"></script>
+  <script type="text/javascript" src="app/module/episode/controller/EpisodeDetailController.js"></script>
 
   <script type="text/javascript" src="components/highcharts/highcharts.js"></script>
   <script type="text/javascript" src="components/highcharts-ng/dist/highcharts-ng.js"></script>
@@ -92,6 +95,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li ng-class="{active : currentModule() == 'employees'}"><a href="#/employees"><i class="fa fa-users"></i> Employees <span class="sr-only">(current)</span></a></li>
+            <li ng-class="{active : currentModule() == 'episodes'}"><a href="#/episodes"><i class="fa fa-caret-square-o-right"></i> Episodes</a></li>
             <li ng-class="{active : currentModule() == 'calendar'}"><a href="#/calendar"><i class="fa fa-calendar"></i> Calendar</a></li>
           </ul>
           <ul class="nav nav-sidebar">
