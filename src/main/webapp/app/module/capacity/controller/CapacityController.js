@@ -3,6 +3,8 @@
 angular.module('capacityApp')
 	.controller('CapacityController', ['$scope', '$http', 'Employee', function($scope, $http, Employee) {
 
+		$scope.useVelocity = true;
+
 		$scope.chartConfig = {
 			options: {
 				chart: {
@@ -25,7 +27,10 @@ angular.module('capacityApp')
 				categories: []
 			},
 			yAxis: {
-				min: 0
+				min: 0,
+				title: {
+					text: 'Capacity (h)'
+				}
 			},
 			series: [],
 			credits: {
@@ -56,20 +61,17 @@ angular.module('capacityApp')
 		}
 
 		$scope.loadChart = function() {
-			var url = 'rest/capacity/workinghours';
+			var url = 'rest/capacity/workinghours?useVelocity=' + $scope.useVelocity;
 			var filteredEmployees = $scope.employees.filter($scope.onlyForSelectedAbilities);
 			if (filteredEmployees.length > 0) {
 				var urlExtra = '';
 				filteredEmployees.forEach(function(element, index) {
 					if (element.selected) {
-						if (urlExtra.length > 0) {
-							urlExtra += '&';
-						}
-						urlExtra += 'employeeIds=' + element.id;
+						urlExtra += '&employeeIds=' + element.id;
 					}
 				});
 				if (urlExtra.length > 0) {
-					url += '?' + urlExtra;
+					url += urlExtra;
 				}
 			}
 			$http.get(url).then(function(response) {
@@ -84,7 +86,7 @@ angular.module('capacityApp')
 						seriesvalues.push(childelement.hours);
 					});
 					series.push({
-						name: element.employee.name,
+						name: $scope.useVelocity ? (element.employee.name + ' (' + element.employee.velocity + '%)') : element.employee.name,
 						data: seriesvalues,
 						color: element.employee.color
 					});

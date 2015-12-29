@@ -25,8 +25,8 @@ import de.egore911.capacity.persistence.model.WorkingHoursEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.persistence.selector.HolidaySelector;
 import de.egore911.capacity.ui.dto.Employee;
-import de.egore911.capacity.ui.dto.WorkingHoursList;
 import de.egore911.capacity.ui.dto.WorkingHoursDetails;
+import de.egore911.capacity.ui.dto.WorkingHoursList;
 import de.egore911.capacity.ui.dto.WorkingHoursPerEmployee;
 import de.egore911.capacity.ui.exceptions.BadArgumentException;
 import de.egore911.capacity.ui.exceptions.NullArgumentException;
@@ -39,7 +39,10 @@ public class CapacityService extends AbstractService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WorkingHoursPerEmployee> getWorkingHours(@QueryParam("employeeIds") List<Integer> employeeIds,
 			@DefaultValue("") @QueryParam("start") LocalDate start,
-			@DefaultValue("") @QueryParam("end") LocalDate end) {
+			@DefaultValue("") @QueryParam("end") LocalDate end,
+			@DefaultValue("false") @QueryParam("useVelocity") boolean useVelocity) {
+
+		// Check if valid dates are passed, otherwise look for 10 days into the future and into the past
 		if (start == null) {
 			start = LocalDate.now().minusDays(10);
 		}
@@ -47,13 +50,18 @@ public class CapacityService extends AbstractService {
 			end = LocalDate.now().plusDays(10);
 		}
 
+		// Load all employees that have an active contract in the timespan
 		List<EmployeeEntity> employees = new EmployeeSelector().withActiveContract(start, end).withIds(employeeIds)
 				.findAll();
 
+		// Calculate the capatcity per employee
 		List<WorkingHoursPerEmployee> result = new ArrayList<>(employees.size());
 		for (EmployeeEntity employee : employees) {
+			if (useVelocity && employee.getVelocity() == 0) {
+				continue;
+			}
 			result.add(new WorkingHoursPerEmployee(getMapper().map(employee, Employee.class),
-					getWorkingHoursForEmployee(employee, start, end)));
+					getWorkingHoursForEmployee(employee, start, end, useVelocity)));
 		}
 
 		return result;
@@ -63,15 +71,19 @@ public class CapacityService extends AbstractService {
 	@Path("workinghours/{employeeId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WorkingHoursList getWorkingHoursForEmployee(@PathParam("employeeId") Integer employeeId,
-			@QueryParam("start") LocalDate start, @QueryParam("end") LocalDate end) {
+			@DefaultValue("") @QueryParam("start") LocalDate start,
+			@DefaultValue("") @QueryParam("end") LocalDate end,
+			@DefaultValue("false") @QueryParam("useVelocity") boolean useVelocity) {
+
+		// Check for valid date ranges
 		if (start == null || end == null) {
 			throw new NullArgumentException("start and end");
 		}
-
 		if (!start.isBefore(end)) {
 			throw new BadArgumentException("start must be before end");
 		}
 
+		// Check for valid employee IDs
 		if (employeeId == null) {
 			throw new NullArgumentException("employeeId");
 		}
@@ -81,12 +93,13 @@ public class CapacityService extends AbstractService {
 			throw new BadArgumentException("Employee with ID " + employeeId + " not found");
 		}
 
-		return getWorkingHoursForEmployee(employee, start, end);
+		return getWorkingHoursForEmployee(employee, start, end, useVelocity);
 	}
 
 	private WorkingHoursList getWorkingHoursForEmployee(@Nonnull EmployeeEntity employee,
 			@Nonnull LocalDate start,
-			@Nonnull LocalDate end) {
+			@Nonnull LocalDate end,
+			boolean useVelocity) {
 		Map<LocalDate, Integer> reductions = new HashMap<>();
 
 		List<HolidayEntity> holidays = new HolidaySelector().withStartInclusive(start).withEndInclusive(end)
@@ -112,14 +125,14 @@ public class CapacityService extends AbstractService {
 			}
 		}
 
-		WorkingHoursList workinghours = getWorkingHoursForEmployee(start, end, employee, reductions);
+		WorkingHoursList workinghours = getWorkingHoursForEmployee(start, end, employee, reductions, useVelocity);
 
 		return workinghours;
 	}
 
 	private WorkingHoursList getWorkingHoursForEmployee(LocalDate start, LocalDate end, EmployeeEntity employee,
-			Map<LocalDate, Integer> reductions) {
-		int workinghours = 0;
+			Map<LocalDate, Integer> reductions, boolean useVelocity) {
+		double workinghours = 0;
 		List<WorkingHoursDetails> details = new ArrayList<>();
 
 		Map<Integer, Hours> durations = getWorkingHourDurations(employee);
@@ -135,6 +148,9 @@ public class CapacityService extends AbstractService {
 			}
 
 			workinghoursOfDay = Math.max(workinghoursOfDay, 0);
+			if (useVelocity) {
+				workinghoursOfDay *= employee.getVelocity() / 100d;
+			}
 			workinghours += workinghoursOfDay;
 			details.add(new WorkingHoursDetails(date, workinghoursOfDay));
 			date = date.plusDays(1);

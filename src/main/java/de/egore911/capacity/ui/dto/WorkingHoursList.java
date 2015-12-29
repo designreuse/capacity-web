@@ -7,13 +7,13 @@ import org.joda.time.LocalDate;
 public class WorkingHoursList {
 	private LocalDate from;
 	private LocalDate until;
-	private int hours;
+	private double hours;
 	private List<WorkingHoursDetails> details;
 
 	public WorkingHoursList() {
 	}
 
-	public WorkingHoursList(LocalDate from, LocalDate until, int hours, List<WorkingHoursDetails> details) {
+	public WorkingHoursList(LocalDate from, LocalDate until, double hours, List<WorkingHoursDetails> details) {
 		this.from = from;
 		this.until = until;
 		this.hours = hours;
@@ -36,11 +36,11 @@ public class WorkingHoursList {
 		this.until = until;
 	}
 
-	public int getHours() {
+	public double getHours() {
 		return hours;
 	}
 
-	public void setHours(int hours) {
+	public void setHours(double hours) {
 		this.hours = hours;
 	}
 	

@@ -1,7 +1,18 @@
 <h1>Capacity</h1>
 
+  <div class="row">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="control_id_useVelocity">Take velocity into account</label>
+      <div class="col-sm-10 label-group-content" ng-transclude>
+      <p>
+        <input id="control_id_useVelocity" type="checkbox" ng-model="useVelocity" ng-change="loadChart();" />
+      </p>
+      </div>
+    </div>
+  </div>
+
 <div class="row">
-<highchart id="chart1" config="chartConfig"></highchart>
+  <highchart config="chartConfig"></highchart>
 </div>
 
 <div class="row">
