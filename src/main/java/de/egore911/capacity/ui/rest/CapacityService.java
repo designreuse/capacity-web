@@ -53,7 +53,7 @@ public class CapacityService extends AbstractService {
 		List<WorkingHoursPerEmployee> result = new ArrayList<>(employees.size());
 		for (EmployeeEntity employee : employees) {
 			result.add(new WorkingHoursPerEmployee(getMapper().map(employee, Employee.class),
-					getWorkingHoursForEmployee(employee.getId(), start, end)));
+					getWorkingHoursForEmployee(employee, start, end)));
 		}
 
 		return result;
