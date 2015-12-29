@@ -26,6 +26,7 @@ public class EmployeeEntity extends IntegerDbObject {
 	private LocationEntity location;
 	private List<AbsenceEntity> absences;
 	private String color;
+	private int velocity;
 
 	public String getName() {
 		return name;
@@ -88,6 +89,14 @@ public class EmployeeEntity extends IntegerDbObject {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public int getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(int velocity) {
+		this.velocity = velocity;
 	}
 
 }
