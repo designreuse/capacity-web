@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -80,6 +81,12 @@ public class CapacityService extends AbstractService {
 			throw new BadArgumentException("Employee with ID " + employeeId + " not found");
 		}
 
+		return getWorkingHoursForEmployee(employee, start, end);
+	}
+
+	private WorkingHoursList getWorkingHoursForEmployee(@Nonnull EmployeeEntity employee,
+			@Nonnull LocalDate start,
+			@Nonnull LocalDate end) {
 		Map<LocalDate, Integer> reductions = new HashMap<>();
 
 		List<HolidayEntity> holidays = new HolidaySelector().withStartInclusive(start).withEndInclusive(end)
