@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -22,6 +23,7 @@ import de.egore911.capacity.persistence.model.ContractEntity_;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity_;
 import de.egore911.capacity.persistence.model.IntegerDbObject_;
+import de.egore911.capacity.persistence.model.WorkingHoursEntity_;
 import de.egore911.persistence.selector.AbstractSelector;
 
 public class EmployeeSelector extends AbstractSelector<EmployeeEntity> {
@@ -90,29 +92,72 @@ public class EmployeeSelector extends AbstractSelector<EmployeeEntity> {
 		}
 
 		if (availableAt != null) {
-
-			Subquery<Integer> subquery = query.subquery(Integer.class);
+			/*Subquery<Integer> subquery = query.subquery(Integer.class);
 			Root<EmployeeEntity> subfrom = subquery.from(EmployeeEntity.class);
 			ListJoin<EmployeeEntity, AbsenceEntity> subfromAbsences = subfrom.join(EmployeeEntity_.absences);
 			subquery.select(subfrom.get(IntegerDbObject_.id));
 			subquery.where(builder.and(
 					builder.lessThanOrEqualTo(subfromAbsences.get(AbsenceEntity_.start), availableAt),
-					builder.greaterThanOrEqualTo(subfromAbsences.get(AbsenceEntity_.end), availableAt)
+					builder.greaterThanOrEqualTo(subfromAbsences.get(AbsenceEntity_.end), availableAt),
+					builder.equal(subfrom.join(EmployeeEntity_.contract).join(ContractEntity_.workingHours).get(WorkingHoursEntity_.dayOfWeek), availableAt.getDayOfWeek())
 				));
-			predicates.add(builder.not(from.get(IntegerDbObject_.id).in(subquery)));
+			predicates.add(builder.not(from.get(IntegerDbObject_.id).in(subquery)));*/
+
+			// Find all employees that have a working day at the requested date
+			Subquery<Integer> subqueryWorkingDay = subqueryWorkingDay(builder, query, availableAt);
+
+			// Find all employees that have an absence at the requested date
+			Subquery<Integer> subqueryAbsence = subqueryAbsence(builder, query, availableAt);
+			
+			predicates.add(builder.and(
+					from.get(IntegerDbObject_.id).in(subqueryWorkingDay),
+					builder.not(from.get(IntegerDbObject_.id).in(subqueryAbsence))
+				));
 		}
 
 		if (absentAt != null) {
-			ListJoin<EmployeeEntity, AbsenceEntity> fromAbsences = from.join(EmployeeEntity_.absences);
-			predicates.add(
-				builder.and(
-					builder.lessThanOrEqualTo(fromAbsences.get(AbsenceEntity_.start), absentAt),
-					builder.greaterThanOrEqualTo(fromAbsences.get(AbsenceEntity_.end), absentAt)
-				)
-			);
+
+			// Find all employees that have a working day at the requested date
+			Subquery<Integer> subqueryWorkingDay = subqueryWorkingDay(builder, query, absentAt);
+
+			// Find all employees that have an absence at the requested date
+			Subquery<Integer> subqueryAbsence = subqueryAbsence(builder, query, absentAt);
+
+			predicates.add(builder.or(
+				builder.not(from.get(IntegerDbObject_.id).in(subqueryWorkingDay)),
+				from.get(IntegerDbObject_.id).in(subqueryAbsence)
+			));
 		}
 
 		return predicates;
+	}
+
+	private static Subquery<Integer> subqueryWorkingDay(CriteriaBuilder builder, CriteriaQuery<?> query, LocalDate at) {
+		Subquery<Integer> subqueryWorkingDay = query.subquery(Integer.class);
+		{
+			Root<EmployeeEntity> subfrom = subqueryWorkingDay.from(EmployeeEntity.class);
+			subqueryWorkingDay.select(subfrom.get(IntegerDbObject_.id));
+			subqueryWorkingDay.where(
+				builder.equal(subfrom.join(EmployeeEntity_.contract).join(ContractEntity_.workingHours).get(WorkingHoursEntity_.dayOfWeek), at.getDayOfWeek())
+			);
+		}
+		return subqueryWorkingDay;
+	}
+
+	private static Subquery<Integer> subqueryAbsence(CriteriaBuilder builder, CriteriaQuery<?> query, LocalDate at) {
+		Subquery<Integer> subqueryAbsence = query.subquery(Integer.class);
+		{
+			Root<EmployeeEntity> subfrom = subqueryAbsence.from(EmployeeEntity.class);
+			ListJoin<EmployeeEntity,AbsenceEntity> fromAbsences = subfrom.join(EmployeeEntity_.absences, JoinType.LEFT);
+			subqueryAbsence.select(subfrom.get(IntegerDbObject_.id));
+			subqueryAbsence.where(
+					builder.and(
+							builder.lessThanOrEqualTo(fromAbsences.get(AbsenceEntity_.start), at),
+							builder.greaterThanOrEqualTo(fromAbsences.get(AbsenceEntity_.end), at)
+						)
+			);
+		}
+		return subqueryAbsence;
 	}
 
 	public EmployeeSelector withId(Integer id) {
