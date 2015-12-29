@@ -21,7 +21,6 @@ import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.model.HolidayEntity;
 import de.egore911.capacity.persistence.model.WorkingHoursEntity;
-import de.egore911.capacity.persistence.selector.AbsenceSelector;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.persistence.selector.HolidaySelector;
 import de.egore911.capacity.ui.dto.Employee;
@@ -94,7 +93,7 @@ public class CapacityService extends AbstractService {
 
 		Map<Integer, Hours> durations = getWorkingHourDurations(employee);
 
-		List<AbsenceEntity> absences = new AbsenceSelector().withEmployeeId(employeeId).findAll();
+		List<AbsenceEntity> absences = employee.getAbsences();
 		for (AbsenceEntity absence : absences) {
 			LocalDate date = absence.getStart();
 			while (date.isBefore(end) && !date.isAfter(absence.getEnd())) {
