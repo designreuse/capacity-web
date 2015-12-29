@@ -1,4 +1,4 @@
-angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calendar', 'highcharts-ng', 'colorpicker.module'])
+angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calendar', 'highcharts-ng', 'colorpicker.module', 'ui.bootstrap'])
 	.controller('MainCtrl', ['$scope', '$location', function($scope, $location) {
 		$scope.currentModule = function() {
 			var currentPath = $location.path();

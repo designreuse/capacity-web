@@ -50,12 +50,17 @@
 			</span>
 		</p>
 	</label-group>
-	<label-group label="Working hours {{workingHours.dayOfWeek | dayOfWeekToString}}" ng-repeat="workingHours in employee.contract.workingHours">
+	<h2 class="sub-header">Working Hours</h2>
+	<label-group label="Working hours {{workingHours.dayOfWeek | dayOfWeekToString}}" ng-repeat="workingHours in (employee.contract.workingHours | orderBy: 'dayOfWeek')">
 		<p>
-			<input type="text" class="form-control" ng-model="workingHours.start" ng-required="true"/>
-			<input type="text" class="form-control" ng-model="workingHours.end" ng-required="true"/>
+			<input type="text" class="form-control" ng-model="workingHours.start" ng-required="true" placeholder="start"/>
+			<input type="text" class="form-control" ng-model="workingHours.end" ng-required="true" placeholder="end"/>
+			<button type="button" ng-click="removeWorkingHours(workingHours.dayOfWeek)" class="btn btn-default"><i class="fa fa-minus-circle"></i> Remove</button>
 		</p>
 	</label-group>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10"><button type="button" ng-click="showAddWorkingHoursDialog()" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add</button></div>
+	</div>
 	<button type="submit" ng-click="save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
 	</div>
 </form>
