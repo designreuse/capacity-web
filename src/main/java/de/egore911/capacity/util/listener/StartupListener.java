@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import de.egore911.capacity.persistence.model.ContractEntity;
-import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.model.WorkingHoursEntity;
 import de.egore911.capacity.ui.dto.Contract;
 import ma.glasnost.orika.CustomMapper;
@@ -67,6 +66,7 @@ public class StartupListener implements ServletContextListener {
 			.byDefault()
 			.customize(
 					new CustomMapper<ContractEntity, Contract>() {
+						@Override
 						public void mapAtoB(ContractEntity a, Contract b, MappingContext context) {
 							if (a.getWorkingHours() != null) {
 								int workingHoursPerWeek = 0;
