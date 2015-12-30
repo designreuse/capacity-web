@@ -138,7 +138,7 @@ public class CapacityService extends AbstractService {
 		Map<Integer, Hours> durations = getWorkingHourDurations(employee);
 
 		LocalDate date = start;
-		while (date.isBefore(end)) {
+		while (!date.isAfter(end)) {
 			int dayOfWeek = date.getDayOfWeek();
 			Hours hours = durations.get(dayOfWeek);
 			double workinghoursOfDay = hours != null ? hours.getHours() : 0;
