@@ -4,6 +4,21 @@ angular.module('capacityApp')
 	.controller('EmployeeDetailController', ['$scope', '$route', '$location', '$http', '$uibModal', '$filter', 'Employee', function ($scope, $route, $location, $http, $uibModal, $filter, Employee) {
 		$scope.id = $route.current.params.id;
 
+		$scope.events = [];
+		$scope.eventSources = [ $scope.events ];
+		function workingHoursToEvents(employee) {
+			$scope.events.splice(0, $scope.events.length);
+			angular.forEach(employee.contract.workingHours, function(element, index) {
+				var start = moment(element.start, 'HH:mm:ss.SSS').day(element.dayOfWeek);
+				var end = moment(element.end, 'HH:mm:ss.SSS').day(element.dayOfWeek);
+				$scope.events.push({
+					title: moment.duration(end.diff(start)).asHours() + 'h',
+					start: start,
+					end: end
+				})
+			});
+		}
+
 		if ($scope.id == 'new') {
 			$scope.employee = new Employee();
 			$scope.employee.contract = {
@@ -14,6 +29,7 @@ angular.module('capacityApp')
 					{dayOfWeek:4,start:'08:00:00.000',end:'16:00:00.000'},
 					{dayOfWeek:5,start:'08:00:00.000',end:'16:00:00.000'}]
 			};
+			workingHoursToEvents($scope.employee);
 			$scope.save = function() {
 				$scope.employee.$save(function() {
 					$location.path('/employees');
@@ -22,6 +38,7 @@ angular.module('capacityApp')
 		} else {
 			Employee.get({id: $scope.id}, function(employee) {
 				$scope.employee = employee;
+				workingHoursToEvents($scope.employee);
 			});
 			$scope.save = function() {
 				$scope.employee.$update(function() {
@@ -38,50 +55,6 @@ angular.module('capacityApp')
 				});
 			});
 		};
-		
-
-		$scope.showAddWorkingHoursDialog = function() {
-			var modalInstance = $uibModal.open({
-				templateUrl: 'app/module/employee/view/addWorkingHours.html',
-				backdrop : 'static',
-				resolve: {
-					employee: function() {
-						return $scope.employee;
-					}
-				},
-				controller : function($scope, $uibModalInstance, employee) {
-					$scope.title = 'Add working hours';
-					$scope.message = 'Please specify the day to add';
-					$scope.confirmButtons = [ ];
-					for (var i = 1; i < 8; i++) {
-						var found = false;
-						employee.contract.workingHours.forEach(function(element, index) {
-							if (element.dayOfWeek == i) {
-								found = true;
-							}
-						});
-						if (!found) {
-							$scope.confirmButtons.push( { value: i, label: $filter('dayOfWeekToString')(i) } );
-						}
-					}
-					$scope.cancelButtons = [ {value: 'Cancel', label: 'Cancel'} ];
-
-					$scope.ok = function(value) {
-						$uibModalInstance.close(value);
-					};
-
-					$scope.cancel = function(value) {
-						$uibModalInstance.dismiss(value);
-					};
-				}
-			});
-			modalInstance.result.then(function(value) {
-				if ($scope.employee.contract.workingHours == undefined) {
-					$scope.employee.contract.workingHours = [];
-				}
-				$scope.employee.contract.workingHours.push({dayOfWeek:value,start:'08:00:00.000',end:'16:00:00.000'})
-			});
-		};
 
 		$scope.removeWorkingHours = function(dayOfWeek) {
 			var i = $scope.employee.contract.workingHours.length;
@@ -90,6 +63,107 @@ angular.module('capacityApp')
 					$scope.employee.contract.workingHours.splice(i, 1);
 				}
 			}
+		};
+
+		// Joda uses 1-7, while moment uses 0-6 (though both use 1 as monday)
+		function getOneBasedDayOfWeek(date) {
+			var dayOfWeek = date.day();
+			if (dayOfWeek == 0) {
+				dayOfWeek = 7;
+			}
+			return dayOfWeek;
 		}
+
+		$scope.calendarConfig = {
+			// Hide the header completely 
+			header: {
+				left: '',
+				center: '',
+				right: ''
+			},
+			// No allDay row
+			allDaySlot: false,
+			// Show the week view
+			defaultView: 'agendaWeek',
+			columnFormat: 'dddd',
+			// Monday is first day
+			firstDay: '1',
+			// Make selectable
+			selectable: true,
+			selectHelper: true,
+			select: function(start, end, jsEvent, view) {
+				var dayOfWeek = getOneBasedDayOfWeek(start);
+				var workingHours = undefined;
+				$scope.employee.contract.workingHours.forEach(function(element, index) {
+					if (element.dayOfWeek == dayOfWeek) {
+						workingHours = element;
+					}
+				});
+				if (workingHours === undefined) {
+					workingHours = {
+						dayOfWeek: dayOfWeek
+					};
+					$scope.employee.contract.workingHours.push(workingHours);
+				}
+				event.title = moment.duration(end.diff(start)).asHours() + 'h';
+				workingHours.start = start.format('HH:mm:ss.SSS');
+				workingHours.end = end.format('HH:mm:ss.SSS');
+				workingHoursToEvents($scope.employee);
+				view.calendar.unselect();
+			},
+			// Make events movable
+			editable: true,
+			eventDrop: function(event, delta, revertFunc) {
+				if (delta.days() != 0) {
+					revertFunc();
+					return;
+				}
+				var dayOfWeek = getOneBasedDayOfWeek(event.start);
+				var workingHours = undefined;
+				$scope.employee.contract.workingHours.forEach(function(element, index) {
+					if (element.dayOfWeek == dayOfWeek) {
+						workingHours = element;
+					}
+				});
+				workingHours.start = event.start.format('HH:mm:ss.SSS');
+				workingHours.end = event.end.format('HH:mm:ss.SSS');
+			},
+			eventResizeStart: function(event) {
+				event.title = ''
+			},
+			eventResize: function(event, delta, revertFunc) {
+				if (event.start.day() != event.end.day()) {
+					revertFunc();
+					return;
+				}
+				var dayOfWeek = getOneBasedDayOfWeek(event.start);
+				var workingHours = undefined;
+				$scope.employee.contract.workingHours.forEach(function(element, index) {
+					if (element.dayOfWeek == dayOfWeek) {
+						workingHours = element;
+					}
+				});
+				event.title = moment.duration(event.end.diff(event.start)).asHours() + 'h';
+				workingHours.start = event.start.format('HH:mm:ss.SSS');
+				workingHours.end = event.end.format('HH:mm:ss.SSS');
+			},
+			// Allow non-overlapping times from 07:00 to 19:00
+			minTime: '07:00',
+			maxTime: '19:00',
+			contentHeight: 'auto',
+			businessHours: {
+				start: '08:00',
+				end: '18:00'
+			},
+			slotEventOverlap: false,
+			eventOverlap: false,
+			// Set the first of the current week
+			defaultDate: moment('00:00:00.000', 'HH:mm:ss.SSS').day(1),
+			// Show 24h times
+			timeFormat: 'HH:mm',
+			axisFormat: 'HH:mm',
+			slotLabelFormat: 'HH:mm'
+		};
+
 	}]
 );
