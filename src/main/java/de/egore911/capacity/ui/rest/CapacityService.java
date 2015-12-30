@@ -141,7 +141,7 @@ public class CapacityService extends AbstractService {
 		while (date.isBefore(end)) {
 			int dayOfWeek = date.getDayOfWeek();
 			Hours hours = durations.get(dayOfWeek);
-			int workinghoursOfDay = hours != null ? hours.getHours() : 0;
+			double workinghoursOfDay = hours != null ? hours.getHours() : 0;
 
 			if (reductions.containsKey(date)) {
 				workinghoursOfDay -= reductions.get(date);

@@ -5,12 +5,12 @@ import org.joda.time.LocalDate;
 public class WorkingHoursDetails {
 
 	private LocalDate date;
-	private int hours;
+	private double hours;
 
 	public WorkingHoursDetails() {
 	}
 
-	public WorkingHoursDetails(LocalDate date, int hours) {
+	public WorkingHoursDetails(LocalDate date, double hours) {
 		this.date = date;
 		this.hours = hours;
 	}
@@ -23,11 +23,11 @@ public class WorkingHoursDetails {
 		this.date = date;
 	}
 
-	public int getHours() {
+	public double getHours() {
 		return hours;
 	}
 
-	public void setHours(int hours) {
+	public void setHours(double hours) {
 		this.hours = hours;
 	}
 
