@@ -1,9 +1,14 @@
 package de.egore911.capacity.persistence.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.collection.internal.PersistentBag;
 import org.joda.time.LocalDate;
 
 @Entity(name = "Episode")
@@ -15,6 +20,7 @@ public class EpisodeEntity extends IntegerDbObject {
 	private LocalDate start;
 	private LocalDate end;
 	private String name;
+	private List<EmployeeEpisodeEntity> employeeEpisodes;
 
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	public LocalDate getStart() {
@@ -40,6 +46,21 @@ public class EpisodeEntity extends IntegerDbObject {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = true)
+	public List<EmployeeEpisodeEntity> getEmployeeEpisodes() {
+		return employeeEpisodes;
+	}
+
+	public void setEmployeeEpisodes(List<EmployeeEpisodeEntity> employeeEpisodes) {
+		if (this.employeeEpisodes != null && this.employeeEpisodes instanceof PersistentBag &&
+				employeeEpisodes != null && !(employeeEpisodes instanceof PersistentBag)) {
+			this.employeeEpisodes.clear();
+			this.employeeEpisodes.addAll(employeeEpisodes);
+		} else {
+			this.employeeEpisodes = employeeEpisodes;
+		}
 	}
 
 }

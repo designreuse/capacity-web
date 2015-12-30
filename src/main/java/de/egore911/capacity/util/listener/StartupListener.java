@@ -40,8 +40,11 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import de.egore911.capacity.persistence.model.ContractEntity;
+import de.egore911.capacity.persistence.model.EmployeeEpisodeEntity;
+import de.egore911.capacity.persistence.model.EpisodeEntity;
 import de.egore911.capacity.persistence.model.WorkingHoursEntity;
 import de.egore911.capacity.ui.dto.Contract;
+import de.egore911.capacity.ui.dto.Episode;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -77,6 +80,22 @@ public class StartupListener implements ServletContextListener {
 							}
 						}
 					})
+			.register();
+
+		MAPPER_FACTORY
+		.classMap(Episode.class, EpisodeEntity.class)
+			.byDefault()
+			.customize(
+				new CustomMapper<Episode, EpisodeEntity>() {
+					@Override
+					public void mapAtoB(Episode a, EpisodeEntity b, MappingContext context) {
+						if (b.getEmployeeEpisodes() != null) {
+							for (EmployeeEpisodeEntity employeeEpisodeEntity : b.getEmployeeEpisodes()) {
+								employeeEpisodeEntity.setEpisode(b);
+							}
+						}
+					}
+			})
 			.register();
 
 		MAPPER_FACTORY

@@ -8,12 +8,14 @@
          <span class="sortorder" ng-show="predicate === 'id'" ng-class="{reverse:reverse}"></span></th>
       <th><span ng-click="order('name')">Name</span>
          <span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span></th>
+      <th>Employees</th>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="episode in episodes | filter: search | orderBy:predicate:reverse">
-      <td>{{episode.id}}</td>
-      <td><a href="#episodes/{{episode.id}}" ng-bind="episode.name"></a></td>
+      <td class="col-sm-1">{{episode.id}}</td>
+      <td class="col-sm-9"><a href="#episodes/{{episode.id}}" ng-bind="episode.name"></a></td>
+      <td class="col-sm-2">{{episode.employeeEpisodes.length}}</td>
     </tr>
   </tbody>
 </table>

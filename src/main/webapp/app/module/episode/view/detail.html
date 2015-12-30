@@ -28,6 +28,15 @@
 			</span>
 		</p>
 	</label-group>
+	<label-group label="Employees">
+		<table class="table table-striped">
+			<tr ng-repeat="employee in employees | orderBy: 'name'" ng-class="{selected: isSelected(employee.id)}">
+				<td class="col-sm-6" ng-bind="employee.name" ng-click="toggleSelection(employee)"></td>
+				<td class="col-sm-1"><span ng-hide="isSelected(employee.id)">{{employee.velocity}}%</span><span ng-hide="!isSelected(employee.id)">{{selection[employee.id].velocity}}%</span></td>
+				<td class="col-sm-2"><slider ng-hide="!isSelected(employee.id)" ng-model="selection[employee.id].velocity" min="0" step="1" max="100"></slider></td>
+			</tr>
+		</table>
+	</label-group>
 	<button type="submit" ng-click="save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
 	</div>
 </form>
