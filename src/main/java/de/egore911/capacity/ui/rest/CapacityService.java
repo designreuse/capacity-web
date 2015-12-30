@@ -14,15 +14,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Transformer;
 import org.joda.time.Hours;
 import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.dao.EmployeeDao;
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
+import de.egore911.capacity.persistence.model.EmployeeEpisodeEntity;
+import de.egore911.capacity.persistence.model.EpisodeEntity;
 import de.egore911.capacity.persistence.model.HolidayEntity;
 import de.egore911.capacity.persistence.model.WorkingHoursEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
+import de.egore911.capacity.persistence.selector.EpisodeSelector;
 import de.egore911.capacity.persistence.selector.HolidaySelector;
 import de.egore911.capacity.ui.dto.Employee;
 import de.egore911.capacity.ui.dto.WorkingHoursDetails;
@@ -40,14 +45,30 @@ public class CapacityService extends AbstractService {
 	public List<WorkingHoursPerEmployee> getWorkingHours(@QueryParam("employeeIds") List<Integer> employeeIds,
 			@DefaultValue("") @QueryParam("start") LocalDate start,
 			@DefaultValue("") @QueryParam("end") LocalDate end,
-			@DefaultValue("false") @QueryParam("useVelocity") boolean useVelocity) {
+			@DefaultValue("false") @QueryParam("useVelocity") boolean useVelocity,
+			@DefaultValue("") @QueryParam("episodeId") Integer episodeId) {
 
-		// Check if valid dates are passed, otherwise look for 10 days into the future and into the past
-		if (start == null) {
-			start = LocalDate.now().minusDays(10);
-		}
-		if (end == null) {
-			end = LocalDate.now().plusDays(10);
+		if (episodeId != null) {
+			EpisodeEntity episode = new EpisodeSelector().withId(episodeId).find();
+			start = episode.getStart();
+			end = episode.getEnd();
+			List<Integer> tmpEmployeeIds = (List<Integer>) CollectionUtils.collect(episode.getEmployeeEpisodes(), new Transformer<EmployeeEpisodeEntity, Integer>() {
+				@Override
+				public Integer transform(EmployeeEpisodeEntity arg0) {
+					return arg0.getEmployee().getId();
+				}
+			});
+			tmpEmployeeIds.retainAll(employeeIds);
+			employeeIds = tmpEmployeeIds;
+		} else {
+
+			// Check if valid dates are passed, otherwise look for 10 days into the future and into the past
+			if (start == null) {
+				start = LocalDate.now().minusDays(10);
+			}
+			if (end == null) {
+				end = LocalDate.now().plusDays(10);
+			}
 		}
 
 		// Load all employees that have an active contract in the timespan

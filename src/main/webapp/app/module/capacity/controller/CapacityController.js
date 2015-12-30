@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('capacityApp')
-	.controller('CapacityController', ['$scope', '$http', 'Employee', function($scope, $http, Employee) {
+	.controller('CapacityController', ['$scope', '$http', 'Employee', 'Episode', function($scope, $http, Employee, Episode) {
 
 		$scope.useVelocity = true;
 
@@ -60,8 +60,21 @@ angular.module('capacityApp')
 			return found;
 		}
 
+		$scope.onlyForSelectedEpisodes = function(item) {
+			if ($scope._selectedEpisode.id == '') {
+				return true;
+			}
+			var found = false;
+			$scope._selectedEpisode.employeeEpisodes.forEach(function(element, index) {
+				if (element.employee.id == item.id) {
+					found = true;
+				}
+			});
+			return found;
+		}
+
 		$scope.loadChart = function() {
-			var url = 'rest/capacity/workinghours?useVelocity=' + $scope.useVelocity;
+			var url = 'rest/capacity/workinghours?useVelocity=' + $scope.useVelocity + '&episodeId=' + $scope._selectedEpisode.id;
 			var filteredEmployees = $scope.employees.filter($scope.onlyForSelectedAbilities);
 			if (filteredEmployees.length > 0) {
 				var urlExtra = '';
@@ -75,10 +88,6 @@ angular.module('capacityApp')
 				}
 			}
 			$http.get(url).then(function(response) {
-				var categories = [];
-				response.data[0].workingHours.details.forEach(function(element, index) {
-					categories.push(element.date)
-				});
 				var series = [];
 				response.data.forEach(function(element, index) {
 					var seriesvalues = []
@@ -91,12 +100,24 @@ angular.module('capacityApp')
 						color: element.employee.color
 					});
 				});
-				$scope.chartConfig.xAxis.categories = categories;
 				$scope.chartConfig.series = series;
-				$scope.chartConfig.title.text = 'Capacity for ' + response.data[0].workingHours.from + ' - ' + response.data[0].workingHours.until;
+
+				var categories = [];
+				if (response.data.length > 0) {
+					response.data[0].workingHours.details.forEach(function(element, index) {
+						categories.push(element.date)
+					});
+				}
+				$scope.chartConfig.xAxis.categories = categories;
+
+				if (response.data.length > 0) {
+					$scope.chartConfig.title.text = 'Capacity for ' + response.data[0].workingHours.from + ' - ' + response.data[0].workingHours.until;
+				} else {
+					$scope.chartConfig.title.text = 'No capacities';
+				}
 			});
 		};
-		
+
 		$http.get('rest/abilities').then(function(response) {
 			$scope.abilities = response.data;
 		});
@@ -109,5 +130,28 @@ angular.module('capacityApp')
 
 			$scope.loadChart();
 		});
+
+		Episode.query(function(episodes) {
+			$scope.episodes = episodes;
+		});
+
+		$scope._selectedEpisode = {
+			id: ''
+		};
+		$scope.selectedEpisode = function(episodeId) {
+			if (arguments.length) {
+				$scope._selectedEpisode = {
+					id: ''
+				};
+				angular.forEach($scope.episodes, function(element, index) {
+					if (episodeId == element.id) {
+						$scope._selectedEpisode = element;
+					}
+				});
+				$scope.loadChart();
+			} else {
+				return $scope._selectedEpisode.id + '';
+			}
+		};
 
 	}]);
