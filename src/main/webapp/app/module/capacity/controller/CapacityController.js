@@ -154,4 +154,30 @@ angular.module('capacityApp')
 			}
 		};
 
+		$scope.sum = function(values) {
+			var result = 0;
+			values.forEach(function(element, index) {
+				result += element;
+			});
+			return result;
+		}
+
+		$scope.rowsum = function(columnIndex) {
+			var result = 0;
+			$scope.chartConfig.series.forEach(function(element, index) {
+				result += element.data[columnIndex];
+			});
+			return result;
+		}
+
+		$scope.sumsum = function() {
+			var result = 0;
+			$scope.chartConfig.series.forEach(function(element, index) {
+				element.data.forEach(function(subelement, subindex) {
+					result += subelement;
+				});
+			});
+			return result;
+		}
+
 	}]);

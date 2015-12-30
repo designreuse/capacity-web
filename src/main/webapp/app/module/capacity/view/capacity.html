@@ -27,6 +27,32 @@
 </div>
 
 <div class="row">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th ng-repeat="category in chartConfig.xAxis.categories">{{category}}</th>
+        <th>Sum</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="row in chartConfig.series">
+        <th ng-bind="row.name"></th>
+        <td ng-repeat="field in row.data track by $index">{{field | number: 1}}h</th>
+        <th>{{sum(row.data) | number: 1}}h</th>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th>Sum</th>
+        <td ng-repeat="category in chartConfig.xAxis.categories">{{rowsum($index) | number: 1}}h</th>
+        <th>{{sumsum() | number: 1}}h</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<div class="row">
 <div class="col-sm-6">
 <table class="table table-striped">
   <thead>
