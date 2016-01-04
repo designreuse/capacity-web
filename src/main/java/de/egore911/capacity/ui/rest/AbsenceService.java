@@ -2,9 +2,11 @@ package de.egore911.capacity.ui.rest;
 
 import java.util.List;
 
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.joda.time.LocalDate;
@@ -17,8 +19,11 @@ public class AbsenceService extends AbstractService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Employee> getEmployees() {
-		return getMapper().mapAsList(new EmployeeSelector().withAbsence(LocalDate.now()).findAll(), Employee.class);
+	public List<Employee> getEmployees(@DefaultValue("") @QueryParam("date") LocalDate date) {
+		if (date == null) {
+			date = LocalDate.now();
+		}
+		return getMapper().mapAsList(new EmployeeSelector().withAbsence(date).findAll(), Employee.class);
 	}
 
 }
