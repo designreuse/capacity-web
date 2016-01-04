@@ -72,6 +72,35 @@ public class EmployeeSelector extends AbstractResourceSelector<EmployeeEntity> {
 					builder.and(
 						builder.greaterThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.end), contractRangeEndDate),
 						from.get(EmployeeEntity_.contract).get(ContractEntity_.start).isNull()
+					),
+					// Case 7: The contract starts in our query range and the contract does not have an end date
+					builder.and(
+						builder.greaterThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.start), contractRangeStartDate),
+						builder.lessThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.start), contractRangeEndDate),
+						from.get(EmployeeEntity_.contract).get(ContractEntity_.end).isNull()
+					),
+					// Case 8: The contract ends in our query range and the contract does not have a start date
+					builder.and(
+						builder.greaterThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.end), contractRangeStartDate),
+						builder.lessThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.end), contractRangeEndDate),
+						from.get(EmployeeEntity_.contract).get(ContractEntity_.start).isNull()
+					),
+					// Case 9: The contract starts in our query range and the contract ends after our query range
+					builder.and(
+						builder.greaterThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.start), contractRangeStartDate),
+						builder.lessThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.start), contractRangeEndDate),
+						builder.greaterThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.end), contractRangeEndDate)
+					),
+					// Case 10: The contract ends in our query range and the contract starts before our query range
+					builder.and(
+						builder.greaterThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.end), contractRangeStartDate),
+						builder.lessThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.end), contractRangeEndDate),
+						builder.lessThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.start), contractRangeStartDate)
+					),
+					// Case 10: The contract starts and ands in our query range
+					builder.and(
+						builder.greaterThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.start), contractRangeStartDate),
+						builder.lessThanOrEqualTo(from.get(EmployeeEntity_.contract).get(ContractEntity_.end), contractRangeEndDate)
 					)
 				)
 			);
