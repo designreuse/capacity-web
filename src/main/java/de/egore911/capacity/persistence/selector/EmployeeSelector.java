@@ -31,6 +31,10 @@ public class EmployeeSelector extends AbstractResourceSelector<EmployeeEntity> {
 	private LocalDate availableAt;
 	private LocalDate absentAt;
 
+	public EmployeeSelector() {
+		setSortColumn("name");
+	}
+
 	@Override
 	protected Class<EmployeeEntity> getEntityClass() {
 		return EmployeeEntity.class;
