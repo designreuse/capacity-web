@@ -75,7 +75,7 @@ angular.module('capacityApp')
 
 		$scope.loadChart = function() {
 			var url = 'rest/capacity/workinghours?useVelocity=' + $scope.useVelocity + '&episodeId=' + $scope._selectedEpisode.id;
-			var filteredEmployees = $scope.employees.filter($scope.onlyForSelectedAbilities);
+			var filteredEmployees = $scope.employees.filter($scope.onlyForSelectedAbilities).filter($scope.onlyForSelectedEpisodes);
 			if (filteredEmployees.length > 0) {
 				var urlExtra = '';
 				filteredEmployees.forEach(function(element, index) {
