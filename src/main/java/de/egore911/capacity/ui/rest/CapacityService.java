@@ -48,6 +48,7 @@ public class CapacityService extends AbstractService {
 			@DefaultValue("false") @QueryParam("useVelocity") boolean useVelocity,
 			@DefaultValue("") @QueryParam("episodeId") Integer episodeId) {
 
+		final Map<Integer, Integer> velocities = new HashMap<>();
 		if (episodeId != null) {
 			EpisodeEntity episode = new EpisodeSelector().withId(episodeId).find();
 			start = episode.getStart();
@@ -55,6 +56,10 @@ public class CapacityService extends AbstractService {
 			List<Integer> tmpEmployeeIds = (List<Integer>) CollectionUtils.collect(episode.getEmployeeEpisodes(), new Transformer<EmployeeEpisodeEntity, Integer>() {
 				@Override
 				public Integer transform(EmployeeEpisodeEntity arg0) {
+					Integer velocity = arg0.getVelocity();
+					if (velocity != null) {
+						velocities.put(arg0.getEmployee().getId(), velocity);
+					}
 					return arg0.getEmployee().getId();
 				}
 			});
@@ -75,14 +80,23 @@ public class CapacityService extends AbstractService {
 		List<EmployeeEntity> employees = new EmployeeSelector().withActiveContract(start, end).withIds(employeeIds)
 				.findAll();
 
+		// Put velocities into lookup (when they were not overridden in the episode)
+		for (EmployeeEntity employee : employees) {
+			if (!velocities.containsKey(employee.getId())) {
+				velocities.put(employee.getId(), employee.getVelocity());
+			}
+		}
+
 		// Calculate the capatcity per employee
 		List<WorkingHoursPerEmployee> result = new ArrayList<>(employees.size());
 		for (EmployeeEntity employee : employees) {
-			if (useVelocity && employee.getVelocity() == 0) {
+			int velocity = velocities.get(employee.getId());
+			if (useVelocity && velocity == 0) {
 				continue;
 			}
+			int actualVelocity = useVelocity ? velocity : 100;
 			result.add(new WorkingHoursPerEmployee(getMapper().map(employee, Employee.class),
-					getWorkingHoursForEmployee(employee, start, end, useVelocity)));
+					getWorkingHoursForEmployee(employee, start, end, actualVelocity), actualVelocity));
 		}
 
 		return result;
@@ -114,13 +128,13 @@ public class CapacityService extends AbstractService {
 			throw new BadArgumentException("Employee with ID " + employeeId + " not found");
 		}
 
-		return getWorkingHoursForEmployee(employee, start, end, useVelocity);
+		return getWorkingHoursForEmployee(employee, start, end, useVelocity ? employee.getVelocity() : 100);
 	}
 
 	private WorkingHoursList getWorkingHoursForEmployee(@Nonnull EmployeeEntity employee,
 			@Nonnull LocalDate start,
 			@Nonnull LocalDate end,
-			boolean useVelocity) {
+			int velocity) {
 		Map<LocalDate, Integer> reductions = new HashMap<>();
 
 		List<HolidayEntity> holidays = new HolidaySelector().withStartInclusive(start).withEndInclusive(end)
@@ -146,13 +160,13 @@ public class CapacityService extends AbstractService {
 			}
 		}
 
-		WorkingHoursList workinghours = getWorkingHoursForEmployee(start, end, employee, reductions, useVelocity);
+		WorkingHoursList workinghours = getWorkingHoursForEmployee(start, end, employee, reductions, velocity);
 
 		return workinghours;
 	}
 
 	private WorkingHoursList getWorkingHoursForEmployee(LocalDate start, LocalDate end, EmployeeEntity employee,
-			Map<LocalDate, Integer> reductions, boolean useVelocity) {
+			Map<LocalDate, Integer> reductions, int velocity) {
 		double workinghours = 0;
 		List<WorkingHoursDetails> details = new ArrayList<>();
 
@@ -169,8 +183,8 @@ public class CapacityService extends AbstractService {
 			}
 
 			workinghoursOfDay = Math.max(workinghoursOfDay, 0);
-			if (useVelocity) {
-				workinghoursOfDay *= employee.getVelocity() / 100d;
+			if (velocity != 100) {
+				workinghoursOfDay *= velocity / 100d;
 			}
 			workinghours += workinghoursOfDay;
 			details.add(new WorkingHoursDetails(date, workinghoursOfDay));

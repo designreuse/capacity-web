@@ -95,7 +95,7 @@ angular.module('capacityApp')
 						seriesvalues.push(childelement.hours);
 					});
 					series.push({
-						name: $scope.useVelocity ? (element.employee.name + ' (' + element.employee.velocity + '%)') : element.employee.name,
+						name: $scope.useVelocity ? (element.employee.name + ' (' + element.velocity + '%)') : element.employee.name,
 						data: seriesvalues,
 						color: element.employee.color
 					});
