@@ -110,7 +110,6 @@ angular.module('capacityApp')
 					};
 					$scope.employee.contract.workingHours.push(workingHours);
 				}
-				event.title = moment.duration(end.diff(start)).asHours() + 'h';
 				workingHours.start = start.format('HH:mm:ss.SSS');
 				workingHours.end = end.format('HH:mm:ss.SSS');
 				workingHoursToEvents($scope.employee);
