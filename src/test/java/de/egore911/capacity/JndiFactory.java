@@ -30,6 +30,7 @@ import javax.naming.NameParser;
 import javax.naming.NamingException;
 import javax.naming.spi.InitialContextFactory;
 
+import org.hsqldb.jdbc.JDBCDataSource;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -47,16 +48,16 @@ public class JndiFactory implements InitialContextFactory {
 	public Context getInitialContext(Hashtable<?, ?> environment) throws NamingException {
 
 		// HSQLDB
-		// final JDBCDataSource jdbcDataSource = new JDBCDataSource();
-		// jdbcDataSource.setUrl("jdbc:hsqldb:mem:testdb");
-		// jdbcDataSource.setUser("sa");
-		// jdbcDataSource.setPassword("");
+		final JDBCDataSource jdbcDataSource = new JDBCDataSource();
+		jdbcDataSource.setUrl("jdbc:hsqldb:mem:testdb");
+		jdbcDataSource.setUser("sa");
+		jdbcDataSource.setPassword("");
 
 		// MySQL
-		final MysqlDataSource jdbcDataSource = new MysqlDataSource();
-		jdbcDataSource.setUrl("jdbc:mysql://localhost/capacity");
-		jdbcDataSource.setUser("capacity");
-		jdbcDataSource.setPassword("capacity");
+		//final MysqlDataSource jdbcDataSource = new MysqlDataSource();
+		//jdbcDataSource.setUrl("jdbc:mysql://localhost/capacity");
+		//jdbcDataSource.setUser("capacity");
+		//jdbcDataSource.setPassword("capacity");
 
 		// PostgreSQL
 		// final PGSimpleDataSource jdbcDataSource = new PGSimpleDataSource();
