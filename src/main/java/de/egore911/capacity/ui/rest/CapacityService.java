@@ -174,17 +174,23 @@ public class CapacityService extends AbstractService {
 
 		LocalDate date = start;
 		while (!date.isAfter(end)) {
-			int dayOfWeek = date.getDayOfWeek();
-			Hours hours = durations.get(dayOfWeek);
-			double workinghoursOfDay = hours != null ? hours.getHours() : 0;
+			double workinghoursOfDay;
+			if (employee.getContract().getStart() != null && date.isBefore(employee.getContract().getStart()) ||
+					employee.getContract().getEnd() != null && date.isAfter(employee.getContract().getEnd())) {
+				workinghoursOfDay = 0;
+			} else {
+				int dayOfWeek = date.getDayOfWeek();
+				Hours hours = durations.get(dayOfWeek);
+				workinghoursOfDay = hours != null ? hours.getHours() : 0;
 
-			if (reductions.containsKey(date)) {
-				workinghoursOfDay -= reductions.get(date);
-			}
+				if (reductions.containsKey(date)) {
+					workinghoursOfDay -= reductions.get(date);
+				}
 
-			workinghoursOfDay = Math.max(workinghoursOfDay, 0);
-			if (velocity != 100) {
-				workinghoursOfDay *= velocity / 100d;
+				workinghoursOfDay = Math.max(workinghoursOfDay, 0);
+				if (velocity != 100) {
+					workinghoursOfDay *= velocity / 100d;
+				}
 			}
 			workinghours += workinghoursOfDay;
 			details.add(new WorkingHoursDetails(date, workinghoursOfDay));
