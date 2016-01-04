@@ -33,11 +33,12 @@ import javax.sql.DataSource;
 
 import org.hibernate.tool.hbm2ddl.SimpleSchemaExport;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.egore911.capacity.util.listener.StartupListener;
 import de.egore911.persistence.util.EntityManagerUtil;
 
 /**
@@ -45,30 +46,29 @@ import de.egore911.persistence.util.EntityManagerUtil;
  */
 public abstract class AbstractDatabaseTest {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(AbstractDatabaseTest.class);
+	private static final Logger log = LoggerFactory.getLogger(AbstractDatabaseTest.class);
 
-	private EntityManagerFactory emf;
+	private static EntityManagerFactory emf;
 
-	@Before
-	public void before() {
-		System.setProperty("java.naming.factory.initial",
-				"de.egore911.capacity.JndiFactory");
-
-		new StartupListener().contextInitialized(null);
+	@BeforeClass
+	public static void beforeClass() {
+		System.setProperty("java.naming.factory.initial", "de.egore911.capacity.JndiFactory");
+		OnceInit.init();
 		try {
 			InitialContext initialContext = new InitialContext();
-			DataSource dataSource = (DataSource) initialContext
-					.lookup(JndiFactory.DATASOURCE_NAME);
+			DataSource dataSource = (DataSource) initialContext.lookup(JndiFactory.DATASOURCE_NAME);
 			try (Connection connection = dataSource.getConnection()) {
-				new SimpleSchemaExport()
-						.importScript(connection, "/import.sql");
+				new SimpleSchemaExport().importScript(connection, "/import.sql");
 			}
 		} catch (NamingException | SQLException e) {
 			log.error(e.getMessage(), e);
 		}
 
 		emf = Persistence.createEntityManagerFactory("capacity");
+	}
+
+	@Before
+	public void before() {
 		EntityManager em = emf.createEntityManager();
 		EntityManagerUtil.setEntityManager(em);
 	}
@@ -78,6 +78,10 @@ public abstract class AbstractDatabaseTest {
 		EntityManager em = EntityManagerUtil.getEntityManager();
 		EntityManagerUtil.clearEntityManager();
 		em.close();
+	}
+
+	@AfterClass
+	public static void afterClass() {
 		emf.close();
 	}
 
