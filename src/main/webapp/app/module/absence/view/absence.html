@@ -1,6 +1,21 @@
 <h1 class="page-header">Absences</h1>
 
 <div class="row">
+  <!-- This should be a <label-group>, but I failed at understanding https://github.com/angular/angular.js/wiki/Understanding-Scopes -->
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="selectedDate">Date</label>
+    <div class="col-sm-10 label-group-content" id="selectedDate">
+      <p class="input-group">
+        <input type="text" class="form-control" ng-model="selectedDate" ng-change="loadAbsencesAndAvailabilities()" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.opened"/>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="datepicker.opened = true;"><i class="fa fa-calendar"></i></button>
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-sm-6">
     <table class="table table-striped">
       <thead>
