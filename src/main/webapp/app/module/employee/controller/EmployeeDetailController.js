@@ -4,6 +4,11 @@ angular.module('capacityApp')
 	.controller('EmployeeDetailController', ['$scope', '$route', '$location', '$http', '$uibModal', '$filter', 'Employee', function ($scope, $route, $location, $http, $uibModal, $filter, Employee) {
 		$scope.id = $route.current.params.id;
 
+		$scope.datepicker = {
+			startOpened: false,
+			endOpened: false
+		};
+
 		$scope.events = [];
 		$scope.eventSources = [ $scope.events ];
 		function workingHoursToEvents(employee) {

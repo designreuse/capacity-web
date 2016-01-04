@@ -36,17 +36,17 @@
 	<h2 class="sub-header">Contract</h2>
 	<label-group label="Start date">
 		<p class="input-group">
-			<input type="text" class="form-control" ng-model="employee.contract.start" />
+			<input type="text" class="form-control" ng-model="employee.contract.start" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.startOpened" />
 			<span class="input-group-btn">
-				<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+				<button type="button" class="btn btn-default" ng-click="datepicker.startOpened = true;"><i class="fa fa-calendar"></i></button>
 			</span>
 		</p>
 	</label-group>
 	<label-group label="End date">
 		<p class="input-group">
-			<input type="text" class="form-control" ng-model="employee.contract.end" />
+			<input type="text" class="form-control" ng-model="employee.contract.end" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.endOpened" />
 			<span class="input-group-btn">
-				<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+				<button type="button" class="btn btn-default" ng-click="datepicker.endOpened = true;"><i class="fa fa-calendar"></i></button>
 			</span>
 		</p>
 	</label-group>

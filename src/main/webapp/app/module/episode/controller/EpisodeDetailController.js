@@ -6,6 +6,11 @@ angular.module('capacityApp')
 
 		$scope.selection = [];
 
+		$scope.datepicker = {
+			startOpened: false,
+			endOpened: false
+		};
+
 		if ($scope.id == 'new') {
 			$scope.episode = new Episode();
 			$scope.save = function() {
