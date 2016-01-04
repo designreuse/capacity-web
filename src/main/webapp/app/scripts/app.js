@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calendar', 'highcharts-ng', 'colorpicker.module', 'ui.bootstrap', 'ui.bootstrap-slider'])
 	.controller('MainCtrl', ['$scope', '$location', function($scope, $location) {
 		$scope.currentModule = function() {
@@ -10,6 +12,6 @@ angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calen
 				currentPath = currentPath.substring(0, firstSlash);
 			}
 			return currentPath;
-		}
+		};
 
 	}]);

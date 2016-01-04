@@ -23,5 +23,5 @@ angular.module('capacityApp')
 					scope.forControl = id;
 				}
 			}
-		}
+		};
 	});

@@ -15,7 +15,7 @@ angular.module('capacityApp')
 					title: moment.duration(end.diff(start)).asHours() + 'h',
 					start: start,
 					end: end
-				})
+				});
 			});
 		}
 
@@ -68,7 +68,7 @@ angular.module('capacityApp')
 		// Joda uses 1-7, while moment uses 0-6 (though both use 1 as monday)
 		function getOneBasedDayOfWeek(date) {
 			var dayOfWeek = date.day();
-			if (dayOfWeek == 0) {
+			if (dayOfWeek === 0) {
 				dayOfWeek = 7;
 			}
 			return dayOfWeek;
@@ -93,7 +93,7 @@ angular.module('capacityApp')
 			selectHelper: true,
 			select: function(start, end, jsEvent, view) {
 				var dayOfWeek = getOneBasedDayOfWeek(start);
-				var workingHours = undefined;
+				var workingHours;
 				$scope.employee.contract.workingHours.forEach(function(element, index) {
 					if (element.dayOfWeek == dayOfWeek) {
 						workingHours = element;
@@ -114,12 +114,12 @@ angular.module('capacityApp')
 			// Make events movable
 			editable: true,
 			eventDrop: function(event, delta, revertFunc) {
-				if (delta.days() != 0) {
+				if (delta.days() !== 0) {
 					revertFunc();
 					return;
 				}
 				var dayOfWeek = getOneBasedDayOfWeek(event.start);
-				var workingHours = undefined;
+				var workingHours;
 				$scope.employee.contract.workingHours.forEach(function(element, index) {
 					if (element.dayOfWeek == dayOfWeek) {
 						workingHours = element;
@@ -129,7 +129,7 @@ angular.module('capacityApp')
 				workingHours.end = event.end.format('HH:mm:ss.SSS');
 			},
 			eventResizeStart: function(event) {
-				event.title = ''
+				event.title = '';
 			},
 			eventResize: function(event, delta, revertFunc) {
 				if (event.start.day() != event.end.day()) {
@@ -137,7 +137,7 @@ angular.module('capacityApp')
 					return;
 				}
 				var dayOfWeek = getOneBasedDayOfWeek(event.start);
-				var workingHours = undefined;
+				var workingHours;
 				$scope.employee.contract.workingHours.forEach(function(element, index) {
 					if (element.dayOfWeek == dayOfWeek) {
 						workingHours = element;

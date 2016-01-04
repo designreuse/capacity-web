@@ -39,7 +39,7 @@ angular.module('capacityApp')
 		};
 
 		$scope.onlyForSelectedAbilities = function(item) {
-			if ($scope.abilities == undefined) {
+			if ($scope.abilities === undefined) {
 				return true;
 			}
 			var found = false;
@@ -58,10 +58,10 @@ angular.module('capacityApp')
 				found = true;
 			}
 			return found;
-		}
+		};
 
 		$scope.onlyForSelectedEpisodes = function(item) {
-			if ($scope._selectedEpisode.id == '') {
+			if ($scope._selectedEpisode.id === '') {
 				return true;
 			}
 			var found = false;
@@ -71,7 +71,7 @@ angular.module('capacityApp')
 				}
 			});
 			return found;
-		}
+		};
 
 		$scope.loadChart = function() {
 			var url = 'rest/capacity/workinghours?useVelocity=' + $scope.useVelocity + '&episodeId=' + $scope._selectedEpisode.id;
@@ -90,7 +90,7 @@ angular.module('capacityApp')
 			$http.get(url).then(function(response) {
 				var series = [];
 				response.data.forEach(function(element, index) {
-					var seriesvalues = []
+					var seriesvalues = [];
 					element.workingHours.details.forEach(function(childelement, childindex) {
 						seriesvalues.push(childelement.hours);
 					});
@@ -105,7 +105,7 @@ angular.module('capacityApp')
 				var categories = [];
 				if (response.data.length > 0) {
 					response.data[0].workingHours.details.forEach(function(element, index) {
-						categories.push(element.date)
+						categories.push(element.date);
 					});
 				}
 				$scope.chartConfig.xAxis.categories = categories;
@@ -160,7 +160,7 @@ angular.module('capacityApp')
 				result += element;
 			});
 			return result;
-		}
+		};
 
 		$scope.rowsum = function(columnIndex) {
 			var result = 0;
@@ -168,7 +168,7 @@ angular.module('capacityApp')
 				result += element.data[columnIndex];
 			});
 			return result;
-		}
+		};
 
 		$scope.sumsum = function() {
 			var result = 0;
@@ -178,6 +178,6 @@ angular.module('capacityApp')
 				});
 			});
 			return result;
-		}
+		};
 
 	}]);
