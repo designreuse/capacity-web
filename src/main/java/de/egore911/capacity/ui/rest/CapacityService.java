@@ -55,12 +55,12 @@ public class CapacityService extends AbstractService {
 			end = episode.getEnd();
 			List<Integer> tmpEmployeeIds = (List<Integer>) CollectionUtils.collect(episode.getEmployeeEpisodes(), new Transformer<EmployeeEpisodeEntity, Integer>() {
 				@Override
-				public Integer transform(EmployeeEpisodeEntity arg0) {
-					Integer velocity = arg0.getVelocity();
+				public Integer transform(EmployeeEpisodeEntity employee) {
+					Integer velocity = employee.getVelocity();
 					if (velocity != null) {
-						velocities.put(arg0.getEmployee().getId(), velocity);
+						velocities.put(employee.getEmployee().getId(), velocity);
 					}
-					return arg0.getEmployee().getId();
+					return employee.getEmployee().getId();
 				}
 			});
 			tmpEmployeeIds.retainAll(employeeIds);
