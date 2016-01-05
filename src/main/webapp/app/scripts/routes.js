@@ -12,13 +12,13 @@ angular.module('capacityApp')
 
 		addRoute('/', 'app/module/home/view/home.html', 'HomeController');
 
-		addRoute('/employees', 'app/module/employee/view/list.html', 'EmployeeListController');
-		addRoute('/employees/:id', 'app/module/employee/view/detail.html', 'EmployeeDetailController');
+		addRoute('/employees', 'app/module/employee/view/employees.html', 'EmployeeListController');
+		addRoute('/employees/:id', 'app/module/employee/view/employee.html', 'EmployeeDetailController');
 
 		addRoute('/calendar', 'app/module/calendar/view/calendar.html', 'CalendarController');
 
-		addRoute('/episodes', 'app/module/episode/view/list.html', 'EpisodeListController');
-		addRoute('/episodes/:id', 'app/module/episode/view/detail.html', 'EpisodeDetailController');
+		addRoute('/episodes', 'app/module/episode/view/episodes.html', 'EpisodeListController');
+		addRoute('/episodes/:id', 'app/module/episode/view/episode.html', 'EpisodeDetailController');
 
 		addRoute('/capacity', 'app/module/capacity/view/capacity.html', 'CapacityController');
 
