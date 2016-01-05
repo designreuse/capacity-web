@@ -13,15 +13,17 @@
       <th><span ng-click="order('end')">End</span>
          <span class="sortorder" ng-show="predicate === 'end'" ng-class="{reverse:reverse}"></span></th>
       <th>Employees</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="episode in episodes | filter: search | orderBy:predicate:reverse">
       <td class="col-sm-1">{{episode.id}}</td>
-      <td class="col-sm-8"><a href="#episodes/{{episode.id}}" ng-bind="episode.name"></a></td>
+      <td class="col-sm-7"><a href="#episodes/{{episode.id}}" ng-bind="episode.name"></a></td>
       <td class="col-sm-1">{{episode.start}}</td>
       <td class="col-sm-1">{{episode.end}}</td>
       <td class="col-sm-1">{{episode.employeeEpisodes.length}}</td>
+      <td class="col-sm-1"><button ng-click="clone(episode.id)" class="btn btn-default"><i class="fa fa-clone"></i> Clone</button></td>
     </tr>
   </tbody>
 </table>

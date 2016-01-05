@@ -19,6 +19,7 @@ angular.module('capacityApp')
 
 		addRoute('/episodes', 'app/module/episode/view/episodes.html', 'EpisodeListController');
 		addRoute('/episodes/:id', 'app/module/episode/view/episode.html', 'EpisodeDetailController');
+		addRoute('/episodes/clone/:id', 'app/module/episode/view/episode.html', 'EpisodeDetailController');
 
 		addRoute('/capacity', 'app/module/capacity/view/capacity.html', 'CapacityController');
 

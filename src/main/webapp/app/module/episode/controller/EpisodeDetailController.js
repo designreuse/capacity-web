@@ -10,36 +10,64 @@ angular.module('capacityApp')
 			startOpened: false,
 			endOpened: false
 		};
+		
+		function prepareDto() {
+			$scope.episode.employeeEpisodes = [];
+			angular.forEach($scope.selection, function(element, index) {
+				$scope.episode.employeeEpisodes.push(element);
+			});
+			if (typeof $scope.episode.start.getMonth === 'function') {
+				$scope.episode.start = moment($scope.episode.start).format('YYYY-MM-DD');
+			}
+			if (typeof $scope.episode.end.getMonth === 'function') {
+				$scope.episode.end = moment($scope.episode.end).format('YYYY-MM-DD');
+			}
+		}
 
 		if ($scope.id == 'new') {
 			$scope.episode = new Episode();
 			$scope.save = function() {
-				$scope.episode.employeeEpisodes = [];
-				angular.forEach($scope.selection, function(element, index) {
-					$scope.episode.employeeEpisodes.push(element);
-				});
+				prepareDto();
 				$scope.episode.$save(function() {
 					$location.path('/episodes');
 				});
 			};
 		} else {
+			var isClone = $location.path().slice(0, '/episodes/clone'.length) == '/episodes/clone';
 			Episode.get({id: $scope.id}, function(episode) {
 				$scope.episode = episode;
-				if ($scope.episode.employeeEpisodes) {
-					angular.forEach($scope.episode.employeeEpisodes, function(element, index) {
-						$scope.selection[element.employee.id] = element;
-					});
+				if (isClone) {
+					$scope.episode.name = 'Clone of ' + $scope.episode.name;
+					$scope.episode.id = undefined;
+					if ($scope.episode.employeeEpisodes) {
+						angular.forEach($scope.episode.employeeEpisodes, function(element, index) {
+							element.id = undefined;
+							$scope.selection[element.employee.id] = element;
+						});
+					}
+				} else {
+					if ($scope.episode.employeeEpisodes) {
+						angular.forEach($scope.episode.employeeEpisodes, function(element, index) {
+							$scope.selection[element.employee.id] = element;
+						});
+					}
 				}
 			});
-			$scope.save = function() {
-				$scope.episode.employeeEpisodes = [];
-				angular.forEach($scope.selection, function(element, index) {
-					$scope.episode.employeeEpisodes.push(element);
-				});
-				$scope.episode.$update(function() {
-					$location.path('/episodes');
-				});
-			};
+			if (isClone) {
+				$scope.save = function() {
+					prepareDto();
+					$scope.episode.$save(function() {
+						$location.path('/episodes');
+					});
+				};
+			} else {
+				$scope.save = function() {
+					prepareDto();
+					$scope.episode.$update(function() {
+						$location.path('/episodes');
+					});
+				};
+			}
 		}
 
 		$scope.isSelected = function(employeeId) {

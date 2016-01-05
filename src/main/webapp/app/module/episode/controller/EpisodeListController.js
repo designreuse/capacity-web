@@ -20,5 +20,9 @@ angular.module('capacityApp')
 		$scope.searchFilter = function(string) {
 			$rootScope.search = string;
 		};
+
+		$scope.clone = function(id) {
+			$location.path('/episodes/clone/'+id);
+		}
 	}]
 );
