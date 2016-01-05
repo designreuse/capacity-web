@@ -100,13 +100,21 @@
 		</profile>
 		<profile>
 			<id>tomcat-7</id>
+			<properties>
+				<packaging.hibernate>compile</packaging.hibernate>
+				<packaging.servlet>provided</packaging.servlet>
+				<version.servlet>3.0.1</version.servlet>
+			</properties>
+		</profile>
+		<profile>
+			<id>tomcat-8</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
 				<packaging.hibernate>compile</packaging.hibernate>
 				<packaging.servlet>provided</packaging.servlet>
-				<version.servlet>3.0.1</version.servlet>
+				<version.servlet>3.1.0</version.servlet>
 			</properties>
 		</profile>
 	</profiles>
