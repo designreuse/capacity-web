@@ -3,6 +3,7 @@ package de.egore911.capacity.persistence.model;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -26,6 +27,7 @@ public class ContractEntity {
 		this.start = start;
 	}
 
+	@Column(name = "`end`")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	public LocalDate getEnd() {
 		return end;

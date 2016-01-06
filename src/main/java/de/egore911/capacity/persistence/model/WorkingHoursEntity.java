@@ -1,5 +1,6 @@
 package de.egore911.capacity.persistence.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import org.hibernate.annotations.Type;
@@ -29,6 +30,7 @@ public class WorkingHoursEntity {
 		this.start = start;
 	}
 
+	@Column(name = "`end`")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
 	public LocalTime getEnd() {
 		return end;

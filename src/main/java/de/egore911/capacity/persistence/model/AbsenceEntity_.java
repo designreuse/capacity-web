@@ -11,9 +11,9 @@ public abstract class AbsenceEntity_ extends de.egore911.capacity.persistence.mo
 
 	public static volatile SingularAttribute<AbsenceEntity, String> reason;
 	public static volatile SingularAttribute<AbsenceEntity, LocalDate> start;
-	public static volatile SingularAttribute<AbsenceEntity, EmployeeEntity> employee;
 	public static volatile SingularAttribute<AbsenceEntity, String> externalId;
 	public static volatile SingularAttribute<AbsenceEntity, LocalDate> end;
+	public static volatile SingularAttribute<AbsenceEntity, EmployeeEntity> employee;
 
 }
 

@@ -3,6 +3,7 @@ package de.egore911.capacity.persistence.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -31,6 +32,7 @@ public class EpisodeEntity extends IntegerDbObject {
 		this.start = start;
 	}
 
+	@Column(name = "`end`")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	public LocalDate getEnd() {
 		return end;

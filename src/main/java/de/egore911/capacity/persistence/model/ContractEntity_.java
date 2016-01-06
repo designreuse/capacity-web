@@ -10,9 +10,10 @@ import org.joda.time.LocalDate;
 @StaticMetamodel(ContractEntity.class)
 public abstract class ContractEntity_ {
 
-	public static volatile ListAttribute<ContractEntity, WorkingHoursEntity> workingHours;
 	public static volatile SingularAttribute<ContractEntity, LocalDate> start;
 	public static volatile SingularAttribute<ContractEntity, LocalDate> end;
+	public static volatile SingularAttribute<ContractEntity, Integer> vacationDaysPerYear;
+	public static volatile ListAttribute<ContractEntity, WorkingHoursEntity> workingHours;
 
 }
 

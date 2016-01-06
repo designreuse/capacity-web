@@ -41,7 +41,7 @@ public class AbsenceEntity extends IntegerDbObject {
 		this.start = start;
 	}
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "`end`")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	public LocalDate getEnd() {
 		return end;

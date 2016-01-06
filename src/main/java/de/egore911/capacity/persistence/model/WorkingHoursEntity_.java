@@ -9,9 +9,9 @@ import org.joda.time.LocalTime;
 @StaticMetamodel(WorkingHoursEntity.class)
 public abstract class WorkingHoursEntity_ {
 
+	public static volatile SingularAttribute<WorkingHoursEntity, Integer> dayOfWeek;
 	public static volatile SingularAttribute<WorkingHoursEntity, LocalTime> start;
 	public static volatile SingularAttribute<WorkingHoursEntity, LocalTime> end;
-	public static volatile SingularAttribute<WorkingHoursEntity, Integer> dayOfWeek;
 
 }
 
