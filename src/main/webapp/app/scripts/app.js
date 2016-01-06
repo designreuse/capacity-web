@@ -4,7 +4,7 @@ angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calen
 	.config(function (uibDatepickerConfig) {
 		uibDatepickerConfig.startingDay = 1;
 	})
-	.controller('MainCtrl', ['$scope', '$location', function($scope, $location) {
+	.controller('MainCtrl', ['$scope', '$location', '$http', function($scope, $location, $http) {
 		$scope.currentModule = function() {
 			var currentPath = $location.path();
 			if (currentPath.startsWith('/')) {
@@ -16,5 +16,9 @@ angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calen
 			}
 			return currentPath;
 		};
+
+		$http.get('rest/version').then(function(response) {
+			$scope.version = response.data;
+		});
 
 	}]);
