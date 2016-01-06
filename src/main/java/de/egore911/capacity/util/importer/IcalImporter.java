@@ -15,6 +15,7 @@ import de.egore911.capacity.persistence.dao.AbsenceDao;
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
+import de.egore911.capacity.ui.dto.ImportResult;
 import de.egore911.capacity.ui.exceptions.BadArgumentException;
 import de.egore911.capacity.ui.exceptions.BadStateException;
 import de.egore911.persistence.util.EntityManagerUtil;
@@ -28,7 +29,8 @@ public class IcalImporter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(IcalImporter.class);
 
-	public void importIcal(String url) {
+	public ImportResult importIcal(String url) {
+		ImportResult result = new ImportResult();
 		try {
 			URL validUrl = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) validUrl.openConnection();
@@ -49,12 +51,14 @@ public class IcalImporter {
 					String uid = uidProperty != null ? uidProperty.getValue() : null;
 					if (uid == null) {
 						LOG.warn("Event did not have an UID, skipping");
+						result.skip();
 						continue;
 					}
 					Property emailProperty = component.getProperty("ATTENDEE");
 					String email = emailProperty != null ? emailProperty.getValue() : null;
 					if (email == null) {
 						LOG.warn("Event " + uid + " did not have an email");
+						result.skip();
 						continue;
 					}
 					if (email.startsWith("mailto:")) {
@@ -64,6 +68,7 @@ public class IcalImporter {
 					EmployeeEntity employee = new EmployeeSelector().withEmail(email).find();
 					if (employee == null) {
 						LOG.warn("Employee with e-mail " + email + " not found, skipping");
+						result.skip();
 						continue;
 					}
 					AbsenceEntity absence = null;
@@ -93,6 +98,11 @@ public class IcalImporter {
 						e.printStackTrace();
 						continue;
 					}
+					if (absence.getId() != null) {
+						result.update();
+					} else {
+						result.create();
+					}
 					new AbsenceDao().save(absence);
 				}
 				em.getTransaction().commit();
@@ -107,6 +117,8 @@ public class IcalImporter {
 		} catch (IOException | ParserException e) {
 			throw new BadStateException(e.getMessage());
 		}
+
+		return result;
 	}
 
 }
