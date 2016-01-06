@@ -10,6 +10,7 @@ import javax.ws.rs.ext.Provider;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -24,6 +25,8 @@ public class JodaParameterConverterProvider implements ParamConverterProvider {
 			return (ParamConverter<T>) new LocalDateParamConverter();
 		} else if (type.equals(LocalTime.class)) {
 			return (ParamConverter<T>) new LocalTimeParamConverter();
+		} else if (type.equals(LocalDateTime.class)) {
+			return (ParamConverter<T>) new LocalDateTimeParamConverter();
 		} else {
 			return null;
 		}
@@ -77,6 +80,22 @@ public class JodaParameterConverterProvider implements ParamConverterProvider {
 		@Override
 		public String toString(LocalTime value) {
 			return ISODateTimeFormat.time().print(value);
+		}
+
+	}
+
+	private static class LocalDateTimeParamConverter implements ParamConverter<LocalDateTime> {
+		@Override
+		public LocalDateTime fromString(String value) {
+			if (StringUtils.isEmpty(value)) {
+				return null;
+			}
+			return ISODateTimeFormat.dateTime().parseLocalDateTime(value);
+		}
+
+		@Override
+		public String toString(LocalDateTime value) {
+			return ISODateTimeFormat.dateTime().print(value);
 		}
 
 	}
