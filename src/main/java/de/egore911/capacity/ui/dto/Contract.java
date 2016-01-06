@@ -8,6 +8,7 @@ public class Contract {
 
 	private LocalDate start;
 	private LocalDate end;
+	private int vacationDaysPerYear;
 	private List<WorkingHours> workingHours;
 	private Integer workingHoursPerWeek;
 
@@ -25,6 +26,14 @@ public class Contract {
 
 	public void setEnd(LocalDate end) {
 		this.end = end;
+	}
+
+	public int getVacationDaysPerYear() {
+		return vacationDaysPerYear;
+	}
+
+	public void setVacationDaysPerYear(int vacationDaysPerYear) {
+		this.vacationDaysPerYear = vacationDaysPerYear;
 	}
 
 	public List<WorkingHours> getWorkingHours() {

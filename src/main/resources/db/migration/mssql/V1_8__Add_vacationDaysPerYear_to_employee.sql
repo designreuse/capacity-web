@@ -1,0 +1,3 @@
+ALTER TABLE employee
+ADD vacationDaysPerYear INT DEFAULT 0 NOT NULL
+GO

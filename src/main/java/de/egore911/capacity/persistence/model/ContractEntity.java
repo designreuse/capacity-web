@@ -16,6 +16,7 @@ public class ContractEntity {
 
 	private LocalDate start;
 	private LocalDate end;
+	private int vacationDaysPerYear;
 	private List<WorkingHoursEntity> workingHours;
 
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
@@ -35,6 +36,14 @@ public class ContractEntity {
 
 	public void setEnd(LocalDate end) {
 		this.end = end;
+	}
+
+	public int getVacationDaysPerYear() {
+		return vacationDaysPerYear;
+	}
+
+	public void setVacationDaysPerYear(int vacationDaysPerYear) {
+		this.vacationDaysPerYear = vacationDaysPerYear;
 	}
 
 	@ElementCollection
