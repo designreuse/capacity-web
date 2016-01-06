@@ -178,7 +178,7 @@ public class StartupListener implements ServletContextListener {
 					} else if (connection.toString().contains("URL=jdbc:hsqldb")) {
 						flyway.setLocations("db/migration/hsqldb");
 					} else if (connection.toString().contains("URL=jdbc:jtds:sqlserver")
-							|| connection.toString().startsWith("jdbc:sqlserver")) {
+							|| connection.toString().contains("URL=jdbc:sqlserver")) {
 						flyway.setLocations("db/migration/mssql");
 					} else if (connection.toString().contains("URL=jdbc:postgresql")) {
 						flyway.setLocations("db/migration/pgsql");
