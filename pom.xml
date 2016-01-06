@@ -44,6 +44,7 @@
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 						</manifest>
 					</archive>
+					<packagingExcludes>META-INF/context.xml</packagingExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
