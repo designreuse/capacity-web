@@ -18,7 +18,7 @@ ALTER TABLE employee
 ADD COLUMN start date DEFAULT NULL;
 
 ALTER TABLE employee
-ADD COLUMN end date DEFAULT NULL;
+ADD COLUMN "end" date DEFAULT NULL;
 
 ALTER TABLE employee
 ADD COLUMN workHoursPerDay int NOT NULL;

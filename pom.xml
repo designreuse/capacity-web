@@ -114,6 +114,7 @@
 				<packaging.hibernate>provided</packaging.hibernate>
 				<packaging.servlet>provided</packaging.servlet>
 				<version.servlet>3.1.0</version.servlet>
+				<version.el>2.2</version.el>
 			</properties>
 		</profile>
 		<profile>
@@ -122,6 +123,7 @@
 				<packaging.hibernate>compile</packaging.hibernate>
 				<packaging.servlet>provided</packaging.servlet>
 				<version.servlet>3.0.1</version.servlet>
+				<version.el>2.2</version.el>
 			</properties>
 		</profile>
 		<profile>
@@ -133,6 +135,7 @@
 				<packaging.hibernate>compile</packaging.hibernate>
 				<packaging.servlet>provided</packaging.servlet>
 				<version.servlet>3.1.0</version.servlet>
+				<version.el>2.2</version.el>
 			</properties>
 		</profile>
 	</profiles>
@@ -277,6 +280,12 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${version.servlet}</version>
 			<scope>${packaging.servlet}</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>${version.el}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- Nullability checks -->

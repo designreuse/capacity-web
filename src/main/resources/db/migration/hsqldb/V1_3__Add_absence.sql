@@ -3,7 +3,7 @@ CREATE TABLE absence (
   created datetime DEFAULT NULL,
   modified datetime DEFAULT NULL,
   start date NOT NULL,
-  end date NOT NULL,
+  "end" date NOT NULL,
   reason varchar(255) NOT NULL,
   employee_id int NOT NULL
 );

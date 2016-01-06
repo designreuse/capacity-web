@@ -6,7 +6,7 @@ CREATE TABLE episode (
   created datetime DEFAULT NULL,
   modified datetime DEFAULT NULL,
   start date NOT NULL,
-  end date NOT NULL,
+  "end" date NOT NULL,
   name varchar(255) NOT NULL
 );
 
