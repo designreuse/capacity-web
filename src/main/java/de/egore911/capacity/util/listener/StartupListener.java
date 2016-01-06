@@ -55,7 +55,7 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 /**
  * Listener executed during startup, responsible for setting up the
  * java.util.Logging->SLF4J bridge and updating the database.
- * 
+ *
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class StartupListener implements ServletContextListener {
