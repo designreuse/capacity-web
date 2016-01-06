@@ -21,6 +21,9 @@ angular.module('capacityApp')
 		addRoute('/episodes/:id', 'app/module/episode/view/episode.html', 'EpisodeDetailController');
 		addRoute('/episodes/clone/:id', 'app/module/episode/view/episode.html', 'EpisodeDetailController');
 
+		addRoute('/ical_imports', 'app/module/ical_import/view/ical_imports.html', 'IcalImportListController');
+		addRoute('/ical_imports/:id', 'app/module/ical_import/view/ical_import.html', 'IcalImportDetailController');
+
 		addRoute('/capacity', 'app/module/capacity/view/capacity.html', 'CapacityController');
 
 		addRoute('/absence', 'app/module/absence/view/absence.html', 'AbsenceController');

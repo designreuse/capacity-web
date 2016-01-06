@@ -1,0 +1,20 @@
+<h1 class="page-header">{{!icalImport.name ? '&nbsp;' : icalImport.name}}</h1>
+
+<form name="form">
+	<label-group label="ID">
+		<p>
+			<input type="text" class="form-control" ng-model="icalImport.id" disabled></input>
+		</p>
+	</label-group>
+	<label-group label="Name">
+		<p>
+			<input type="text" class="form-control" ng-model="icalImport.name"></input>
+		</p>
+	</label-group>
+	<label-group label="URL">
+		<p>
+			<input type="text" class="form-control" ng-model="icalImport.url"></input>
+		</p>
+	</label-group>
+	<button type="submit" ng-click="save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
+</form>

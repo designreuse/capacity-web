@@ -1,0 +1,27 @@
+<h1 class="page-header">iCal Imports</h1>
+
+<h2 class="sub-header">Listing ({{icalImports.length}})</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><span ng-click="order('id')">ID</span>
+         <span class="sortorder" ng-show="predicate === 'id'" ng-class="{reverse:reverse}"></span></th>
+      <th><span ng-click="order('name')">Name</span>
+         <span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span></th>
+      <th><span ng-click="order('url')">URL</span>
+         <span class="sortorder" ng-show="predicate === 'url'" ng-class="{reverse:reverse}"></span></th>
+      <th>Last import</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="icalImport in icalImports | filter: search | orderBy:predicate:reverse">
+      <td class="col-sm-1">{{icalImport.id}}</td>
+      <td class="col-sm-3"><a href="#episodes/{{icalImport.id}}" ng-bind="icalImport.name"></a></td>
+      <td class="col-sm-6">{{icalImport.url}}</td>
+      <td class="col-sm-6">{{icalImport.lastImported}}</td>
+      <td class="col-sm-1"><button ng-click="import(icalImport.id)" class="btn btn-default"><i class="fa fa-cloud-download"></i> Import</button></td>
+    </tr>
+  </tbody>
+</table>
+<button ng-click="add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add</button>

@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <h3 class="modal-title" ng-bind="title"></h3>
+</div>
+<div class="modal-body">
+  <p ng-bind="message"></p>
+</div>
+<div class="modal-footer">
+  <div class="control-content">
+    <button ng-repeat="button in confirmButtons" class="btn btn-primary" ng-click="ok(button.value)" ng-bind="button.label"></button>
+    <a href="" ng-repeat="button in cancelButtons" ng-click="cancel(button.value)" ng-bind="button.label"></a>
+  </div>
+</div>
