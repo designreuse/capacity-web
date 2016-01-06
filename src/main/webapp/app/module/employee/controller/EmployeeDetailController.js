@@ -9,6 +9,15 @@ angular.module('capacityApp')
 			endOpened: false
 		};
 
+		function prepareDto() {
+			if ($scope.employee.contract.start && typeof $scope.employee.contract.start.getMonth === 'function') {
+				$scope.employee.contract.start = moment($scope.employee.contract.start).format('YYYY-MM-DD');
+			}
+			if ($scope.employee.contract.end && typeof $scope.employee.contract.end.getMonth === 'function') {
+				$scope.employee.contract.end = moment($scope.employee.contract.end).format('YYYY-MM-DD');
+			}
+		}
+
 		$scope.events = [];
 		$scope.eventSources = [ $scope.events ];
 		function workingHoursToEvents(employee) {
@@ -36,6 +45,7 @@ angular.module('capacityApp')
 			};
 			workingHoursToEvents($scope.employee);
 			$scope.save = function() {
+				prepareDto();
 				$scope.employee.$save(function() {
 					$location.path('/employees');
 				});
@@ -46,6 +56,7 @@ angular.module('capacityApp')
 				workingHoursToEvents($scope.employee);
 			});
 			$scope.save = function() {
+				prepareDto();
 				$scope.employee.$update(function() {
 					$location.path('/employees');
 				});
