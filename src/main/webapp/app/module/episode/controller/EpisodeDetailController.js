@@ -10,16 +10,16 @@ angular.module('capacityApp')
 			startOpened: false,
 			endOpened: false
 		};
-		
+
 		function prepareDto() {
 			$scope.episode.employeeEpisodes = [];
 			angular.forEach($scope.selection, function(element, index) {
 				$scope.episode.employeeEpisodes.push(element);
 			});
-			if (typeof $scope.episode.start.getMonth === 'function') {
+			if ($scope.episode.start && typeof $scope.episode.start.getMonth === 'function') {
 				$scope.episode.start = moment($scope.episode.start).format('YYYY-MM-DD');
 			}
-			if (typeof $scope.episode.end.getMonth === 'function') {
+			if ($scope.episode.end && typeof $scope.episode.end.getMonth === 'function') {
 				$scope.episode.end = moment($scope.episode.end).format('YYYY-MM-DD');
 			}
 		}
