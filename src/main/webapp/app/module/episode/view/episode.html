@@ -1,7 +1,6 @@
 <h1 class="page-header">{{!episode.name ? '&nbsp;' : episode.name}}</h1>
 
 <form name="form">
-	<div class="row">
 	<label-group label="ID">
 		<p>
 			<input type="text" class="form-control" ng-model="episode.id" disabled></input>
@@ -38,5 +37,4 @@
 		</table>
 	</label-group>
 	<button type="submit" ng-click="save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
-	</div>
 </form>
