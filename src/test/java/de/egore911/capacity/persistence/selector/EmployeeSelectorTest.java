@@ -15,6 +15,7 @@ import org.junit.Test;
 import de.egore911.capacity.AbstractDatabaseTest;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 
+@SuppressWarnings("unchecked")
 public class EmployeeSelectorTest extends AbstractDatabaseTest {
 
 	@Test

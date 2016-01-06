@@ -36,8 +36,6 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */

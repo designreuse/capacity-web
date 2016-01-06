@@ -17,6 +17,7 @@ import org.joda.time.format.ISODateTimeFormat;
 @Provider
 public class JodaParameterConverterProvider implements ParamConverterProvider {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> ParamConverter<T> getConverter(Class<T> type, Type genericType, Annotation[] annotations) {
 		if (type.equals(DateTime.class)) {
