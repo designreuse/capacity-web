@@ -22,11 +22,16 @@
     </div>
   </div>
 
-<div class="row">
+  <ul class="nav nav-pills">
+    <li ng-class="{active:selected == 'chart'}"><a href ng-click="select('chart')">Chart</a></li>
+    <li ng-class="{active:selected == 'list'}"><a href ng-click="select('list')">List</a></li>
+  </ul>
+
+<div ng-show="selected == 'chart'">
   <highchart config="chartConfig"></highchart>
 </div>
 
-<div class="row">
+<div ng-show="selected == 'list'">
   <table class="table table-striped">
     <thead>
       <tr>

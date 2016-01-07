@@ -5,6 +5,11 @@ angular.module('capacityApp')
 
 		$scope.useVelocity = true;
 
+		$scope.selected = 'chart';
+		$scope.select = function(tab) {
+			$scope.selected = tab;
+		}
+
 		$scope.chartConfig = {
 			options: {
 				chart: {
