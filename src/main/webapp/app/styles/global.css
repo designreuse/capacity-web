@@ -19,3 +19,7 @@ ul.dropdown-menu {
 	height: 13px;
 	border-radius: 2px;
 }
+
+h1.page-header i.fa {
+	margin-right: 8px;
+}
