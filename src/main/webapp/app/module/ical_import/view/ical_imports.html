@@ -17,7 +17,7 @@
   <tbody>
     <tr ng-repeat="icalImport in icalImports | filter: search | orderBy:predicate:reverse">
       <td class="col-sm-1">{{icalImport.id}}</td>
-      <td class="col-sm-3"><a href="#episodes/{{icalImport.id}}" ng-bind="icalImport.name"></a></td>
+      <td class="col-sm-3"><a href="#ical_imports/{{icalImport.id}}" ng-bind="icalImport.name"></a></td>
       <td class="col-sm-6">{{icalImport.url}}</td>
       <td class="col-sm-6">{{icalImport.lastImported}}</td>
       <td class="col-sm-1"><button ng-click="import(icalImport.id)" class="btn btn-default"><i class="fa fa-cloud-download"></i> Import</button></td>
