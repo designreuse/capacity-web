@@ -25,7 +25,7 @@
       </thead>
       <tbody>
         <tr ng-repeat="employee in absent | filter: search | orderBy: 'name'">
-          <td ng-bind="employee.name"></td>
+          <td><employee-name employee="employee" /></td>
         </tr>
       </tbody>
     </table>
@@ -39,7 +39,7 @@
       </thead>
       <tbody>
         <tr ng-repeat="employee in available | filter: search | orderBy: 'name'">
-          <td ng-bind="employee.name"></td>
+          <td><employee-name employee="employee" /></td>
         </tr>
       </tbody>
     </table>
