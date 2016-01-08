@@ -29,7 +29,12 @@ angular.module('capacityApp')
 				text: ''
 			},
 			xAxis: {
-				categories: []
+				categories: [],
+				labels: {
+					formatter: function () {
+						return '<span style="fill: ' + this.value.color + ';">' + this.value.y + '</span>';
+					}
+				}
 			},
 			yAxis: {
 				min: 0,
@@ -110,7 +115,8 @@ angular.module('capacityApp')
 				var categories = [];
 				if (response.data.length > 0) {
 					response.data[0].workingHours.details.forEach(function(element, index) {
-						categories.push(element.date);
+						var dayOfWeek = moment(element.date).day();
+						categories.push({y: element.date, color: (dayOfWeek == 0 || dayOfWeek == 6) ? '#aaaaaa' : '#000000' });
 					});
 				}
 				$scope.chartConfig.xAxis.categories = categories;

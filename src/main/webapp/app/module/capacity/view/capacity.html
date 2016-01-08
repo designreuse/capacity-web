@@ -36,7 +36,7 @@
     <thead>
       <tr>
         <th>Employee</th>
-        <th ng-repeat="category in chartConfig.xAxis.categories">{{category}}</th>
+        <th ng-repeat="category in chartConfig.xAxis.categories"><span style="color:{{category.color}};">{{category.y}}</span></th>
         <th>Sum</th>
       </tr>
     </thead>
