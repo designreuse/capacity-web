@@ -12,12 +12,14 @@
     <div class="form-group">
       <label class="col-sm-2 control-label" for="control_id_episode">Episode</label>
       <div class="col-sm-10 label-group-content">
-      <p>
-        <select ng-model="selectedEpisode" ng-model-options="{ getterSetter: true }">
-          <option value="">None</option>
-          <option ng-repeat="episode in episodes" value="{{episode.id}}">{{episode.name}} ({{episode.start}} - {{episode.end}})</option>
-        </select>
-      </p>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{_selectedEpisode.name ? _selectedEpisode.name + '(' + _selectedEpisode.start + ' - ' + _selectedEpisode.end + ')' : 'None'}} <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href >None</a></li>
+            <li role="separator" class="divider"></li>
+            <li ng-repeat="episode in episodes | orderBy: 'start':true"><a href ng-click="selectedEpisode(episode.id)">{{episode.name}} ({{episode.start}} - {{episode.end}})</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

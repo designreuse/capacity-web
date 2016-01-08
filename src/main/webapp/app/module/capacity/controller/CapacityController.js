@@ -165,6 +165,14 @@ angular.module('capacityApp')
 			}
 		};
 
+		$scope.episodeName = function() {
+			if ($scope._selectedEpisode && $scope._selectedEpisode.id) {
+				return $scope._selectedEpisode.name + " " + $scope._selectedEpisode.start + " - " + $scope._selectedEpisode.end + ")";
+			}
+			return "None";
+		}
+
+
 		$scope.sum = function(values) {
 			var result = 0;
 			values.forEach(function(element, index) {
