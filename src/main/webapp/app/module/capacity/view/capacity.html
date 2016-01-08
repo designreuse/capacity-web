@@ -29,11 +29,11 @@
     <li ng-class="{active:selected == 'list'}"><a href ng-click="select('list')">List</a></li>
   </ul>
 
-<div ng-show="selected == 'chart'">
+<div class="panel panel-default" ng-show="selected == 'chart'" style="padding: 30px;">
   <highchart config="chartConfig"></highchart>
 </div>
 
-<div ng-show="selected == 'list'">
+<div class="panel panel-default" ng-show="selected == 'list'">
   <table class="table table-striped">
     <thead>
       <tr>
