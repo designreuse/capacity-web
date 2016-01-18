@@ -64,8 +64,11 @@ public class EntityManagerFilter implements Filter {
 			EntityManagerUtil.setEntityManager(entityManager);
 			filterChain.doFilter(servletRequest, servletResponse);
 		} finally {
-			EntityManagerUtil.clearEntityManager();
-			entityManager.close();
+			entityManager = EntityManagerUtil.getEntityManager();
+			if (entityManager != null) {
+				EntityManagerUtil.clearEntityManager();
+				entityManager.close();
+			}
 		}
 	}
 
