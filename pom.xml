@@ -287,6 +287,12 @@
 			<version>${version.el}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- Nullability checks -->
 		<dependency>
