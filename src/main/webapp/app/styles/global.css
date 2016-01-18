@@ -27,3 +27,11 @@ ul.dropdown-menu {
 h1.page-header i.fa {
 	margin-right: 8px;
 }
+
+.sortorder:after {
+	content: '\25bc';
+}
+
+.sortorder.reverse:after {
+	content: '\25b2';
+}

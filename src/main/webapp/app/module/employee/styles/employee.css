@@ -16,10 +16,3 @@ ul.abilities li:last-child:after {
     content: "";
 }
 
-.sortorder:after {
-	content: '\25bc';
-}
-
-.sortorder.reverse:after {
-	content: '\25b2';
-}
