@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 
 import org.joda.time.format.ISODateTimeFormat;
@@ -16,6 +17,7 @@ import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.ui.dto.ImportResult;
+import de.egore911.capacity.ui.dto.Progress;
 import de.egore911.capacity.ui.exceptions.BadArgumentException;
 import de.egore911.capacity.ui.exceptions.BadStateException;
 import de.egore911.persistence.util.EntityManagerUtil;
@@ -23,15 +25,18 @@ import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.ComponentList;
 import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.component.CalendarComponent;
 
 public class IcalImporter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(IcalImporter.class);
 
-	public ImportResult importIcal(String url) {
+	public void importIcal(@Nonnull String url, @Nonnull Progress<ImportResult> progress) {
 		ImportResult result = new ImportResult();
 		try {
+			progress.setMessage("Downloading calendar");
 			URL validUrl = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) validUrl.openConnection();
 			connection.setRequestMethod("GET");
@@ -39,6 +44,7 @@ public class IcalImporter {
 			if (responseCode != 200) {
 				throw new BadStateException("Got HTTP status " + responseCode + ", expected 200");
 			}
+			progress.setMessage("Parsing calendar");
 			CalendarBuilder builder = new CalendarBuilder();
 
 			Calendar calendar = builder.build(connection.getInputStream());
@@ -46,7 +52,11 @@ public class IcalImporter {
 			EntityManager em = EntityManagerUtil.getEntityManager();
 			em.getTransaction().begin();
 			try {
-				for (Component component : calendar.getComponents("VEVENT")) {
+				progress.setMessage("Importing events");
+				ComponentList<CalendarComponent> components = calendar.getComponents("VEVENT");
+				progress.setMax(components.size());
+				int i = 0;
+				for (Component component : components) {
 					Property uidProperty = component.getProperty("UID");
 					String uid = uidProperty != null ? uidProperty.getValue() : null;
 					if (uid == null) {
@@ -95,6 +105,7 @@ public class IcalImporter {
 								ISODateTimeFormat.basicDate().parseLocalDate(component.getProperty("DTEND").getValue()).minusDays(1));
 					} catch (IllegalArgumentException e) {
 						// TODO We don't handle vacations for half days
+						result.skip();
 						e.printStackTrace();
 						continue;
 					}
@@ -104,21 +115,33 @@ public class IcalImporter {
 						result.create();
 					}
 					new AbsenceDao().save(absence);
+					progress.setValue(++i);
 				}
+				progress.setValue(progress.getMax());
 				em.getTransaction().commit();
 			} finally {
 				if (em.getTransaction().isActive()) {
 					em.getTransaction().rollback();
 				}
 			}
+			progress.setMessage("Import completed");
 
 		} catch (MalformedURLException e) {
+			progress.setSuccess(false);
+			progress.setMessage(e.getMessage());
 			throw new BadArgumentException("Not a valid URL");
 		} catch (IOException | ParserException e) {
+			progress.setSuccess(false);
+			progress.setMessage(e.getMessage());
 			throw new BadStateException(e.getMessage());
+		} catch (RuntimeException e) {
+			progress.setSuccess(false);
+			progress.setMessage(e.getMessage());
+			throw new BadStateException(e.getMessage());
+		} finally {
+			progress.setCompleted(true);
+			progress.setResult(result);
 		}
-
-		return result;
 	}
 
 }

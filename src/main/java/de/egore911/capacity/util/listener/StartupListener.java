@@ -23,6 +23,9 @@ package de.egore911.capacity.util.listener;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -62,6 +65,8 @@ public class StartupListener implements ServletContextListener {
 
 	private static final Logger log = LoggerFactory.getLogger(StartupListener.class);
 
+	public static ScheduledExecutorService SCHEDULE_EXECUTOR;
+	public static ExecutorService EXECUTOR;
 	public static final MapperFactory MAPPER_FACTORY = new DefaultMapperFactory.Builder().build();
 
 	static {
@@ -228,11 +233,19 @@ public class StartupListener implements ServletContextListener {
 		} catch (NamingException e) {
 			log.error(e.getMessage(), e);
 		}
+
+		SCHEDULE_EXECUTOR = Executors.newSingleThreadScheduledExecutor();
+		EXECUTOR = Executors.newSingleThreadExecutor();
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		// Nothing
+		if (SCHEDULE_EXECUTOR != null) {
+			SCHEDULE_EXECUTOR.shutdown();
+		}
+		if (EXECUTOR != null) {
+			EXECUTOR.shutdown();
+		}
 	}
 
 }

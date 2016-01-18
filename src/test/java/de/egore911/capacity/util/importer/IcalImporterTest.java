@@ -4,6 +4,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.egore911.capacity.AbstractDatabaseTest;
+import de.egore911.capacity.ui.dto.ImportResult;
+import de.egore911.capacity.ui.dto.Progress;
 
 public class IcalImporterTest extends AbstractDatabaseTest {
 
@@ -11,6 +13,6 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 	@Ignore
 	public void test() {
 		IcalImporter importer = new IcalImporter();
-		importer.importIcal("Some ICS url");
+		importer.importIcal("Some ICS url", new Progress<ImportResult>());
 	}
 }
