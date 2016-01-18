@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('capacityApp')
-	.controller('EmployeeDetailController', ['$scope', '$route', '$location', '$http', '$uibModal', '$filter', 'Employee', function ($scope, $route, $location, $http, $uibModal, $filter, Employee) {
+	.controller('EmployeeDetailController', ['$scope', '$route', '$location', '$http', '$filter', 'Employee', function ($scope, $route, $location, $http, $filter, Employee) {
 		$scope.id = $route.current.params.id;
 
 		$scope.datepicker = {
