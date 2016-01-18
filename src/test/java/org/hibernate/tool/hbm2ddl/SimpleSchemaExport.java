@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
  * @author Steve Ebersole
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
+@SuppressWarnings("deprecation")
 public class SimpleSchemaExport {
 
 	private static final Logger log = LoggerFactory
