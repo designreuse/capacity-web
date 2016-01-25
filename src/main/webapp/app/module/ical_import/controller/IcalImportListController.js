@@ -38,7 +38,11 @@ angular.module('capacityApp')
 						$scope.confirmButtons = [ { value: 'ok', label: 'OK' }];
 						$scope.cancelButtons = [ ];
 
-						ws = new WebSocket("ws://" + window.location.host + window.location.pathname + "async/progress/" + response.data);
+						if (window.location.protocol == 'https:') {
+							ws = new WebSocket("wss://" + window.location.host + window.location.pathname + "async/progress/" + response.data);
+						} else {
+							ws = new WebSocket("ws://" + window.location.host + window.location.pathname + "async/progress/" + response.data);
+						}
 
 						ws.onmessage = function(event) {
 							var newProgress = JSON.parse(event.data);
