@@ -97,7 +97,7 @@ public class CalendarService {
 				result.add(event);
 			}
 			return result;
-		} else {
+		} else if ("absences".equals(id)) {
 			List<AbsenceEntity> absences = new AbsenceSelector()
 				.withStartInclusive(start)
 				.withEndInclusive(end)
@@ -112,6 +112,8 @@ public class CalendarService {
 				result.add(event);
 			}
 			return result;
+		} else {
+			throw new NotFoundException("Calendar with id " + id + " not found");
 		}
 	}
 
