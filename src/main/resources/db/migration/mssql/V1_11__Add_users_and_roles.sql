@@ -40,8 +40,7 @@ GO
 CREATE TABLE role_permissions (
   id_role int NOT NULL,
   permission varchar(255) DEFAULT NULL,
-  KEY KF_rolepermission_role_IX (id_role),
-  CONSTRAINT KF_rolepermission_role_IX FOREIGN KEY (id_role) REFERENCES role (id)
+  CONSTRAINT FK_rolepermission_role FOREIGN KEY (id_role) REFERENCES role (id)
 )
 GO
 
