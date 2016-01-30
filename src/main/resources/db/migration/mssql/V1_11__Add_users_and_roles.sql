@@ -44,7 +44,7 @@ CREATE TABLE role_permissions (
 )
 GO
 
-CREATE INDEX FK_rolepermission_role_IX ON role_permssions(id_role)
+CREATE INDEX FK_rolepermission_role_IX ON role_permissions(id_role)
 GO
 
 CREATE TABLE user_role (
