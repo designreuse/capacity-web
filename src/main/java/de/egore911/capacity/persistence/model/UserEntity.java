@@ -39,9 +39,9 @@ import org.apache.commons.collections4.CollectionUtils;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@Entity
+@Entity(name = "User")
 @Table(name = "user_")
-public class User extends IntegerDbObject {
+public class UserEntity extends IntegerDbObject {
 
 	private static final long serialVersionUID = 5341258879773745459L;
 
@@ -49,7 +49,7 @@ public class User extends IntegerDbObject {
 	private String login;
 	private String password;
 	private String email;
-	private List<Role> roles = new ArrayList<>(0);
+	private List<RoleEntity> roles = new ArrayList<>(0);
 
 	@Column(nullable = false, length = 255)
 	@NotNull
@@ -98,15 +98,15 @@ public class User extends IntegerDbObject {
 	@ManyToMany
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id"))
 	@OrderBy("name")
-	public List<Role> getRoles() {
+	public List<RoleEntity> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
 	}
 
-	public boolean hasRole(Role role) {
+	public boolean hasRole(RoleEntity role) {
 		if (CollectionUtils.isEmpty(roles)) {
 			return false;
 		}
@@ -117,7 +117,7 @@ public class User extends IntegerDbObject {
 		if (CollectionUtils.isEmpty(roles)) {
 			return false;
 		}
-		for (Role role : roles) {
+		for (RoleEntity role : roles) {
 			if (role.hasPermission(permission)) {
 				return true;
 			}

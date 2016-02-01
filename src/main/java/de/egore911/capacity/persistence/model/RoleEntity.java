@@ -42,15 +42,15 @@ import org.apache.commons.collections4.CollectionUtils;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@Entity
+@Entity(name = "Role")
 @Table(name = "role")
-public class Role extends IntegerDbObject {
+public class RoleEntity extends IntegerDbObject {
 
 	private static final long serialVersionUID = 1353587049705666524L;
 
 	private String name;
 	private List<Permission> permissions = new ArrayList<>(0);
-	private List<User> users = new ArrayList<>(0);
+	private List<UserEntity> users = new ArrayList<>(0);
 
 	@Column(nullable = false, length = 255)
 	@NotNull
@@ -77,11 +77,11 @@ public class Role extends IntegerDbObject {
 
 	@ManyToMany(mappedBy = "roles")
 	@OrderBy("name")
-	public List<User> getUsers() {
+	public List<UserEntity> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<UserEntity> users) {
 		this.users = users;
 	}
 
