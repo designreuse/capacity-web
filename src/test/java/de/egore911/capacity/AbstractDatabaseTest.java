@@ -21,23 +21,14 @@
  */
 package de.egore911.capacity;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.sql.DataSource;
 
-import org.hibernate.tool.hbm2ddl.SimpleSchemaExport;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.egore911.persistence.util.EntityManagerUtil;
 
@@ -46,23 +37,12 @@ import de.egore911.persistence.util.EntityManagerUtil;
  */
 public abstract class AbstractDatabaseTest {
 
-	private static final Logger log = LoggerFactory.getLogger(AbstractDatabaseTest.class);
-
 	private static EntityManagerFactory emf;
 
 	@BeforeClass
 	public static void beforeClass() {
 		System.setProperty("java.naming.factory.initial", "de.egore911.capacity.JndiFactory");
 		OnceInit.init();
-		try {
-			InitialContext initialContext = new InitialContext();
-			DataSource dataSource = (DataSource) initialContext.lookup(JndiFactory.DATASOURCE_NAME);
-			try (Connection connection = dataSource.getConnection()) {
-				new SimpleSchemaExport().importScript(connection, "/import.sql");
-			}
-		} catch (NamingException | SQLException e) {
-			log.error(e.getMessage(), e);
-		}
 
 		emf = Persistence.createEntityManagerFactory("capacity");
 	}
