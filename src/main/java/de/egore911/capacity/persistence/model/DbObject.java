@@ -24,6 +24,8 @@ package de.egore911.capacity.persistence.model;
 import java.io.Serializable;
 
 import javax.persistence.EntityListeners;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
@@ -44,8 +46,8 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 
 	private LocalDateTime created;
 	private LocalDateTime modified;
-	/*private User createdBy;
-	private User modifiedBy;*/
+	private UserEntity createdBy;
+	private UserEntity modifiedBy;
 
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
 	public LocalDateTime getCreated() {
@@ -65,25 +67,25 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 		this.modified = modified;
 	}
 
-	/*@ManyToOne(optional = true)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "id_creator", nullable = true)
-	public User getCreatedBy() {
+	public UserEntity getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(User createdBy) {
+	public void setCreatedBy(UserEntity createdBy) {
 		this.createdBy = createdBy;
 	}
 
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "id_modificator", nullable = true)
-	public User getModifiedBy() {
+	public UserEntity getModifiedBy() {
 		return modifiedBy;
 	}
 
-	public void setModifiedBy(User modifiedBy) {
+	public void setModifiedBy(UserEntity modifiedBy) {
 		this.modifiedBy = modifiedBy;
-	}*/
+	}
 
 	@Transient
 	public abstract ID getId();

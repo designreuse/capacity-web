@@ -24,6 +24,8 @@ package de.egore911.capacity.persistence.listeners;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.joda.time.LocalDateTime;
 
 import de.egore911.capacity.persistence.model.DbObject;
@@ -38,21 +40,21 @@ public class ModifiedListener {
 		o.setCreated(LocalDateTime.now());
 		o.setModified(o.getCreated());
 
-		/*User user = SessionUtil.getLoggedInUser();
-		if (user != null) {
-			o.setCreatedBy(user);
-			o.setModifiedBy(user);
-		}*/
+		Subject user = SecurityUtils.getSubject();
+		if (user.isAuthenticated()) {
+			//o.setCreatedBy(user.get);
+			//o.setModifiedBy(user);
+		}
 	}
 
 	@PreUpdate
 	public void preUpdate(DbObject<?> o) {
 		o.setModified(LocalDateTime.now());
 
-		/*User user = SessionUtil.getLoggedInUser();
-		if (user != null) {
-			o.setModifiedBy(user);
-		}*/
+		Subject user = SecurityUtils.getSubject();
+		if (user.isAuthenticated()) {
+			//o.setModifiedBy(user);
+		}
 	}
 
 }
