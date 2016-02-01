@@ -14,3 +14,5 @@ INSERT INTO employee (id, created, modified, name, email, start, "end", location
 INSERT INTO employee (id, created, modified, name, email, start, "end", location_id, color, velocity) VALUES (16, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'User from start november until dec', 'from@november', '2015-11-01', '2015-12-31', NULL, '#ff0000', '50');
 INSERT INTO employee (id, created, modified, name, email, start, "end", location_id, color, velocity) VALUES (17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'User from jan until mid october', 'until.mid@october', '2015-01-01', '2015-10-15', NULL, '#ff0000', '50');
 INSERT INTO employee (id, created, modified, name, email, start, "end", location_id, color, velocity) VALUES (18, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'User from mid october until dec', 'from.mid@november', '2015-10-15', '2015-12-31', NULL, '#ff0000', '50');
+
+INSERT INTO absence (id, created, modified, employee_id, start, "end", reason, externalId) VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, '2015-02-01', '2015-02-28', 'Whole February', NULL);
