@@ -23,7 +23,7 @@ public class VersionExtractor {
 			if (pomPropertiesStream != null) {
 				properties.load(pomPropertiesStream);
 			}
-		} catch (IOException e) {
+		} catch (IOException | NullPointerException e) {
 			return null;
 		}
 		String version = properties.getProperty(property);
