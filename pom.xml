@@ -365,8 +365,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-bootstrap-colorpicker</artifactId>
-			<version>3.0.11</version>
+			<artifactId>angularjs-color-picker</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>tinycolor</artifactId>
+			<version>1.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars.bower</groupId>

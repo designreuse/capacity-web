@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calendar', 'highcharts-ng', 'colorpicker.module', 'ui.bootstrap', 'ui.bootstrap-slider'])
+angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calendar', 'highcharts-ng', 'color.picker', 'ui.bootstrap', 'ui.bootstrap-slider'])
 	.config(function (uibDatepickerConfig) {
 		uibDatepickerConfig.startingDay = 1;
 	})

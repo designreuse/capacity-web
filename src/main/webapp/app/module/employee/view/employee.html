@@ -25,12 +25,7 @@
 		</p>
 	</label-group>
 	<label-group label="Color">
-		<p class="input-group">
-			<input colorpicker type="text" class="form-control" ng-model="employee.color" ng-required="true"/>
-			<span class="input-group-btn">
-				<button type="button" class="btn btn-default"><i class="color-picker-color" style="background-color: {{employee.color}};"></i></button>
-			</span>
-		</p>
+		<color-picker ng-model="employee.color" ng-required="true" color-picker-format="'hex'" color-picker-alpha="false" color-picker-swatch-pos="'right'"></color-picker>
 	</label-group>
 	<h2 class="sub-header">Contract</h2>
 	<label-group label="Start date">
