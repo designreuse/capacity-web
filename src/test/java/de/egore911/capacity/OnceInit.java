@@ -28,6 +28,10 @@ public class OnceInit {
 				DataSource dataSource = (DataSource) initialContext.lookup(JndiFactory.DATASOURCE_NAME);
 				try (Connection connection = dataSource.getConnection()) {
 					new SimpleSchemaExport().importScript(connection, "/import.sql");
+					// MetadataImplementor metadata = null;
+					// SchemaExport schemaExport = new SchemaExport(metadata,
+					// connection);
+					// schemaExport.execute(Target.EXPORT, Type.CREATE);
 				}
 			} catch (NamingException | SQLException e) {
 				log.error(e.getMessage(), e);
