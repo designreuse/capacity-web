@@ -35,3 +35,8 @@ h1.page-header i.fa {
 .sortorder.reverse:after {
 	content: '\25b2';
 }
+
+.input-group-addon .fa {
+	width: 1em;
+	margin: 0 auto;
+}
