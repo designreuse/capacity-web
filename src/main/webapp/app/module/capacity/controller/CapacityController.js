@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('capacityApp')
-	.controller('CapacityController', ['$scope', '$http', 'Employee', 'Episode', function($scope, $http, Employee, Episode) {
+	.controller('CapacityController', ['$scope', '$http', 'Episode', function($scope, $http, Episode) {
 
 		$scope.useVelocity = true;
 
@@ -15,8 +15,8 @@ angular.module('capacityApp')
 			endOpened: false
 		};
 		$scope.duration = {
-			start: moment().format('YYYY-MM-DD'),
-			end: moment().add(14, 'd').format('YYYY-MM-DD')
+			start: moment().add(-10, 'd').format('YYYY-MM-DD'),
+			end: moment().add(10, 'd').format('YYYY-MM-DD')
 		}
 
 		$scope.chartConfig = {
@@ -57,54 +57,29 @@ angular.module('capacityApp')
 			}
 		};
 
-		$scope.onlyForSelectedAbilities = function(item) {
-			if ($scope.abilities === undefined) {
-				return true;
-			}
-			var found = false;
-			var anySelected = false;
-			$scope.abilities.forEach(function(element, index) {
-				if (element.selected) {
-					anySelected = true;
-					item.abilities.forEach(function(childelement, childindex) {
-						if (element.name == childelement.name) {
-							found = true;
-						}
-					});
-				}
+		$scope.andFilters = {1: []};
+		$scope.lastIndex = 1;
+		$scope.addAndFilter = function() {
+			$scope.lastIndex++;
+			$scope.andFilters[$scope.lastIndex] = [];
+		}
+		$scope.removeAndFilter = function(id) {
+			delete $scope.andFilters[id];
+		}
+		$scope.loadAbilities = function($query) {
+			return $http.get('rest/abilities').then(function(response) {
+				var abilities = response.data;
+				return abilities.filter(function(abilitiy) {
+					return abilitiy.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+				});
 			});
-			if (!anySelected) {
-				found = true;
-			}
-			return found;
-		};
-
-		$scope.onlyForSelectedEpisodes = function(item) {
-			if ($scope._selectedEpisode.id === '') {
-				return true;
-			}
-			var found = false;
-			$scope._selectedEpisode.employeeEpisodes.forEach(function(element, index) {
-				if (element.employee.id == item.id) {
-					found = true;
-				}
-			});
-			return found;
 		};
 
 		$scope.loadChart = function() {
-			var url = 'rest/capacity/workinghours?useVelocity=' + $scope.useVelocity + '&episodeId=' + $scope._selectedEpisode.id;
-			var filteredEmployees = $scope.employees.filter($scope.onlyForSelectedAbilities).filter($scope.onlyForSelectedEpisodes);
-			if (filteredEmployees.length > 0) {
-				var urlExtra = '';
-				filteredEmployees.forEach(function(element, index) {
-					if (element.selected) {
-						urlExtra += '&employeeIds=' + element.id;
-					}
-				});
-				if (urlExtra.length > 0) {
-					url += urlExtra;
-				}
+			var url = 'rest/capacity/workinghours';
+			var data = {
+				useVelocity: $scope.useVelocity,
+				episodeId: $scope._selectedEpisode.id
 			}
 			if ($scope._selectedEpisode.id == '') {
 				if ($scope.duration.start && typeof $scope.duration.start.getMonth === 'function') {
@@ -113,9 +88,26 @@ angular.module('capacityApp')
 				if ($scope.duration.end && typeof $scope.duration.end.getMonth === 'function') {
 					$scope.duration.end = moment($scope.duration.end).format('YYYY-MM-DD');
 				}
-				url += '&start=' + $scope.duration.start + '&end=' + $scope.duration.end;
+				data.start = $scope.duration.start;
+				data.end = $scope.duration.end;
 			}
-			$http.get(url).then(function(response) {
+			var andFilters = Object.keys($scope.andFilters);
+			if (andFilters.length > 0) {
+				var filter = [];
+				for (var k in $scope.andFilters) {
+					if (!$scope.andFilters.hasOwnProperty(k)) {
+						continue;
+					}
+					var andFilter = $scope.andFilters[k];
+					if (andFilter.length > 0) {
+						filter.push(andFilter);
+					}
+				}
+				if (filter.length > 0) {
+					data.filter = filter;
+				}
+			}
+			$http.post(url, data).then(function(response) {
 				var series = [];
 				response.data.forEach(function(element, index) {
 					var seriesvalues = [];
@@ -147,21 +139,9 @@ angular.module('capacityApp')
 			});
 		};
 
-		$http.get('rest/abilities').then(function(response) {
-			$scope.abilities = response.data;
-		});
-
-		Employee.query(function(employees) {
-			employees.forEach(function(element, index) {
-				element.selected = true;
-			});
-			$scope.employees = employees;
-
-			$scope.loadChart();
-		});
-
 		Episode.query(function(episodes) {
 			$scope.episodes = episodes;
+			$scope.loadChart();
 		});
 
 		$scope._selectedEpisode = {

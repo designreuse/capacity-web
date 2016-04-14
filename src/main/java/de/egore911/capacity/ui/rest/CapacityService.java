@@ -1,13 +1,18 @@
 package de.egore911.capacity.ui.rest;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -20,6 +25,7 @@ import org.joda.time.Hours;
 import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.dao.EmployeeDao;
+import de.egore911.capacity.persistence.model.AbilityEntity;
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.model.EmployeeEpisodeEntity;
@@ -29,31 +35,33 @@ import de.egore911.capacity.persistence.model.WorkingHoursEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.persistence.selector.EpisodeSelector;
 import de.egore911.capacity.persistence.selector.HolidaySelector;
+import de.egore911.capacity.ui.dto.Ability;
 import de.egore911.capacity.ui.dto.Employee;
 import de.egore911.capacity.ui.dto.WorkingHoursDetails;
 import de.egore911.capacity.ui.dto.WorkingHoursList;
 import de.egore911.capacity.ui.dto.WorkingHoursPerEmployee;
+import de.egore911.capacity.ui.dto.WorkingHoursRequest;
 import de.egore911.capacity.ui.exceptions.BadArgumentException;
 import de.egore911.capacity.ui.exceptions.NullArgumentException;
 
 @Path("capacity")
 public class CapacityService extends AbstractService {
 
-	@GET
+	@POST
 	@Path("workinghours")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<WorkingHoursPerEmployee> getWorkingHours(@QueryParam("employeeIds") List<Integer> employeeIds,
-			@DefaultValue("") @QueryParam("start") LocalDate start,
-			@DefaultValue("") @QueryParam("end") LocalDate end,
-			@DefaultValue("false") @QueryParam("useVelocity") boolean useVelocity,
-			@DefaultValue("") @QueryParam("episodeId") Integer episodeId) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<WorkingHoursPerEmployee> getWorkingHours(WorkingHoursRequest request) {
 
 		final Map<Integer, Integer> velocities = new HashMap<>();
-		if (episodeId != null) {
-			EpisodeEntity episode = new EpisodeSelector().withId(episodeId).find();
+		LocalDate start;
+		LocalDate end;
+		List<Integer> employeeIds;
+		if (request.getEpisodeId() != null) {
+			EpisodeEntity episode = new EpisodeSelector().withId(request.getEpisodeId()).find();
 			start = episode.getStart();
 			end = episode.getEnd();
-			List<Integer> tmpEmployeeIds = (List<Integer>) CollectionUtils.collect(episode.getEmployeeEpisodes(), new Transformer<EmployeeEpisodeEntity, Integer>() {
+			employeeIds = (List<Integer>) CollectionUtils.collect(episode.getEmployeeEpisodes(), new Transformer<EmployeeEpisodeEntity, Integer>() {
 				@Override
 				public Integer transform(EmployeeEpisodeEntity employee) {
 					Integer velocity = employee.getVelocity();
@@ -63,22 +71,51 @@ public class CapacityService extends AbstractService {
 					return employee.getEmployee().getId();
 				}
 			});
-			tmpEmployeeIds.retainAll(employeeIds);
-			employeeIds = tmpEmployeeIds;
 		} else {
 
 			// Check if valid dates are passed, otherwise look for 10 days into the future and into the past
-			if (start == null) {
+			if (request.getStart() == null) {
 				start = LocalDate.now().minusDays(10);
+			} else {
+				start = request.getStart();
 			}
-			if (end == null) {
+			if (request.getEnd() == null) {
 				end = LocalDate.now().plusDays(10);
+			} else {
+				end = request.getEnd();
 			}
+			employeeIds = null;
 		}
 
 		// Load all employees that have an active contract in the timespan
 		List<EmployeeEntity> employees = new EmployeeSelector().withActiveContract(start, end).withIds(employeeIds)
 				.findAll();
+
+		// Remove all employees not matching the search query
+		if (CollectionUtils.isNotEmpty(request.getFilter())) {
+			Set<EmployeeEntity> tmpEmployees = new HashSet<>(employees.size());
+			for (Collection<Ability> f : request.getFilter()) {
+				if (CollectionUtils.isEmpty(f)) {
+					continue;
+				}
+				outer: for (EmployeeEntity employee : employees) {
+					for (Ability a : f) {
+						boolean found = false;
+						for (AbilityEntity ability : employee.getAbilities()) {
+							if (a.getName().equals(ability.getName())) {
+								found = true;
+								break;
+							}
+						}
+						if (!found) {
+							continue outer;
+						}
+					}
+					tmpEmployees.add(employee);
+				}
+			}
+			employees = new ArrayList<>(tmpEmployees);
+		}
 
 		// Put velocities into lookup (when they were not overridden in the episode)
 		for (EmployeeEntity employee : employees) {
@@ -91,10 +128,10 @@ public class CapacityService extends AbstractService {
 		List<WorkingHoursPerEmployee> result = new ArrayList<>(employees.size());
 		for (EmployeeEntity employee : employees) {
 			int velocity = velocities.get(employee.getId());
-			if (useVelocity && velocity == 0) {
+			if (request.isUseVelocity() && velocity == 0) {
 				continue;
 			}
-			int actualVelocity = useVelocity ? velocity : 100;
+			int actualVelocity = request.isUseVelocity() ? velocity : 100;
 			result.add(new WorkingHoursPerEmployee(getMapper().map(employee, Employee.class),
 					getWorkingHoursForEmployee(employee, start, end, actualVelocity), actualVelocity));
 		}

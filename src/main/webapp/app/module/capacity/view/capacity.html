@@ -38,6 +38,23 @@
         </span>
       </p>
     </label-group>
+    <label-group label="Abilities">
+      <div ng-repeat="(id, list) in andFilters" style="width: 230px; float: left; margin-right: 8px;">
+        <div class="panel panel-default" style="width: 200px; float: left; margin-right: 8px;">
+          <tags-input ng-model="list" display-property="name" placeholder="..." replace-spaces-with-dashes="false" class="bootstrap" on-tag-added="loadChart();" on-tag-removed="loadChart();">
+            <auto-complete source="loadAbilities($query)" min-length="2" max-results-to-show="32"></auto-complete>
+          </tags-input>
+          <div class="panel-footer">
+            AND <button ng-click="removeAndFilter(id)" class="btn btn-default"><i class="fa fa-minus-circle"></i></button>
+          </div>
+        </div>
+        <div ng-hide="id == lastIndex">
+          OR
+        </div>
+      </div>
+      <div style="clear: both;"></div>
+      <button ng-click="addAndFilter()" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add AND block</button>
+    </label-group>
   </div>
 
   <ul class="nav nav-pills">
@@ -73,39 +90,4 @@
       </tr>
     </tfoot>
   </table>
-</div>
-
-<div class="row">
-<div class="col-sm-6">
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Abilities</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="ability in abilities | filter: search | orderBy: 'name'">
-      <td><input type="checkbox" ng-model="ability.selected" ng-change="loadChart();"/></td>
-      <td ng-bind="ability.name"></td>
-    </tr>
-  </tbody>
-</table>
-</div>
-<div class="col-sm-6">
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Employee</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="employee in employees | filter: onlyForSelectedAbilities | filter: onlyForSelectedEpisodes | orderBy: 'name'">
-      <td><input type="checkbox" ng-model="employee.selected" ng-change="loadChart();"/></td>
-      <td ng-bind="employee.name"></td>
-    </tr>
-  </tbody>
-</table>
-</div>
 </div>
