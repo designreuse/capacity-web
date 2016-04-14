@@ -10,6 +10,16 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="col-sm-2 control-label" for="control_id_useVelocity">Units</label>
+      <div class="col-sm-10 label-group-content">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-default active" ng-class="{active:units == 'hours'}" ng-click="switchUnits('hours')">Hours</button>
+          <button type="button" class="btn btn-default" ng-class="{active:units == 'days'}" ng-click="switchUnits('days')">Days</button>
+          <button type="button" class="btn btn-default" ng-class="{active:units == 'weeks'}" ng-click="switchUnits('weeks')">Weeks</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="col-sm-2 control-label" for="control_id_episode">Episode</label>
       <div class="col-sm-10 label-group-content">
         <div class="btn-group">
@@ -78,15 +88,15 @@
     <tbody>
       <tr ng-repeat="row in chartConfig.series">
         <th ng-bind="row.name"></th>
-        <td ng-repeat="field in row.data track by $index">{{field | number: 1}}h</th>
-        <th>{{sum(row.data) | number: 1}}h</th>
+        <td ng-repeat="field in row.data track by $index">{{field | number: 1}}{{units | limitTo: 1}}</th>
+        <th>{{sum(row.data) | number: 1}}{{units | limitTo: 1}}</th>
       </tr>
     </tbody>
     <tfoot>
       <tr>
         <th>Sum</th>
-        <td ng-repeat="category in chartConfig.xAxis.categories">{{rowsum($index) | number: 1}}h</th>
-        <th>{{sumsum() | number: 1}}h</th>
+        <td ng-repeat="category in chartConfig.xAxis.categories">{{rowsum($index) | number: 1}}{{units | limitTo: 1}}</th>
+        <th>{{sumsum() | number: 1}}{{units | limitTo: 1}}</th>
       </tr>
     </tfoot>
   </table>

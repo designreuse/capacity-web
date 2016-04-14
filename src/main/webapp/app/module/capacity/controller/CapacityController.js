@@ -1,14 +1,22 @@
 'use strict';
 
 angular.module('capacityApp')
-	.controller('CapacityController', ['$scope', '$http', 'Episode', function($scope, $http, Episode) {
+	.controller('CapacityController', ['$scope', '$http', 'Episode', '$filter', function($scope, $http, Episode, $filter) {
 
+		// Boolean option: Whether or not to calculate the capacity using the velocity per employee or not
 		$scope.useVelocity = true;
+		// Selection option which display format to use (default "hours", other possible values "days" and "weeks")
+		$scope.units = "hours";
 
 		$scope.selected = 'chart';
 		$scope.select = function(tab) {
 			$scope.selected = tab;
 		};
+
+		$scope.switchUnits = function(units) {
+			$scope.units = units;
+			$scope.loadChart();
+		}
 
 		$scope.datepicker = {
 			startOpened: false,
@@ -48,7 +56,7 @@ angular.module('capacityApp')
 			yAxis: {
 				min: 0,
 				title: {
-					text: 'Capacity (h)'
+					text: 'Capacity (' + $filter('limitTo')($scope.units, 1) + ')'
 				}
 			},
 			series: [],
@@ -112,7 +120,13 @@ angular.module('capacityApp')
 				response.data.forEach(function(element, index) {
 					var seriesvalues = [];
 					element.workingHours.details.forEach(function(childelement, childindex) {
-						seriesvalues.push(childelement.hours);
+						var value = childelement.hours;
+						if ($scope.units == 'hours') {
+							value /= 8;
+						} else if ($scope.units == 'weeks') {
+							value /= 40;
+						}
+						seriesvalues.push(value);
 					});
 					series.push({
 						name: $scope.useVelocity ? (element.employee.name + ' (' + element.velocity + '%)') : element.employee.name,
@@ -121,6 +135,7 @@ angular.module('capacityApp')
 					});
 				});
 				$scope.chartConfig.series = series;
+				$scope.chartConfig.yAxis.title.text = 'Capacity (' + $filter('limitTo')($scope.units, 1) + ')';
 
 				var categories = [];
 				if (response.data.length > 0) {
@@ -132,7 +147,7 @@ angular.module('capacityApp')
 				$scope.chartConfig.xAxis.categories = categories;
 
 				if (response.data.length > 0) {
-					$scope.chartConfig.title.text = 'Capacity for ' + response.data[0].workingHours.from + ' - ' + response.data[0].workingHours.until;
+					$scope.chartConfig.title.text = 'Capacity (in ' + $scope.units + ') for ' + response.data[0].workingHours.from + ' - ' + response.data[0].workingHours.until;
 				} else {
 					$scope.chartConfig.title.text = 'No capacities';
 				}
