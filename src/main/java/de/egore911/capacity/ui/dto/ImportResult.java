@@ -5,6 +5,7 @@ public class ImportResult {
 	private int skipped;
 	private int created;
 	private int updated;
+	private int deleted;
 
 	public int getSkipped() {
 		return skipped;
@@ -28,6 +29,14 @@ public class ImportResult {
 
 	public void setUpdated(int updated) {
 		this.updated = updated;
+	}
+
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 
 	public void skip() {

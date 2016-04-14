@@ -20,6 +20,7 @@ public class AbsenceEntity extends IntegerDbObject {
 	private LocalDate end;
 	private String reason;
 	private String externalId;
+	private IcalImportEntity icalImport;
 
 	@ManyToOne
 	@JoinColumn(name = "employee_id", nullable = false)
@@ -66,6 +67,16 @@ public class AbsenceEntity extends IntegerDbObject {
 
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "icalimport_id", nullable = true)
+	public IcalImportEntity getIcalImport() {
+		return icalImport;
+	}
+
+	public void setIcalImport(IcalImportEntity icalImport) {
+		this.icalImport = icalImport;
 	}
 
 }

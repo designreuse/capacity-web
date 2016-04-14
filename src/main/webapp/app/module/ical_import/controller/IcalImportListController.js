@@ -69,7 +69,7 @@ angular.module('capacityApp')
 									backdrop : 'static',
 									controller : function($scope, $uibModalInstance) {
 										$scope.title = 'Import completed';
-										$scope.message = 'The import was completed successfully (Skipped: ' + progress.result.skipped + ', Created: ' + progress.result.created  + ', Updated: ' + progress.result.updated + ')';
+										$scope.message = 'The import was completed successfully (Skipped: ' + progress.result.skipped + ', Created: ' + progress.result.created  + ', Updated: ' + progress.result.updated + ', Deleted: ' + progress.result.deleted + ')';
 										$scope.confirmButtons = [ { value: 'ok', label: 'OK' }];
 										$scope.cancelButtons = [ ];
 

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import de.egore911.capacity.persistence.dao.AbsenceDao;
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
+import de.egore911.capacity.persistence.model.IcalImportEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.ui.dto.ImportResult;
 import de.egore911.capacity.ui.dto.Progress;
@@ -33,7 +36,8 @@ public class IcalImporter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(IcalImporter.class);
 
-	public void importIcal(@Nonnull String url, @Nonnull Progress<ImportResult> progress) {
+	public void importIcal(@Nonnull IcalImportEntity icalImport, @Nonnull Progress<ImportResult> progress) {
+		String url = icalImport.getUrl();
 		ImportResult result = new ImportResult();
 		try {
 			progress.setMessage("Downloading calendar");
@@ -56,6 +60,8 @@ public class IcalImporter {
 				ComponentList<CalendarComponent> components = calendar.getComponents("VEVENT");
 				progress.setMax(components.size());
 				int i = 0;
+				Set<Integer> absenceIds = new HashSet<>();
+				AbsenceDao absenceDao = new AbsenceDao();
 				for (Component component : components) {
 					Property uidProperty = component.getProperty("UID");
 					String uid = uidProperty != null ? uidProperty.getValue() : null;
@@ -83,7 +89,7 @@ public class IcalImporter {
 					}
 					AbsenceEntity absence = null;
 					for (AbsenceEntity existingAbsence : employee.getAbsences()) {
-						if (uid.equals(existingAbsence.getExternalId())) {
+						if (uid.equals(existingAbsence.getExternalId()) && existingAbsence.getIcalImport() != null && existingAbsence.getIcalImport().getId().equals(icalImport.getId())) {
 							absence = existingAbsence;
 							break;
 						}
@@ -93,6 +99,7 @@ public class IcalImporter {
 						employee.getAbsences().add(absence);
 						absence.setEmployee(employee);
 						absence.setExternalId(uid);
+						absence.setIcalImport(icalImport);
 					}
 
 					Property summaryProperty = component.getProperty("SUMMARY");
@@ -114,9 +121,15 @@ public class IcalImporter {
 					} else {
 						result.create();
 					}
-					new AbsenceDao().save(absence);
+					absence = absenceDao.save(absence);
+					absenceIds.add(absence.getId());
 					progress.setValue(++i);
 				}
+
+				if (!absenceIds.isEmpty()) {
+					result.setDeleted(absenceDao.deleteFromIcalImportExcept(icalImport, absenceIds));
+				}
+
 				progress.setValue(progress.getMax());
 				em.getTransaction().commit();
 			} finally {
@@ -124,6 +137,7 @@ public class IcalImporter {
 					em.getTransaction().rollback();
 				}
 			}
+
 			progress.setMessage("Import completed");
 
 		} catch (MalformedURLException e) {

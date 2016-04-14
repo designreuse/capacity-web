@@ -64,7 +64,7 @@ public class IcalImportService extends AbstractResourceService<IcalImport, IcalI
 					if (icalImportEntity == null) {
 						throw new BadArgumentException("Given ID not found in database");
 					}
-					new IcalImporter().importIcal(icalImportEntity.getUrl(), progress);
+					new IcalImporter().importIcal(icalImportEntity, progress);
 					icalImportEntity.setLastImported(LocalDateTime.now());
 					new IcalImportDao().save(icalImportEntity);
 				} finally {
