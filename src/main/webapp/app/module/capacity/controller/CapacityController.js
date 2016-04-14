@@ -212,4 +212,8 @@ angular.module('capacityApp')
 			return result;
 		};
 
+		$scope.isPast = function(date) {
+			return moment(date).diff(moment(), 'minutes') < 0;
+		}
+
 	}]);

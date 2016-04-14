@@ -27,7 +27,7 @@
           <ul class="dropdown-menu">
             <li><a href ng-click="selectedEpisode('')">None</a></li>
             <li role="separator" class="divider"></li>
-            <li ng-repeat="episode in episodes | orderBy: 'start':true"><a href ng-click="selectedEpisode(episode.id)">{{episode.name}} ({{episode.start}} - {{episode.end}})</a></li>
+            <li ng-repeat="episode in episodes | orderBy: 'start':true" ng-class="{past : isPast(episode.end)}"><a href ng-click="selectedEpisode(episode.id)">{{episode.name}} ({{episode.start}} - {{episode.end}})</a></li>
           </ul>
         </div>
       </div>
