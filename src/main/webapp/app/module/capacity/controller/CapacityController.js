@@ -8,6 +8,15 @@ angular.module('capacityApp')
 		$scope.selected = 'chart';
 		$scope.select = function(tab) {
 			$scope.selected = tab;
+		};
+
+		$scope.datepicker = {
+			startOpened: false,
+			endOpened: false
+		};
+		$scope.duration = {
+			start: moment().format('YYYY-MM-DD'),
+			end: moment().add(14, 'd').format('YYYY-MM-DD')
 		}
 
 		$scope.chartConfig = {
@@ -96,6 +105,15 @@ angular.module('capacityApp')
 				if (urlExtra.length > 0) {
 					url += urlExtra;
 				}
+			}
+			if ($scope._selectedEpisode.id == '') {
+				if ($scope.duration.start && typeof $scope.duration.start.getMonth === 'function') {
+					$scope.duration.start = moment($scope.duration.start).format('YYYY-MM-DD');
+				}
+				if ($scope.duration.end && typeof $scope.duration.end.getMonth === 'function') {
+					$scope.duration.end = moment($scope.duration.end).format('YYYY-MM-DD');
+				}
+				url += '&start=' + $scope.duration.start + '&end=' + $scope.duration.end;
 			}
 			$http.get(url).then(function(response) {
 				var series = [];

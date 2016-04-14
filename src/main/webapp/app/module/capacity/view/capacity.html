@@ -15,13 +15,29 @@
         <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{_selectedEpisode.name ? _selectedEpisode.name + '(' + _selectedEpisode.start + ' - ' + _selectedEpisode.end + ')' : 'None'}} <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li><a href >None</a></li>
+            <li><a href ng-click="selectedEpisode('')">None</a></li>
             <li role="separator" class="divider"></li>
             <li ng-repeat="episode in episodes | orderBy: 'start':true"><a href ng-click="selectedEpisode(episode.id)">{{episode.name}} ({{episode.start}} - {{episode.end}})</a></li>
           </ul>
         </div>
       </div>
     </div>
+    <label-group label="Start date" ng-show="_selectedEpisode.id == ''">
+      <p class="input-group">
+        <input type="text" class="form-control" ng-model="duration.start" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.startOpened" ng-change="loadChart()"/>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="datepicker.startOpened = true;"><i class="fa fa-calendar"></i></button>
+        </span>
+      </p>
+    </label-group>
+    <label-group label="End date" ng-show="_selectedEpisode.id == ''">
+      <p class="input-group">
+        <input type="text" class="form-control" ng-model="duration.end" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.endOpened" ng-change="loadChart()"/>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="datepicker.endOpened = true;"><i class="fa fa-calendar"></i></button>
+        </span>
+      </p>
+    </label-group>
   </div>
 
   <ul class="nav nav-pills">
