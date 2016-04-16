@@ -28,13 +28,14 @@ import javax.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.egore911.capacity.persistence.model.DbObject;
 import de.egore911.persistence.selector.AbstractSelector;
 import de.egore911.persistence.util.EntityManagerUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public abstract class AbstractDao<T> {
+public abstract class AbstractDao<T extends DbObject<?>> {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(AbstractDao.class);
@@ -92,7 +93,11 @@ public abstract class AbstractDao<T> {
 			em.getTransaction().begin();
 		}
 		try {
-			entity = em.merge(entity);
+			if (entity.getId() == null) {
+				em.persist(entity);
+			} else {
+				entity = em.merge(entity);
+			}
 			if (ourOwnTransaction) {
 				em.getTransaction().commit();
 			}
