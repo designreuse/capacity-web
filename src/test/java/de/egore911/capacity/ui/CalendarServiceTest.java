@@ -10,6 +10,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import javax.ws.rs.NotFoundException;
+
 import org.junit.Test;
 
 import de.egore911.capacity.ui.rest.CalendarService;
@@ -64,4 +66,8 @@ public class CalendarServiceTest extends AbstractUiTest {
 		assertThat(property.getValue(), equalTo(propertyValue));
 	}
 
+	@Test(expected = NotFoundException.class)
+	public void testInvalid() throws IOException, ParserException {
+		target("calendar/invalid.ics").request().get(String.class);
+	}
 }
