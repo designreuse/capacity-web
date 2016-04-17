@@ -15,6 +15,15 @@ INSERT INTO employee (id, created, modified, name, email, start, "end", location
 INSERT INTO employee (id, created, modified, name, email, start, "end", location_id, color, velocity) VALUES (17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'User from jan until mid october', 'until.mid@october', '2015-01-01', '2015-10-15', NULL, '#ff0000', '50');
 INSERT INTO employee (id, created, modified, name, email, start, "end", location_id, color, velocity) VALUES (18, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'User from mid october until dec', 'from.mid@november', '2015-10-15', '2015-12-31', NULL, '#ff0000', '50');
 
+INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES ( 1, 2, '08:00:00', '16:00:00', 1);
+INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES ( 2, 2, '08:00:00', '16:00:00', 2);
+INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES ( 3, 2, '08:00:00', '16:00:00', 3);
+INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES ( 5, 2, '08:00:00', '16:00:00', 5);
+INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES ( 7, 2, '08:00:00', '16:00:00', 7);
+INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES (13, 2, '08:00:00', '16:00:00', 13);
+INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES (15, 2, '08:00:00', '16:00:00', 15);
+
+
 INSERT INTO ability(employee_id, name) VALUES (1, 'Working');
 INSERT INTO ability(employee_id, name) VALUES (2, 'Working');
 INSERT INTO ability(employee_id, name) VALUES (2, 'Relaxing');
