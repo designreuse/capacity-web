@@ -1,6 +1,5 @@
 package de.egore911.capacity.persistence.selector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,9 +13,8 @@ import org.joda.time.LocalDate;
 import de.egore911.capacity.persistence.model.HolidayEntity;
 import de.egore911.capacity.persistence.model.HolidayEntity_;
 import de.egore911.capacity.persistence.model.LocationEntity;
-import de.egore911.persistence.selector.AbstractSelector;
 
-public class HolidaySelector extends AbstractSelector<HolidayEntity> {
+public class HolidaySelector extends AbstractResourceSelector<HolidayEntity> {
 
 	private static final long serialVersionUID = 5033423386936177219L;
 
@@ -31,7 +29,7 @@ public class HolidaySelector extends AbstractSelector<HolidayEntity> {
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<HolidayEntity> from, CriteriaQuery<?> query) {
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = super.generatePredicateList(builder, from, query);
 		if (startInclusive != null) {
 			predicates.add(builder.greaterThanOrEqualTo(from.get(HolidayEntity_.date), startInclusive));
 		}
