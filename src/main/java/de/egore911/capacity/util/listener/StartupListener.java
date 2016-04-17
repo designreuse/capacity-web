@@ -43,10 +43,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import de.egore911.capacity.persistence.dao.EmployeeDao;
+import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.ContractEntity;
 import de.egore911.capacity.persistence.model.EmployeeEpisodeEntity;
 import de.egore911.capacity.persistence.model.EpisodeEntity;
 import de.egore911.capacity.persistence.model.WorkingHoursEntity;
+import de.egore911.capacity.ui.dto.Absence;
 import de.egore911.capacity.ui.dto.Contract;
 import de.egore911.capacity.ui.dto.Episode;
 import ma.glasnost.orika.CustomMapper;
@@ -101,7 +104,23 @@ public class StartupListener implements ServletContextListener {
 							}
 						}
 					}
-			})
+				})
+			.register();
+
+		MAPPER_FACTORY
+			.classMap(Absence.class, AbsenceEntity.class)
+			.byDefault()
+			.customize(
+				new CustomMapper<Absence, AbsenceEntity>() {
+					@Override
+					public void mapAtoB(Absence a, AbsenceEntity b, MappingContext context) {
+						b.setEmployee(new EmployeeDao().findById(a.getEmployeeId()));
+					}
+					@Override
+					public void mapBtoA(AbsenceEntity a, Absence b, MappingContext context) {
+						b.setEmployeeId(a.getEmployee().getId());
+					}
+				})
 			.register();
 
 		MAPPER_FACTORY

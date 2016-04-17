@@ -1,6 +1,5 @@
 package de.egore911.capacity.persistence.selector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,9 +12,8 @@ import org.joda.time.LocalDate;
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.AbsenceEntity_;
 import de.egore911.capacity.persistence.model.IntegerDbObject_;
-import de.egore911.persistence.selector.AbstractSelector;
 
-public class AbsenceSelector extends AbstractSelector<AbsenceEntity> {
+public class AbsenceSelector extends AbstractResourceSelector<AbsenceEntity> {
 
 	private static final long serialVersionUID = 2834185298759056762L;
 
@@ -30,7 +28,7 @@ public class AbsenceSelector extends AbstractSelector<AbsenceEntity> {
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<AbsenceEntity> from, CriteriaQuery<?> query) {
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = super.generatePredicateList(builder, from, query);
 
 		if (employeeId != null) {
 			predicates.add(builder.equal(from.get(AbsenceEntity_.employee).get(IntegerDbObject_.id), employeeId));
