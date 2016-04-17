@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  */
 public class EntityManagerUtil {
 
-	private static final Logger log = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(EntityManagerUtil.class);
 
 	private static ThreadLocal<EntityManager> entityManagerHolder = new ThreadLocal<>();
@@ -54,7 +54,7 @@ public class EntityManagerUtil {
 	 */
 	public static void setEntityManager(EntityManager entityManager) {
 		if (entityManagerHolder.get() != null) {
-			log.error("Replacing existing EntityManger");
+			LOG.error("Replacing existing EntityManger");
 		}
 		entityManagerHolder.set(entityManager);
 	}
