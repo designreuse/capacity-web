@@ -44,7 +44,7 @@ public class CalendarServiceTest extends AbstractUiTest {
 	}
 
 	@Test
-	public void test() throws IOException, ParserException {
+	public void testAbsences() throws IOException, ParserException {
 		String ics = target("calendar/absences.ics").request().get(String.class);
 
 		CalendarBuilder builder = new CalendarBuilder();
