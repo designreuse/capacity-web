@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.joda.time.LocalDate;
 
+import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.ui.dto.Employee;
 
@@ -23,7 +24,11 @@ public class AbsenceService extends AbstractService {
 		if (date == null) {
 			date = LocalDate.now();
 		}
-		return getMapper().mapAsList(new EmployeeSelector().withAbsence(date).withActiveContract(date, date).findAll(), Employee.class);
+		List<EmployeeEntity> abenstEmployees = new EmployeeSelector()
+				.withAbsence(date)
+				.withActiveContract(date, date)
+				.findAll();
+		return getMapper().mapAsList(abenstEmployees, Employee.class);
 	}
 
 }
