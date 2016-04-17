@@ -1,12 +1,14 @@
 package de.egore911.capacity.ui;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import java.io.IOException;
 import java.util.List;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -29,8 +31,9 @@ public class AbsenceServiceTest extends AbstractUiTest {
 		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {});
 
 		assertThat("Two employees expected: 1 has an absence, 17 has non-working day", employees, hasSize(2));
-		Employee employee = employees.get(0);
 
-		assertThat(employee.getId(), equalTo(1));
+		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(1))));
+		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(17))));
+
 	}
 }
