@@ -11,10 +11,9 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 public class JerseyConfig extends ResourceConfig {
 
 	public JerseyConfig() {
-		JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
 		JodaMapper jodaMapper = new JodaMapper();
 		jodaMapper.setWriteDatesAsTimestamps(false);
-		provider.setMapper(jodaMapper);
+		JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider(jodaMapper, JacksonJaxbJsonProvider.DEFAULT_ANNOTATIONS);
 		register(provider);
 
 		register(new AuthorizationFilterFeature());
