@@ -32,9 +32,11 @@ public abstract class AbstractUiTest extends JerseyTest {
 	@Override
 	protected DeploymentContext configureDeployment() {
 		// Use same config as done in web.xml
-		return ServletDeploymentContext.builder(configure())
+		return ServletDeploymentContext
+				.builder(configure())
 				.addFilter(EntityManagerFilter.class, "EntityManagerFilter")
 				.initParam("jersey.config.server.provider.packages", "de.egore911.capacity.ui.rest")
+				.initParam("javax.ws.rs.Application", "de.egore911.capacity.ui.rest.JerseyConfig")
 				.build();
 	}
 
