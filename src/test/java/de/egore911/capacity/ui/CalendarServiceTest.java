@@ -14,8 +14,6 @@ import javax.ws.rs.NotFoundException;
 
 import org.junit.Test;
 
-import de.egore911.capacity.ui.rest.CalendarService;
-import de.egore911.capacity.ui.rest.JerseyConfig;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
@@ -24,13 +22,6 @@ import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 
 public class CalendarServiceTest extends AbstractUiTest {
-
-	@Override
-	protected JerseyConfig configure() {
-		JerseyConfig application = super.configure();
-		application.register(CalendarService.class);
-		return application;
-	}
 
 	@Test
 	public void testHolidays() throws IOException, ParserException {
