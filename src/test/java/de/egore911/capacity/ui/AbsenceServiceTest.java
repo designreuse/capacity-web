@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.hamcrest.Matchers;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -28,12 +29,37 @@ public class AbsenceServiceTest extends AbstractUiTest {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JodaModule());
 
-		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {});
+		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {
+		});
 
 		assertThat("Two employees expected: 1 has an absence, 17 has non-working day", employees, hasSize(2));
 
 		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(1))));
 		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(17))));
 
+	}
+
+	@Test
+	public void checkNoAbsences() throws JsonParseException, JsonMappingException, IOException {
+		String absences = target("absent").request().get(String.class);
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JodaModule());
+
+		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {
+		});
+
+		System.err.println(absences);
+
+		if (2 == new LocalDate().getDayOfWeek()) {
+			assertThat("Three employees expected: all have non-working day", employees, hasSize(3));
+		} else {
+			assertThat("Four employees expected: all have non-working day", employees, hasSize(4));
+
+			assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(2))));
+		}
+		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(8))));
+		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(6))));
+		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(4))));
 	}
 }
