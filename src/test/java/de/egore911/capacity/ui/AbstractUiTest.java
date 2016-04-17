@@ -3,6 +3,8 @@ package de.egore911.capacity.ui;
 import org.glassfish.jersey.test.DeploymentContext;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.ServletDeploymentContext;
+import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
+import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.junit.BeforeClass;
 
 import de.egore911.capacity.OnceInit;
@@ -20,6 +22,8 @@ public abstract class AbstractUiTest extends JerseyTest {
 
 	@Override
 	protected JerseyConfig configure() {
+		// Use default configuration, but manually register the provider as
+		// @Provider is not picked up by JerseyTest
 		JerseyConfig application = new JerseyConfig();
 		application.register(JodaParameterConverterProvider.class);
 		return application;
@@ -27,7 +31,15 @@ public abstract class AbstractUiTest extends JerseyTest {
 
 	@Override
 	protected DeploymentContext configureDeployment() {
-		return ServletDeploymentContext.builder(configure()).addFilter(EntityManagerFilter.class, "EntityManagerFilter").build();
+		// Use same config as done in web.xml
+		return ServletDeploymentContext.builder(configure())
+				.addFilter(EntityManagerFilter.class, "EntityManagerFilter")
+				.initParam("jersey.config.server.provider.packages", "de.egore911.capacity.ui.rest")
+				.build();
 	}
 
+	@Override
+	protected TestContainerFactory getTestContainerFactory() {
+		return new GrizzlyWebTestContainerFactory();
+	}
 }
