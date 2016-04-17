@@ -1,11 +1,15 @@
 package de.egore911.capacity.ui;
 
+import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.test.DeploymentContext;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.ServletDeploymentContext;
 import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
 import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.junit.BeforeClass;
+
+import com.fasterxml.jackson.datatype.joda.JodaMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 import de.egore911.capacity.OnceInit;
 import de.egore911.capacity.ui.filter.EntityManagerFilter;
@@ -22,11 +26,23 @@ public abstract class AbstractUiTest extends JerseyTest {
 
 	@Override
 	protected JerseyConfig configure() {
+		// In case we need to see the parameters again:
+		//enable(TestProperties.LOG_TRAFFIC);
+		//enable(TestProperties.DUMP_ENTITY);
+
 		// Use default configuration, but manually register the provider as
 		// @Provider is not picked up by JerseyTest
 		JerseyConfig application = new JerseyConfig();
 		application.register(JodaParameterConverterProvider.class);
 		return application;
+	}
+	
+	@Override
+	protected void configureClient(ClientConfig config) {
+		JodaMapper jodaMapper = new JodaMapper();
+		jodaMapper.setWriteDatesAsTimestamps(false);
+		JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider(jodaMapper, JacksonJaxbJsonProvider.DEFAULT_ANNOTATIONS);
+		config.register(provider);
 	}
 
 	@Override
