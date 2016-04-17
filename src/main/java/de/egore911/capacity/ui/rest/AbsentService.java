@@ -16,7 +16,7 @@ import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.ui.dto.Employee;
 
 @Path("absent")
-public class AbsenceService extends AbstractService {
+public class AbsentService extends AbstractService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

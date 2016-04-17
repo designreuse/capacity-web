@@ -20,7 +20,7 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import de.egore911.capacity.ui.dto.Employee;
 
-public class AbsenceServiceTest extends AbstractUiTest {
+public class AbsentServiceTest extends AbstractUiTest {
 
 	@Test
 	public void checkAbsencesTenthOfFebruary() throws JsonParseException, JsonMappingException, IOException {
