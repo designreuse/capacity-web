@@ -163,6 +163,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.jersey>2.22.1</version.jersey>
 	</properties>
 
 	<dependencies>
@@ -193,12 +194,12 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet</artifactId>
-			<version>2.22.1</version>
+			<version>${version.jersey}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
-			<version>2.22.1</version>
+			<version>${version.jersey}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -434,7 +435,7 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 			<artifactId>jersey-test-framework-provider-jetty</artifactId>
-			<version>2.22.1</version>
+			<version>${version.jersey}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
