@@ -74,25 +74,25 @@ public class StartupListener implements ServletContextListener {
 
 	static {
 		MAPPER_FACTORY
-		.classMap(ContractEntity.class, Contract.class)
+			.classMap(ContractEntity.class, Contract.class)
 			.byDefault()
 			.customize(
-					new CustomMapper<ContractEntity, Contract>() {
-						@Override
-						public void mapAtoB(ContractEntity a, Contract b, MappingContext context) {
-							if (a.getWorkingHours() != null) {
-								int workingHoursPerWeek = 0;
-								for (WorkingHoursEntity workingHoursEntity : a.getWorkingHours()) {
-									workingHoursPerWeek += Hours.hoursBetween(workingHoursEntity.getStart(), workingHoursEntity.getEnd()).getHours();
-								}
-								b.setWorkingHoursPerWeek(workingHoursPerWeek);
+				new CustomMapper<ContractEntity, Contract>() {
+					@Override
+					public void mapAtoB(ContractEntity a, Contract b, MappingContext context) {
+						if (a.getWorkingHours() != null) {
+							int workingHoursPerWeek = 0;
+							for (WorkingHoursEntity workingHoursEntity : a.getWorkingHours()) {
+								workingHoursPerWeek += Hours.hoursBetween(workingHoursEntity.getStart(), workingHoursEntity.getEnd()).getHours();
 							}
+							b.setWorkingHoursPerWeek(workingHoursPerWeek);
 						}
-					})
+					}
+				})
 			.register();
 
 		MAPPER_FACTORY
-		.classMap(Episode.class, EpisodeEntity.class)
+			.classMap(Episode.class, EpisodeEntity.class)
 			.byDefault()
 			.customize(
 				new CustomMapper<Episode, EpisodeEntity>() {
