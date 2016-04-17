@@ -23,8 +23,6 @@ public class AbsenceServiceTest extends AbstractUiTest {
 	public void checkAbsences() throws JsonParseException, JsonMappingException, IOException {
 		String absences = target("absent").queryParam("date", "2015-02-10").request().get(String.class);
 
-		System.err.println(absences);
-
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JodaModule());
 
