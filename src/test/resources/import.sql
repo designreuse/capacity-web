@@ -23,9 +23,18 @@ INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES ( 7,
 INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES (13, 2, '08:00:00', '16:00:00', 13);
 INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES (15, 2, '08:00:00', '16:00:00', 15);
 
-
 INSERT INTO ability(employee_id, name) VALUES (1, 'Working');
 INSERT INTO ability(employee_id, name) VALUES (2, 'Working');
 INSERT INTO ability(employee_id, name) VALUES (2, 'Relaxing');
 
 INSERT INTO absence (id, created, modified, employee_id, start, "end", reason, externalId) VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, '2015-02-01', '2015-02-28', 'Whole February', NULL);
+
+INSERT INTO episode (id, created, modified, name, start, "end") VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'The Wrath of Khan', '2015-01-01', '2015-06-30');
+INSERT INTO episode (id, created, modified, name, start, "end") VALUES (2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Into Darkness', '2015-07-01', '2015-12-31');
+
+INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, NULL);
+INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 2, NULL);
+INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 1, 33);
+INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 2, 66);
+INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3, 2, 15);
+INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4, 2, 15);
