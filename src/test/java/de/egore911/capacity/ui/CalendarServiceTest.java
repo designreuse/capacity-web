@@ -56,8 +56,8 @@ public class CalendarServiceTest extends AbstractUiTest {
 		// Check properties
 		CalendarComponent component = components.get(0);
 		matchProperty(component, "SUMMARY", "Whole February: User 2015 complete");
-		matchProperty(component, "DTSTART", "20150131");
-		matchProperty(component, "DTEND", "20150227");
+		matchProperty(component, "DTSTART", "20150201");
+		matchProperty(component, "DTEND", "20150228");
 	}
 
 	private static void matchProperty(CalendarComponent component, String propertyName, String propertyValue) {
