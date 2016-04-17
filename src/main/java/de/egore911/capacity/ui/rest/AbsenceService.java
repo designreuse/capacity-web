@@ -23,7 +23,7 @@ public class AbsenceService extends AbstractService {
 		if (date == null) {
 			date = LocalDate.now();
 		}
-		return getMapper().mapAsList(new EmployeeSelector().withAbsence(date).findAll(), Employee.class);
+		return getMapper().mapAsList(new EmployeeSelector().withAbsence(date).withActiveContract(date, date).findAll(), Employee.class);
 	}
 
 }
