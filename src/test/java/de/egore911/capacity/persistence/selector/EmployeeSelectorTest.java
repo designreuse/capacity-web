@@ -20,8 +20,8 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 
 	@Test
 	public void testContractRange_workingOnTenthOfFebruary() {
-		LocalDate contractRangeStartDate = new LocalDate("2015-02-10");
-		LocalDate contractRangeEndDate = new LocalDate("2015-02-10");
+		LocalDate contractRangeStartDate = LocalDate.parse("2015-02-10");
+		LocalDate contractRangeEndDate = LocalDate.parse("2015-02-10");
 		List<EmployeeEntity> employees = new EmployeeSelector()
 				.withActiveContract(contractRangeStartDate, contractRangeEndDate)
 				.findAll();
@@ -48,8 +48,8 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 
 	@Test
 	public void testContractRange_workingInOctober() {
-		LocalDate contractRangeStartDate = new LocalDate("2015-10-01");
-		LocalDate contractRangeEndDate = new LocalDate("2015-10-31");
+		LocalDate contractRangeStartDate = LocalDate.parse("2015-10-01");
+		LocalDate contractRangeEndDate = LocalDate.parse("2015-10-31");
 		List<EmployeeEntity> employees = new EmployeeSelector()
 				.withActiveContract(contractRangeStartDate, contractRangeEndDate)
 				.findAll();
@@ -77,8 +77,8 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 
 	@Test
 	public void testContractRange_workingInSeptember() {
-		LocalDate contractRangeStartDate = new LocalDate("2015-09-01");
-		LocalDate contractRangeEndDate = new LocalDate("2015-09-30");
+		LocalDate contractRangeStartDate = LocalDate.parse("2015-09-01");
+		LocalDate contractRangeEndDate = LocalDate.parse("2015-09-30");
 		List<EmployeeEntity> employees = new EmployeeSelector()
 				.withActiveContract(contractRangeStartDate, contractRangeEndDate)
 				.findAll();
@@ -106,8 +106,8 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 
 	@Test
 	public void testContractRange_workingInNovember() {
-		LocalDate contractRangeStartDate = new LocalDate("2015-11-01");
-		LocalDate contractRangeEndDate = new LocalDate("2015-11-30");
+		LocalDate contractRangeStartDate = LocalDate.parse("2015-11-01");
+		LocalDate contractRangeEndDate = LocalDate.parse("2015-11-30");
 		List<EmployeeEntity> employees = new EmployeeSelector()
 				.withActiveContract(contractRangeStartDate, contractRangeEndDate)
 				.findAll();

@@ -9,8 +9,8 @@ public class AbsenceSelectorTest extends AbstractDatabaseTest {
 
 	@Test
 	public void smoketest() {
-		LocalDate startDate = new LocalDate("2015-10-01");
-		LocalDate endDate = new LocalDate("2015-10-31");
+		LocalDate startDate = LocalDate.parse("2015-10-01");
+		LocalDate endDate = LocalDate.parse("2015-10-31");
 
 		new AbsenceSelector()
 			.withEmployeeId(1)
