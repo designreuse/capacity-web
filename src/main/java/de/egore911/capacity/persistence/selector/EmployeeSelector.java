@@ -115,23 +115,12 @@ public class EmployeeSelector extends AbstractResourceSelector<EmployeeEntity> {
 		}
 
 		if (availableAt != null) {
-			/*Subquery<Integer> subquery = query.subquery(Integer.class);
-			Root<EmployeeEntity> subfrom = subquery.from(EmployeeEntity.class);
-			ListJoin<EmployeeEntity, AbsenceEntity> subfromAbsences = subfrom.join(EmployeeEntity_.absences);
-			subquery.select(subfrom.get(IntegerDbObject_.id));
-			subquery.where(builder.and(
-					builder.lessThanOrEqualTo(subfromAbsences.get(AbsenceEntity_.start), availableAt),
-					builder.greaterThanOrEqualTo(subfromAbsences.get(AbsenceEntity_.end), availableAt),
-					builder.equal(subfrom.join(EmployeeEntity_.contract).join(ContractEntity_.workingHours).get(WorkingHoursEntity_.dayOfWeek), availableAt.getDayOfWeek())
-				));
-			predicates.add(builder.not(from.get(IntegerDbObject_.id).in(subquery)));*/
-
 			// Find all employees that have a working day at the requested date
 			Subquery<Integer> subqueryWorkingDay = subqueryWorkingDay(builder, query, availableAt);
 
 			// Find all employees that have an absence at the requested date
 			Subquery<Integer> subqueryAbsence = subqueryAbsence(builder, query, availableAt);
-			
+
 			predicates.add(builder.and(
 					from.get(IntegerDbObject_.id).in(subqueryWorkingDay),
 					builder.not(from.get(IntegerDbObject_.id).in(subqueryAbsence))
