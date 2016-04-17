@@ -21,7 +21,6 @@
  */
 package de.egore911.capacity;
 
-import java.util.Arrays;
 import java.util.Hashtable;
 
 import javax.naming.Context;
