@@ -1,7 +1,7 @@
 package de.egore911.capacity.ui;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -37,12 +37,12 @@ public class AvailabilityServiceTest extends AbstractUiTest {
 				"6 employees expected: ID 1 has an absence, all others have working day, no absence and a valid contract",
 				employees, hasSize(6));
 
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(2))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(15))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(13))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(5))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(3))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(7))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(2))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(15))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(13))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(5))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(3))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(7))));
 
 	}
 
@@ -59,13 +59,13 @@ public class AvailabilityServiceTest extends AbstractUiTest {
 		assertThat("Sevent employee expected: all have working day, no absence and a valid contract", employees,
 				hasSize(7));
 
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(1))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(2))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(15))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(13))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(5))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(3))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(7))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(1))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(2))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(15))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(13))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(5))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(3))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(7))));
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class AvailabilityServiceTest extends AbstractUiTest {
 		if (2 == new LocalDate().getDayOfWeek()) {
 			assertThat("One employee expected: ID 2 has a working day and a valid contract", employees, hasSize(1));
 
-			assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(2))));
+			assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(2))));
 		} else {
 			assertThat("No employees expected: noone has a working day", employees, empty());
 		}

@@ -1,7 +1,7 @@
 package de.egore911.capacity.ui;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -34,8 +34,8 @@ public class AbsenceServiceTest extends AbstractUiTest {
 
 		assertThat("Two employees expected: ID 1 has an absence, ID 17 has non-working day", employees, hasSize(2));
 
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(1))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(17))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(1))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(17))));
 
 	}
 
@@ -51,7 +51,7 @@ public class AbsenceServiceTest extends AbstractUiTest {
 
 		assertThat("One employee expected: ID 17 has non-working day", employees, hasSize(1));
 
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(17))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(17))));
 
 	}
 
@@ -70,10 +70,10 @@ public class AbsenceServiceTest extends AbstractUiTest {
 		} else {
 			assertThat("Four employees expected: all have non-working day", employees, hasSize(4));
 
-			assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(2))));
+			assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(2))));
 		}
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(8))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(6))));
-		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(4))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(8))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(6))));
+		assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(4))));
 	}
 }
