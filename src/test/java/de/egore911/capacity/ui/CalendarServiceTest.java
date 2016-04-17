@@ -1,6 +1,5 @@
 package de.egore911.capacity.ui;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.egore911.capacity.ui.rest.CalendarService;
@@ -16,7 +15,6 @@ public class CalendarServiceTest extends AbstractUiTest {
 	}
 
 	@Test
-	@Ignore
 	public void test() {
 		String hello = target("calendar/holidays.ics").request().get(String.class);
 		System.err.println(hello);
