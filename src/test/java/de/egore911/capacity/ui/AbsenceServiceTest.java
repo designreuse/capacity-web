@@ -23,7 +23,7 @@ import de.egore911.capacity.ui.dto.Employee;
 public class AbsenceServiceTest extends AbstractUiTest {
 
 	@Test
-	public void checkAbsences() throws JsonParseException, JsonMappingException, IOException {
+	public void checkAbsencesTenthOfFebruary() throws JsonParseException, JsonMappingException, IOException {
 		String absences = target("absent").queryParam("date", "2015-02-10").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -32,7 +32,7 @@ public class AbsenceServiceTest extends AbstractUiTest {
 		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {
 		});
 
-		assertThat("Two employees expected: 1 has an absence, 17 has non-working day", employees, hasSize(2));
+		assertThat("Two employees expected: ID 1 has an absence, ID 17 has non-working day", employees, hasSize(2));
 
 		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(1))));
 		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(17))));
@@ -40,8 +40,8 @@ public class AbsenceServiceTest extends AbstractUiTest {
 	}
 
 	@Test
-	public void checkNoAbsences() throws JsonParseException, JsonMappingException, IOException {
-		String absences = target("absent").request().get(String.class);
+	public void checkAbsencesThirdOfMarch() throws JsonParseException, JsonMappingException, IOException {
+		String absences = target("absent").queryParam("date", "2015-03-03").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JodaModule());
@@ -49,7 +49,21 @@ public class AbsenceServiceTest extends AbstractUiTest {
 		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {
 		});
 
-		System.err.println(absences);
+		assertThat("One employee expected: ID 17 has non-working day", employees, hasSize(1));
+
+		assertThat(employees, hasItems(Matchers.<Employee> hasProperty("id", equalTo(17))));
+
+	}
+
+	@Test
+	public void checkAbsencesToday() throws JsonParseException, JsonMappingException, IOException {
+		String absences = target("absent").request().get(String.class);
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JodaModule());
+
+		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {
+		});
 
 		if (2 == new LocalDate().getDayOfWeek()) {
 			assertThat("Three employees expected: all have non-working day", employees, hasSize(3));
