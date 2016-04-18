@@ -3,13 +3,16 @@ package de.egore911.capacity.ui;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
+import java.util.List;
 import java.util.UUID;
+
+import javax.ws.rs.core.GenericType;
 
 import org.joda.time.LocalDate;
 
 import de.egore911.capacity.ui.dto.Absence;
 
-public class AbsenceCRUDTest extends AbstraceCRUDTest<Absence> {
+public class AbsenceCRUDTest extends AbstractCRUDTest<Absence> {
 
 	@Override
 	protected Absence createFixture() {
@@ -42,6 +45,12 @@ public class AbsenceCRUDTest extends AbstraceCRUDTest<Absence> {
 		assertThat(created.getEnd(), equalTo(fixture.getEnd()));
 		assertThat(created.getReason(), equalTo(fixture.getReason()));
 		assertThat(created.getEmployeeId(), equalTo(fixture.getEmployeeId()));
+	}
+
+	@Override
+	protected GenericType<List<Absence>> getGenericType() {
+		return new GenericType<List<Absence>>() {
+		};
 	}
 
 }

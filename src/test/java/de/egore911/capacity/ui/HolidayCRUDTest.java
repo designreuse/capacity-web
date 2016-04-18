@@ -3,13 +3,16 @@ package de.egore911.capacity.ui;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
+import java.util.List;
 import java.util.UUID;
+
+import javax.ws.rs.core.GenericType;
 
 import org.joda.time.LocalDate;
 
 import de.egore911.capacity.ui.dto.Holiday;
 
-public class HolidayCRUDTest  extends AbstraceCRUDTest<Holiday> {
+public class HolidayCRUDTest  extends AbstractCRUDTest<Holiday> {
 
 	@Override
 	protected Holiday createFixture() {
@@ -38,6 +41,12 @@ public class HolidayCRUDTest  extends AbstraceCRUDTest<Holiday> {
 	protected void compareDtos(Holiday fixture, Holiday created) {
 		assertThat(created.getDate(), equalTo(fixture.getDate()));
 		assertThat(created.getName(), equalTo(fixture.getName()));
+	}
+
+	@Override
+	protected GenericType<List<Holiday>> getGenericType() {
+		return new GenericType<List<Holiday>>() {
+		};
 	}
 
 }
