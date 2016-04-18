@@ -50,6 +50,7 @@ angular.module('capacityApp')
 				});
 			};
 		} else {
+			$scope.employee = {};
 			Employee.get({id: $route.current.params.id}, function(employee) {
 				$scope.employee = employee;
 				workingHoursToEvents($scope.employee);

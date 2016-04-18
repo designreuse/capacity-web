@@ -34,6 +34,7 @@ angular.module('capacityApp')
 			};
 		} else {
 			var isClone = $location.path().slice(0, '/episodes/clone'.length) == '/episodes/clone';
+			$scope.episode = {};
 			Episode.get({id: $scope.id}, function(episode) {
 				$scope.episode = episode;
 				if (isClone) {

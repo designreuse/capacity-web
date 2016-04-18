@@ -12,6 +12,7 @@ angular.module('capacityApp')
 				});
 			};
 		} else {
+			$scope.icalImport = {};
 			IcalImport.get({id: $scope.id}, function(icalImport) {
 				$scope.icalImport = icalImport;
 				if ($scope.icalImport.employeeIcalImports) {
