@@ -5,7 +5,7 @@ angular.module('capacityApp')
 
 		$scope.calendars = [
 			{ id: 'holidays', name: 'Holidays', selected: true },
-			{ id: 'employees', name: 'Employees', selected: true }
+			{ id: 'employees', name: 'Absences', selected: true }
 		];
 
 		$scope.alertEventOnClick = function(date, jsEvent, view) {
