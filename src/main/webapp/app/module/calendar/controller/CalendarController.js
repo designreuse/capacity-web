@@ -1,12 +1,64 @@
 'use strict';
 
 angular.module('capacityApp')
-	.controller('CalendarController', ['$scope', '$http', 'uiCalendarConfig', function($scope, $http, uiCalendarConfig) {
+	.controller('CalendarController', ['$scope', '$http', 'uiCalendarConfig', '$uibModal', function($scope, $http, uiCalendarConfig, $uibModal) {
 
 		$scope.calendars = [
 			{ id: 'holidays', name: 'Holidays', selected: true },
 			{ id: 'employees', name: 'Employees', selected: true }
 		];
+
+		$scope.alertEventOnClick = function(date, jsEvent, view) {
+
+			var modalInstance = $uibModal.open({
+				animation: $scope.animationsEnabled,
+				templateUrl: 'app/module/calendar/view/event.html',
+				controller: function ($scope, $uibModalInstance, date, parentScope, Holiday) {
+					$scope.title = 'Add event';
+					$scope.confirmButtons = [{ value: 'ok', label: 'OK' }];
+					$scope.cancelButtons = [{ value: 'cancel', label: 'Cancel' }];
+					$scope.holiday = new Holiday();
+					$scope.holiday.date = moment(date).format('YYYY-MM-DD');
+					$scope.holiday.name = '';
+					$scope.holiday.hoursReduction = 8;
+					$scope.datepicker = {
+						startOpened: false
+					};
+					$scope.parentScope = parentScope;
+					$scope.selected = {
+						calendar: parentScope.calendars[0]
+					};
+
+					$scope.ok = function(value) {
+						if ($scope.selected.calendar.id == 'holidays') {
+							$scope.holiday.date = moment($scope.holiday.date).format('YYYY-MM-DD');
+							$scope.holiday.$save(function(holiday) {
+								parentScope.allEvents[0].push({
+									title: holiday.name,
+									start: holiday.date,
+									end: null,
+									className: 'holidays'
+								});
+								publishEvents(0);
+								$uibModalInstance.close(value);
+							});
+						}
+					};
+
+					$scope.cancel = function(value) {
+						$uibModalInstance.dismiss(value);
+					};
+				},
+				resolve: {
+					date: date,
+					parentScope: $scope
+				}
+			});
+		};
+
+		$scope.calendarConfig = {
+			dayClick: $scope.alertEventOnClick
+		};
 
 		var publishEvents = function(index) {
 			if ($scope.calendars[index].selected) {

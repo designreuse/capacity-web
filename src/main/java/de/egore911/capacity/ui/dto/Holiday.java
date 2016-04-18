@@ -1,12 +1,15 @@
 package de.egore911.capacity.ui.dto;
 
+import java.util.List;
+
 import org.joda.time.LocalDate;
 
 public class Holiday extends AbstractDto {
 
 	private LocalDate date;
 	private String name;
-	private Location location;
+	private int hoursReduction;
+	private List<Location> locations;
 
 	public LocalDate getDate() {
 		return date;
@@ -24,12 +27,20 @@ public class Holiday extends AbstractDto {
 		this.name = name;
 	}
 
-	public Location getLocation() {
-		return location;
+	public int getHoursReduction() {
+		return hoursReduction;
 	}
 
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setHoursReduction(int hoursReduction) {
+		this.hoursReduction = hoursReduction;
+	}
+
+	public List<Location> getLocations() {
+		return locations;
+	}
+
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
 	}
 
 }
