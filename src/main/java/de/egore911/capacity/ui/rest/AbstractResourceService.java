@@ -37,14 +37,14 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public int create(T t) {
+	public T create(T t) {
 		if (t == null) {
 			throw new NullArgumentException("t");
 		}
 		if (t.getId() != null) {
 			throw new BadArgumentException("Cannot create an entity already having an ID");
 		}
-		return getDao().save(getMapper().map(t, getEntityClass())).getId();
+		return getMapper().map(getDao().save(getMapper().map(t, getEntityClass())), getDtoClass());
 	}
 
 	@GET

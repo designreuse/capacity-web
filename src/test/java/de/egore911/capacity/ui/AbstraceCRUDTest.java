@@ -32,12 +32,18 @@ public abstract class AbstraceCRUDTest<T extends AbstractDto> extends AbstractUi
 
 		// when: we create an fixture
 		Entity<T> entity = Entity.entity(fixture, MediaType.APPLICATION_JSON);
-		Integer id = target(path).request().post(entity, Integer.class);
+		T created = target(path).request().post(entity, getFixtureClass());
 
-		// then: we should get the ID back
-		assertThat(id, notNullValue());
-		T created = target(path + "/" + id).request().get(getFixtureClass());
+		// then: we should get the created object
+		Integer id = created.getId();
+		assertThat(created.getId(), notNullValue());
 		compareDtos(fixture, created);
+
+		// when: we load the object by id
+		T loaded = target(path + "/" + id).request().get(getFixtureClass());
+
+		// then: we get back the identical object that was just created
+		compareDtos(fixture, loaded);
 
 		// Modify our fixture
 		fixture.setId(id);
