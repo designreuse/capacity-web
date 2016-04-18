@@ -13,16 +13,37 @@ angular.module('capacityApp')
 			var modalInstance = $uibModal.open({
 				animation: $scope.animationsEnabled,
 				templateUrl: 'app/module/calendar/view/event.html',
-				controller: function ($scope, $uibModalInstance, date, parentScope, Holiday) {
+				controller: function ($scope, $uibModalInstance, date, parentScope, Holiday, Absence, Employee, $filter) {
 					$scope.title = 'Add event';
 					$scope.confirmButtons = [{ value: 'ok', label: 'OK' }];
 					$scope.cancelButtons = [{ value: 'cancel', label: 'Cancel' }];
+
+					// Holiday
 					$scope.holiday = new Holiday();
 					$scope.holiday.date = moment(date).format('YYYY-MM-DD');
 					$scope.holiday.name = '';
 					$scope.holiday.hoursReduction = 8;
+
+					// Absence
+					$scope.absence = new Absence();
+					$scope.absence.start = moment(date).format('YYYY-MM-DD');
+					$scope.absence.end = moment(date).format('YYYY-MM-DD');
+					$scope.absence.reason = '';
+					$scope.employees = [];
+					$scope.employeesLookup = {};
+					Employee.query(function(employees) {
+						employees = $filter('orderBy')(employees, 'name');
+						angular.forEach(employees, function(element, index) {
+							$scope.employeesLookup[element.id] = element;
+						});
+						$scope.employees = employees;
+						$scope.absence.employeeId = employees[0].id;
+					});
+
 					$scope.datepicker = {
-						startOpened: false
+						dateOpened: false,
+						startOpened: false,
+						endOpened: false
 					};
 					$scope.parentScope = parentScope;
 					$scope.selected = {
@@ -40,6 +61,20 @@ angular.module('capacityApp')
 									className: 'holidays'
 								});
 								publishEvents(0);
+								$uibModalInstance.close(value);
+							});
+						} else if ($scope.selected.calendar.id == 'employees') {
+							$scope.absence.start = moment($scope.absence.start).format('YYYY-MM-DD');
+							$scope.absence.end = moment($scope.absence.end).format('YYYY-MM-DD');
+							$scope.absence.$save(function(absence) {
+								parentScope.allEvents[0].push({
+									title: $scope.employeesLookup[absence.employeeId].name + ': ' + absence.reason,
+									start: absence.start,
+									end: absence.end,
+									color: $scope.employeesLookup[absence.employeeId].color,
+									className: 'employees'
+								});
+								publishEvents(1);
 								$uibModalInstance.close(value);
 							});
 						}

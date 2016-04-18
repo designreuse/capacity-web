@@ -19,9 +19,30 @@
 			</div>
 			</label-group>
 
-			<label-group label="Start date">
+			<label-group label="Date" ng-show="'holidays' == selected.calendar.id">
 			<p class="input-group">
 				<input type="text" class="form-control" ng-model="holiday.date"
+					uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.dateOpened" />
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default"
+						ng-click="datepicker.dateOpened = true;">
+						<i class="fa fa-calendar"></i>
+					</button>
+				</span>
+			</p>
+			</label-group>
+
+			<label-group label="Name" ng-show="'holidays' == selected.calendar.id">
+				<input type="text" class="form-control" ng-model="holiday.name" />
+			</label-group>
+
+			<label-group label="Hours reduction" ng-show="'holidays' == selected.calendar.id">
+				<input type="text" class="form-control" ng-model="holiday.hoursReduction" />
+			</label-group>
+
+			<label-group label="Start date" ng-show="'employees' == selected.calendar.id">
+			<p class="input-group">
+				<input type="text" class="form-control" ng-model="absence.start"
 					uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.startOpened" />
 				<span class="input-group-btn">
 					<button type="button" class="btn btn-default"
@@ -32,13 +53,38 @@
 			</p>
 			</label-group>
 
-			<label-group label="Name">
-				<input type="text" class="form-control" ng-model="holiday.name" />
+			<label-group label="End date" ng-show="'employees' == selected.calendar.id">
+			<p class="input-group">
+				<input type="text" class="form-control" ng-model="absence.end"
+					uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.endOpened" />
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default"
+						ng-click="datepicker.endOpened = true;">
+						<i class="fa fa-calendar"></i>
+					</button>
+				</span>
+			</p>
 			</label-group>
 
-			<label-group label="Hours reduction">
-				<input type="text" class="form-control" ng-model="holiday.hoursReduction" />
+			<label-group label="Reason" ng-show="'employees' == selected.calendar.id">
+				<input type="text" class="form-control" ng-model="absence.reason" />
 			</label-group>
+
+			<label-group label="Employee" ng-show="'employees' == selected.calendar.id">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{employeesLookup[absence.employeeId].name}} <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li ng-repeat="employee in employees"
+						ng-class="{active : absence.employeeId == employee.id}"><a
+						href ng-click="absence.employeeId = employee.id">{{employee.name}}</a>
+					</li>
+				</ul>
+			</div>
+			</label-group>
+
 		</form>
 	</div>
 </div>
