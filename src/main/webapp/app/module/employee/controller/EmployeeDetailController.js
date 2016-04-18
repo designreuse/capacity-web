@@ -2,7 +2,6 @@
 
 angular.module('capacityApp')
 	.controller('EmployeeDetailController', ['$scope', '$route', '$location', '$http', '$filter', 'Employee', function ($scope, $route, $location, $http, $filter, Employee) {
-		$scope.id = $route.current.params.id;
 
 		$scope.datepicker = {
 			startOpened: false,
@@ -33,7 +32,7 @@ angular.module('capacityApp')
 			});
 		}
 
-		if ($scope.id == 'new') {
+		if ($route.current.params.id == 'new') {
 			$scope.employee = new Employee();
 			$scope.employee.contract = {
 				workingHours: [
@@ -51,7 +50,7 @@ angular.module('capacityApp')
 				});
 			};
 		} else {
-			Employee.get({id: $scope.id}, function(employee) {
+			Employee.get({id: $route.current.params.id}, function(employee) {
 				$scope.employee = employee;
 				workingHoursToEvents($scope.employee);
 			});
