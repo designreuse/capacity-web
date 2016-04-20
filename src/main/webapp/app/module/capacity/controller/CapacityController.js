@@ -122,6 +122,8 @@ angular.module('capacityApp')
 					element.workingHours.details.forEach(function(childelement, childindex) {
 						var value = childelement.hours;
 						if ($scope.units == 'hours') {
+							// No calculation necessary
+						} else if ($scope.units == 'days') {
 							value /= 8;
 						} else if ($scope.units == 'weeks') {
 							value /= 40;
