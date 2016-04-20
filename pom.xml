@@ -484,6 +484,11 @@
 				<artifactId>jackson-jaxrs-json-provider</artifactId>
 				<version>${version.jackson}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.webjars.bower</groupId>
+				<artifactId>angular</artifactId>
+				<version>1.5.5</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>
