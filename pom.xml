@@ -404,10 +404,8 @@
 			<artifactId>angular-bootstrap-slider</artifactId>
 			<version>0.1.24</version>
 		</dependency>
-
-		<!-- Javascript without bower -->
 		<dependency>
-			<groupId>org.webjars</groupId>
+			<groupId>org.webjars.bower</groupId>
 			<artifactId>ng-tags-input</artifactId>
 			<version>2.3.0</version>
 		</dependency>
@@ -416,6 +414,8 @@
 			<artifactId>awesome-bootstrap-checkbox</artifactId>
 			<version>0.3.7</version>
 		</dependency>
+
+		<!-- Javascript without bower -->
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>highcharts</artifactId>
