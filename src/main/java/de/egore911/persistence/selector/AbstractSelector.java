@@ -102,11 +102,11 @@ public abstract class AbstractSelector<T> implements Serializable {
 
 	@Nonnull
 	protected List<Order> generateOrderList(@Nonnull CriteriaBuilder builder, @Nonnull Root<T> from) {
-		if (StringUtils.isNotEmpty(getSortColumn())) {
-			if (!Boolean.FALSE.equals(getAscending())) {
-				return Collections.singletonList(builder.asc(from.get(getSortColumn())));
+		if (StringUtils.isNotEmpty(sortColumn)) {
+			if (!Boolean.FALSE.equals(ascending)) {
+				return Collections.singletonList(builder.asc(from.get(sortColumn)));
 			}
-			return Collections.singletonList(builder.desc(from.get(getSortColumn())));
+			return Collections.singletonList(builder.desc(from.get(sortColumn)));
 		}
 		return getDefaultOrderList(builder, from);
 	}
@@ -121,36 +121,24 @@ public abstract class AbstractSelector<T> implements Serializable {
 	private String sortColumn;
 	private Boolean ascending;
 
-	public Integer getOffset() {
-		return offset;
-	}
-
-	public void setOffset(Integer offset) {
+	public AbstractSelector<T> withOffset(Integer offset) {
 		this.offset = offset;
+		return this;
 	}
 
-	public Integer getLimit() {
-		return limit;
-	}
-
-	public void setLimit(Integer limit) {
+	public AbstractSelector<T> withLimit(Integer limit) {
 		this.limit = limit;
+		return this;
 	}
 
-	public String getSortColumn() {
-		return sortColumn;
-	}
-
-	public void setSortColumn(String sortColumn) {
+	public AbstractSelector<T> withSortColumn(String sortColumn) {
 		this.sortColumn = sortColumn;
+		return this;
 	}
 
-	public Boolean getAscending() {
-		return ascending;
-	}
-
-	public void setAscending(Boolean ascending) {
+	public AbstractSelector<T> withAscending(Boolean ascending) {
 		this.ascending = ascending;
+		return this;
 	}
 
 }

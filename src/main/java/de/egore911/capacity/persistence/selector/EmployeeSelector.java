@@ -32,7 +32,7 @@ public class EmployeeSelector extends AbstractResourceSelector<EmployeeEntity> {
 	private LocalDate absentAt;
 
 	public EmployeeSelector() {
-		setSortColumn("name");
+		withSortColumn("name");
 	}
 
 	@Override

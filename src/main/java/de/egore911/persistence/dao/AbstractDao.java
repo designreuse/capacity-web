@@ -52,9 +52,9 @@ public abstract class AbstractDao<T extends DbObject<?>> {
 			log.trace("Selecting all {}s from {} to {}", getClass()
 					.getSimpleName(), offset, offset + limit);
 		}
-		AbstractSelector<T> selector = createSelector();
-		selector.setOffset(offset);
-		selector.setLimit(limit);
+		AbstractSelector<T> selector = createSelector()
+				.withOffset(offset)
+				.withLimit(limit);
 		return selector.findAll();
 	}
 
@@ -63,11 +63,11 @@ public abstract class AbstractDao<T extends DbObject<?>> {
 			log.trace("Selecting all {}s from {} to {}", getClass()
 					.getSimpleName(), offset, offset + limit);
 		}
-		AbstractSelector<T> selector = createSelector();
-		selector.setOffset(offset);
-		selector.setLimit(limit);
-		selector.setSortColumn(sortColumn);
-		selector.setAscending(asc);
+		AbstractSelector<T> selector = createSelector()
+				.withOffset(offset)
+				.withLimit(limit)
+				.withSortColumn(sortColumn)
+				.withAscending(asc);
 		return selector.findAll();
 	}
 
