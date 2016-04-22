@@ -1,9 +1,11 @@
 package de.egore911.capacity.persistence.selector;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -131,6 +133,40 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 		assertThat(employees, not(hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(17)))));
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(18))));
 
+	}
+
+	@Test
+	public void testOffsetAndLimit() {
+		int max = (int) new EmployeeSelector().count();
+		assertThat(max, equalTo(16));
+
+		assertThat(new EmployeeSelector().findAll(), hasSize(max));
+		assertThat(new EmployeeSelector().withOffset(10).findAll(), hasSize(max - 10));
+		assertThat(new EmployeeSelector().withOffset(max).findAll(), hasSize(0));
+
+		assertThat(new EmployeeSelector().withLimit(3).findAll(), hasSize(3));
+		assertThat(new EmployeeSelector().withOffset(max - 3).findAll(), hasSize(3));
+		assertThat(new EmployeeSelector().withOffset(max - 1).findAll(), hasSize(1));
+		assertThat(new EmployeeSelector().withOffset(max).findAll(), hasSize(0));
+	}
+
+	@Test
+	public void testSorting() {
+		List<EmployeeEntity> employees = new EmployeeSelector()
+				.withEmail("from@october")
+				.withSortColumn("name")
+				.withAscending(true)
+				.findAll();
+
+		assertThat(employees, contains(hasProperty("name", equalTo("User from start october")), hasProperty("name", equalTo("User from start october until dec"))));
+
+		employees = new EmployeeSelector()
+				.withEmail("from@october")
+				.withSortColumn("name")
+				.withAscending(false)
+				.findAll();
+
+		assertThat(employees, contains(hasProperty("name", equalTo("User from start october until dec")), hasProperty("name", equalTo("User from start october"))));
 	}
 
 }
