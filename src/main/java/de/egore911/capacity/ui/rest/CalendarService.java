@@ -25,8 +25,10 @@ import de.egore911.capacity.ui.dto.Event;
 import de.egore911.capacity.util.VersionExtractor;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Date;
+import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.DtStamp;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
@@ -61,6 +63,7 @@ public class CalendarService {
 			for (HolidayEntity holiday : holidays) {
 				VEvent event = new VEvent(new Date(holiday.getDate().toDate()), holiday.getName());
 				event.getProperties().add(generateUid(holiday));
+				event.getProperties().add(new DtStamp(new DateTime(holiday.getCreated().toDate())));
 				calendar.getComponents().add(event);
 			}
 		} else if ("absences".equals(id)) {
@@ -69,6 +72,7 @@ public class CalendarService {
 				VEvent event = new VEvent(new Date(absence.getStart().toDate()), new Date(absence.getEnd().toDate()),
 						absence.getReason() + ": " + absence.getEmployee().getName());
 				event.getProperties().add(generateUid(absence));
+				event.getProperties().add(new DtStamp(new DateTime(absence.getCreated().toDate())));
 				calendar.getComponents().add(event);
 			}
 		} else {
