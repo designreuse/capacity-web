@@ -139,7 +139,7 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 	@Test
 	public void testOffsetAndLimit() {
 		int max = (int) new EmployeeSelector().count();
-		assertThat(max, equalTo(greaterThanOrEqualTo(16)));
+		assertThat(max, greaterThanOrEqualTo(16));
 
 		assertThat(new EmployeeSelector().findAll(), hasSize(max));
 		assertThat(new EmployeeSelector().withOffset(10).findAll(), hasSize(max - 10));
