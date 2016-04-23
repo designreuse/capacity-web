@@ -62,7 +62,7 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void update(@PathParam("id") Integer id, T t) {
+	public void update(@PathParam("id") @Nonnull Integer id, T t) {
 		if (t == null) {
 			throw new NullArgumentException("t");
 		}
