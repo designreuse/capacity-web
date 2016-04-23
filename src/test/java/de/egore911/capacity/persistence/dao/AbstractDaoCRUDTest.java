@@ -2,6 +2,7 @@ package de.egore911.capacity.persistence.dao;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -20,18 +21,41 @@ public abstract class AbstractDaoCRUDTest<T extends IntegerDbObject> extends Abs
 
 	@Test
 	public void testCRUD() {
+
+		// Create a fixture
 		T absence = createFixture();
 
+		// when: we create a fixture
 		T created = getDao().save(absence);
 
-		assertThat(created.getId(), notNullValue());
+		try {
 
-		modifyFixture(created);
+			// then: we get back a fixture with an ID
+			assertThat(created.getId(), notNullValue());
 
-		T updated = getDao().save(absence);
+			// when: we modify a fixture
+			modifyFixture(created);
 
-		assertThat(updated.getId(), notNullValue());
-		assertThat(updated.getId(), equalTo(created.getId()));
+			// then: we get an updated fixture that has the same ID
+			T updated = getDao().save(absence);
+			assertThat(updated.getId(), notNullValue());
+			assertThat(updated.getId(), equalTo(created.getId()));
+
+			// when: we load a fixture
+			T loaded = getDao().findById(created.getId());
+
+			// then: we get back the fixture matching the ID
+			assertThat(loaded.getId(), equalTo(created.getId()));
+
+		} finally {
+
+			// when: we remove a fixture
+			getDao().remove(created);
+
+			// then: we can no longer find the fixture
+			T loaded = getDao().findById(created.getId());
+			assertThat(loaded, nullValue());
+		}
 	}
 
 }
