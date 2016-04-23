@@ -7,6 +7,8 @@ import static org.hamcrest.core.IsNull.nullValue;
 
 import java.util.List;
 
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -92,6 +94,33 @@ public abstract class AbstractCRUDTest<T extends AbstractDto> extends AbstractUi
 
 		// then: we get a HTTP 400
 		assertThat(response.getStatus(), equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+
+		// when: we try to update the deleted fixture
+		entity = Entity.entity(fixture, MediaType.APPLICATION_JSON);
+		try {
+			target(path + "/" + id).request().put(entity, Integer.class);
+		} catch (NotFoundException e) {
+			// then: we get a HTTP 404
+		}
+	}
+
+	@Test
+	public void testEmptyUpdate() throws InstantiationException, IllegalAccessException {
+		String path = getPath();
+
+		// Create an fixture fixture
+		T fixture = createFixture();
+		Entity<T> entity = Entity.entity(fixture, MediaType.APPLICATION_JSON);
+		T created = target(path).request().post(entity, getFixtureClass());
+		fixture.setId(created.getId());
+
+		// when: we try to update the fixture to nothing
+		entity = Entity.entity(getFixtureClass().newInstance(), MediaType.APPLICATION_JSON);
+		try {
+			target(path + "/" + created.getId()).request().put(entity, Integer.class);
+		} catch (BadRequestException e) {
+			// then: we get a HTTP 400
+		}
 	}
 
 }
