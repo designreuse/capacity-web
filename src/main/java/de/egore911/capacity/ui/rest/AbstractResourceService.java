@@ -95,7 +95,7 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 		try {
 			U entity = getSelector().withId(id).find();
 			if (entity == null) {
-				throw new IllegalArgumentException();
+				throw new BadArgumentException("Entity with ID " + id + " does not exist");
 			}
 			getDao().remove(entity);
 			em.getTransaction().commit();

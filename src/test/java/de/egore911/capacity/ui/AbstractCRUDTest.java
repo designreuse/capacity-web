@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
@@ -85,6 +86,12 @@ public abstract class AbstractCRUDTest<T extends AbstractDto> extends AbstractUi
 		// and then: we should have the same amount of more stored elements as before the test
 		list = target(path).request().get(getGenericType());
 		assertThat(list.size(), equalTo(preSize));
+
+		// when: we try do delete the removed entity again
+		Response response = target(path + "/" + id).request().delete();
+
+		// then: we get a HTTP 400
+		assertThat(response.getStatus(), equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
 	}
 
 }
