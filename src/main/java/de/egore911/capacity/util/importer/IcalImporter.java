@@ -1,6 +1,7 @@
 package de.egore911.capacity.util.importer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -164,8 +165,9 @@ public class IcalImporter {
 		progress.setMessage("Parsing calendar");
 		CalendarBuilder builder = new CalendarBuilder();
 
-		Calendar calendar = builder.build(connection.getInputStream());
-		return calendar;
+		try (InputStream inputStream = connection.getInputStream()) {
+			return builder.build(inputStream);
+		}
 	}
 
 }
