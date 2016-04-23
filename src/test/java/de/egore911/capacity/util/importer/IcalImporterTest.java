@@ -70,6 +70,25 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 		assertThat(progress.getResult().getUpdated(), equalTo(0));
 		assertThat(progress.getResult().getSkipped(), equalTo(0));
 
+		progress = new Progress<>();
+		new IcalImporter().importIcal(icalImport, progress);
+		assertThat(progress.isCompleted(), equalTo(true));
+		assertThat(progress.getResult().getCreated(), equalTo(0));
+		assertThat(progress.getResult().getDeleted(), equalTo(0));
+		assertThat(progress.getResult().getUpdated(), equalTo(1));
+		assertThat(progress.getResult().getSkipped(), equalTo(0));
+
+		icalImport = mock(IcalImportEntity.class);
+		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/atendees/two_attendee.ics").toString());
+		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		progress = new Progress<>();
+		new IcalImporter().importIcal(icalImport, progress);
+		assertThat(progress.isCompleted(), equalTo(true));
+		assertThat(progress.getResult().getCreated(), equalTo(1));
+		assertThat(progress.getResult().getDeleted(), equalTo(1));
+		assertThat(progress.getResult().getUpdated(), equalTo(0));
+		assertThat(progress.getResult().getSkipped(), equalTo(0));
+
 		removeAbsences();
 	}
 
