@@ -2,6 +2,7 @@ package de.egore911.capacity.ui.rest;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -88,10 +89,7 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 
 	@DELETE
 	@Path("/{id}")
-	public void delete(@PathParam("id") Integer id) {
-		if (id == null) {
-			throw new NullArgumentException("id");
-		}
+	public void delete(@PathParam("id") @Nonnull Integer id) {
 		EntityManager em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
 		try {
