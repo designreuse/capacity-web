@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Christoph Brill//capacity 0.0.0//EN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:two_attendee-unittest@capacity-web
+SUMMARY:Summary
+DESCRIPTION:Description
+DTSTART;VALUE=DATE:20100101
+DTEND;VALUE=DATE:20100101
+ATTENDEE;CN="User 2015 complete":mailto:2015@complete
+ATTENDEE;CN="User always":mailto:always
+END:VEVENT
+END:VCALENDAR
