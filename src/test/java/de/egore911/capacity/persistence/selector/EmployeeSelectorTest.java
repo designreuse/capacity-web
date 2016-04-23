@@ -1,6 +1,7 @@
 package de.egore911.capacity.persistence.selector;
 
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -28,7 +29,7 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 				.withActiveContract(contractRangeStartDate, contractRangeEndDate)
 				.findAll();
 
-		assertThat(employees, hasSize(8));
+		assertThat(employees, hasSize(greaterThanOrEqualTo(8)));
 
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(1))));
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(2))));
@@ -56,7 +57,7 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 				.withActiveContract(contractRangeStartDate, contractRangeEndDate)
 				.findAll();
 
-		assertThat(employees, hasSize(12));
+		assertThat(employees, hasSize(greaterThanOrEqualTo(12)));
 
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(1))));
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(2))));
@@ -85,7 +86,7 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 				.withActiveContract(contractRangeStartDate, contractRangeEndDate)
 				.findAll();
 
-		assertThat(employees, hasSize(8));
+		assertThat(employees, hasSize(greaterThanOrEqualTo(8)));
 
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(1))));
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(2))));
@@ -114,7 +115,7 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 				.withActiveContract(contractRangeStartDate, contractRangeEndDate)
 				.findAll();
 
-		assertThat(employees, hasSize(8));
+		assertThat(employees, hasSize(greaterThanOrEqualTo(8)));
 
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(1))));
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(2))));
@@ -138,7 +139,7 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 	@Test
 	public void testOffsetAndLimit() {
 		int max = (int) new EmployeeSelector().count();
-		assertThat(max, equalTo(16));
+		assertThat(max, equalTo(greaterThanOrEqualTo(16)));
 
 		assertThat(new EmployeeSelector().findAll(), hasSize(max));
 		assertThat(new EmployeeSelector().withOffset(10).findAll(), hasSize(max - 10));
