@@ -58,6 +58,48 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 	}
 
 	@Test
+	public void testNoUUID() {
+		IcalImportEntity icalImport = mock(IcalImportEntity.class);
+		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/no_uuid.ics").toString());
+		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		Progress<ImportResult> progress = new Progress<>();
+		new IcalImporter().importIcal(icalImport, progress);
+		assertThat(progress.isCompleted(), equalTo(true));
+		assertThat(progress.getResult().getCreated(), equalTo(0));
+		assertThat(progress.getResult().getDeleted(), equalTo(0));
+		assertThat(progress.getResult().getUpdated(), equalTo(0));
+		assertThat(progress.getResult().getSkipped(), equalTo(1));
+	}
+
+	@Test
+	public void testEmptyUUID() {
+		IcalImportEntity icalImport = mock(IcalImportEntity.class);
+		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/empty_uuid.ics").toString());
+		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		Progress<ImportResult> progress = new Progress<>();
+		new IcalImporter().importIcal(icalImport, progress);
+		assertThat(progress.isCompleted(), equalTo(true));
+		assertThat(progress.getResult().getCreated(), equalTo(0));
+		assertThat(progress.getResult().getDeleted(), equalTo(0));
+		assertThat(progress.getResult().getUpdated(), equalTo(0));
+		assertThat(progress.getResult().getSkipped(), equalTo(1));
+	}
+
+	@Test
+	public void testWhitespaceUUID() {
+		IcalImportEntity icalImport = mock(IcalImportEntity.class);
+		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/whitespace_uuid.ics").toString());
+		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		Progress<ImportResult> progress = new Progress<>();
+		new IcalImporter().importIcal(icalImport, progress);
+		assertThat(progress.isCompleted(), equalTo(true));
+		assertThat(progress.getResult().getCreated(), equalTo(0));
+		assertThat(progress.getResult().getDeleted(), equalTo(0));
+		assertThat(progress.getResult().getUpdated(), equalTo(0));
+		assertThat(progress.getResult().getSkipped(), equalTo(1));
+	}
+
+	@Test
 	public void testOneAttendee() {
 		IcalImportEntity icalImport = mock(IcalImportEntity.class);
 		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/atendees/one_attendee.ics").toString());
