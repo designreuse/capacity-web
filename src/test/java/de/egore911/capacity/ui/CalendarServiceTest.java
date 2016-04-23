@@ -2,7 +2,6 @@ package de.egore911.capacity.ui;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 
@@ -31,7 +30,7 @@ public class CalendarServiceTest extends AbstractUiTest {
 		Calendar calendar = builder.build(new ByteArrayInputStream(ics.getBytes(StandardCharsets.UTF_8)));
 		ComponentList<CalendarComponent> components = calendar.getComponents("VEVENT");
 
-		assertThat("No holidays defined in import.sql, should be empty", components, empty());
+		assertThat(components, hasSize(3));
 	}
 
 	@Test
