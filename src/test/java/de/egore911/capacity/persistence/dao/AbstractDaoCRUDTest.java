@@ -5,6 +5,8 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.egore911.capacity.AbstractDatabaseTest;
@@ -13,11 +15,19 @@ import de.egore911.persistence.dao.AbstractDao;
 
 public abstract class AbstractDaoCRUDTest<T extends IntegerDbObject> extends AbstractDatabaseTest {
 
+	private long count;
+
 	protected abstract T createFixture();
 
 	protected abstract void modifyFixture(T fixture);
 
 	protected abstract AbstractDao<T> getDao();
+
+	@Before
+	public void before() {
+		super.before();
+		count = getDao().count();
+	}
 
 	@Test
 	public void testCRUD() {
@@ -56,6 +66,12 @@ public abstract class AbstractDaoCRUDTest<T extends IntegerDbObject> extends Abs
 			T loaded = getDao().findById(created.getId());
 			assertThat(loaded, nullValue());
 		}
+	}
+
+	@After
+	public void after() {
+		assertThat(count, equalTo(getDao().count()));
+		super.after();
 	}
 
 }
