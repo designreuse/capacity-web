@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -152,11 +153,13 @@ public class IcalImporter {
 			throws MalformedURLException, IOException, ProtocolException, ParserException {
 		progress.setMessage("Downloading calendar");
 		URL validUrl = new URL(url);
-		HttpURLConnection connection = (HttpURLConnection) validUrl.openConnection();
-		connection.setRequestMethod("GET");
-		int responseCode = connection.getResponseCode();
-		if (responseCode != 200) {
-			throw new BadStateException("Got HTTP status " + responseCode + ", expected 200");
+		URLConnection connection = validUrl.openConnection();
+
+		if (connection instanceof HttpURLConnection) {
+			int responseCode = ((HttpURLConnection) connection).getResponseCode();
+			if (responseCode != 200) {
+				throw new BadStateException("Got HTTP status " + responseCode + ", expected 200");
+			}
 		}
 		progress.setMessage("Parsing calendar");
 		CalendarBuilder builder = new CalendarBuilder();
