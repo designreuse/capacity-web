@@ -14,9 +14,7 @@ import javax.ws.rs.core.MediaType;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
@@ -27,7 +25,7 @@ import de.egore911.capacity.ui.dto.WorkingHoursRequest;
 public class CapacityServiceTest extends AbstractUiTest {
 
 	@Test
-	public void testEpisodeOne() throws JsonParseException, JsonMappingException, IOException {
+	public void testEpisodeOne() throws IOException {
 		WorkingHoursRequest request = new WorkingHoursRequest();
 		request.setEpisodeId(1);
 		Entity<WorkingHoursRequest> entity = Entity.entity(request, MediaType.APPLICATION_JSON);
@@ -49,7 +47,7 @@ public class CapacityServiceTest extends AbstractUiTest {
 	}
 
 	@Test
-	public void testEpisodeTwo() throws JsonParseException, JsonMappingException, IOException {
+	public void testEpisodeTwo() throws IOException {
 		WorkingHoursRequest request = new WorkingHoursRequest();
 		request.setEpisodeId(2);
 		Entity<WorkingHoursRequest> entity = Entity.entity(request, MediaType.APPLICATION_JSON);

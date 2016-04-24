@@ -12,9 +12,7 @@ import org.hamcrest.Matchers;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 

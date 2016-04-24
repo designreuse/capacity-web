@@ -13,9 +13,7 @@ import org.hamcrest.Matchers;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
@@ -24,7 +22,7 @@ import de.egore911.capacity.ui.dto.Employee;
 public class AvailabilityServiceTest extends AbstractUiTest {
 
 	@Test
-	public void checkAvailabilitiesTenthOfFebruary() throws JsonParseException, JsonMappingException, IOException {
+	public void checkAvailabilitiesTenthOfFebruary() throws IOException {
 		String availabilities = target("available").queryParam("date", "2015-02-10").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -47,7 +45,7 @@ public class AvailabilityServiceTest extends AbstractUiTest {
 	}
 
 	@Test
-	public void checkAvailabilitiesThirdOfMarch() throws JsonParseException, JsonMappingException, IOException {
+	public void checkAvailabilitiesThirdOfMarch() throws IOException {
 		String availabilities = target("available").queryParam("date", "2015-03-03").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -69,7 +67,7 @@ public class AvailabilityServiceTest extends AbstractUiTest {
 	}
 
 	@Test
-	public void checkAvailabilitiesToday() throws JsonParseException, JsonMappingException, IOException {
+	public void checkAvailabilitiesToday() throws IOException {
 		String availabilities = target("available").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
