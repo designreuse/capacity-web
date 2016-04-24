@@ -33,7 +33,7 @@ public class HolidaySelector extends AbstractResourceSelector<HolidayEntity> {
 
 	@Nonnull
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<HolidayEntity> from, CriteriaQuery<?> query) {
+	protected List<Predicate> generatePredicateList(@Nonnull CriteriaBuilder builder, @Nonnull Root<HolidayEntity> from, @Nonnull CriteriaQuery<?> query) {
 		List<Predicate> predicates = super.generatePredicateList(builder, from, query);
 		if (startInclusive != null) {
 			predicates.add(builder.greaterThanOrEqualTo(from.get(HolidayEntity_.date), startInclusive));
