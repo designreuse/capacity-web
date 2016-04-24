@@ -86,10 +86,7 @@ public class RoleEntity extends IntegerDbObject {
 	}
 
 	public boolean hasPermission(Permission permission) {
-		if (CollectionUtils.isEmpty(permissions)) {
-			return false;
-		}
-		return permissions.contains(permission);
+		return CollectionUtils.isNotEmpty(permissions) && permissions.contains(permission);
 	}
 
 }

@@ -107,10 +107,7 @@ public class UserEntity extends IntegerDbObject {
 	}
 
 	public boolean hasRole(RoleEntity role) {
-		if (CollectionUtils.isEmpty(roles)) {
-			return false;
-		}
-		return roles.contains(role);
+		return CollectionUtils.isNotEmpty(roles) && roles.contains(role);
 	}
 
 	public boolean hasPermission(Permission permission) {
