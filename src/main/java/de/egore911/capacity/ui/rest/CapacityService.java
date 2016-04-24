@@ -190,9 +190,7 @@ public class CapacityService extends AbstractService {
 			}
 		}
 
-		WorkingHoursList workinghours = getWorkingHoursForEmployee(start, end, employee, reductions, velocity);
-
-		return workinghours;
+		return getWorkingHoursForEmployee(start, end, employee, reductions, velocity);
 	}
 
 	private WorkingHoursList getWorkingHoursForEmployee(LocalDate start, LocalDate end, EmployeeEntity employee,
