@@ -16,7 +16,7 @@ angular.module('capacityApp')
 		$scope.switchUnits = function(units) {
 			$scope.units = units;
 			$scope.loadChart();
-		}
+		};
 
 		$scope.datepicker = {
 			startOpened: false,
@@ -25,7 +25,7 @@ angular.module('capacityApp')
 		$scope.duration = {
 			start: moment().add(-10, 'd').format('YYYY-MM-DD'),
 			end: moment().add(10, 'd').format('YYYY-MM-DD')
-		}
+		};
 
 		$scope.chartConfig = {
 			options: {
@@ -70,10 +70,10 @@ angular.module('capacityApp')
 		$scope.addAndFilter = function() {
 			$scope.lastIndex++;
 			$scope.andFilters[$scope.lastIndex] = [];
-		}
+		};
 		$scope.removeAndFilter = function(id) {
 			delete $scope.andFilters[id];
-		}
+		};
 		$scope.loadAbilities = function($query) {
 			return $http.get('rest/abilities').then(function(response) {
 				var abilities = response.data;
@@ -88,7 +88,7 @@ angular.module('capacityApp')
 			var data = {
 				useVelocity: $scope.useVelocity,
 				episodeId: $scope._selectedEpisode.id
-			}
+			};
 			if ($scope._selectedEpisode.id == '') {
 				if ($scope.duration.start && typeof $scope.duration.start.getMonth === 'function') {
 					$scope.duration.start = moment($scope.duration.start).format('YYYY-MM-DD');
@@ -185,7 +185,7 @@ angular.module('capacityApp')
 				return $scope._selectedEpisode.name + " " + $scope._selectedEpisode.start + " - " + $scope._selectedEpisode.end + ")";
 			}
 			return "None";
-		}
+		};
 
 
 		$scope.sum = function(values) {
