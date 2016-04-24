@@ -21,8 +21,6 @@
  */
 package de.egore911.persistence.dao;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
@@ -39,37 +37,6 @@ public abstract class AbstractDao<T extends DbObject<?>> {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(AbstractDao.class);
-
-	public List<T> findAll() {
-		if (log.isTraceEnabled()) {
-			log.trace("Selecting all {}s", getClass().getSimpleName());
-		}
-		return createSelector().findAll();
-	}
-
-	public List<T> findAll(int offset, int limit) {
-		if (log.isTraceEnabled()) {
-			log.trace("Selecting all {}s from {} to {}", getClass()
-					.getSimpleName(), offset, offset + limit);
-		}
-		AbstractSelector<T> selector = createSelector()
-				.withOffset(offset)
-				.withLimit(limit);
-		return selector.findAll();
-	}
-
-	public List<T> findAll(int offset, int limit, String sortColumn, boolean asc) {
-		if (log.isTraceEnabled()) {
-			log.trace("Selecting all {}s from {} to {}", getClass()
-					.getSimpleName(), offset, offset + limit);
-		}
-		AbstractSelector<T> selector = createSelector()
-				.withOffset(offset)
-				.withLimit(limit)
-				.withSortColumn(sortColumn)
-				.withAscending(asc);
-		return selector.findAll();
-	}
 
 	public T findById(Integer id) {
 		if (log.isTraceEnabled()) {

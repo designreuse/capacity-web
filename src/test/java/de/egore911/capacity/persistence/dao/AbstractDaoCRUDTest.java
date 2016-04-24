@@ -1,9 +1,10 @@
 package de.egore911.capacity.persistence.dao;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import de.egore911.capacity.AbstractDatabaseTest;
 import de.egore911.capacity.persistence.model.IntegerDbObject;
 import de.egore911.persistence.dao.AbstractDao;
+import de.egore911.persistence.util.EntityManagerUtil;
 
 public abstract class AbstractDaoCRUDTest<T extends IntegerDbObject> extends AbstractDatabaseTest {
 
@@ -57,7 +59,19 @@ public abstract class AbstractDaoCRUDTest<T extends IntegerDbObject> extends Abs
 			// then: we get back the fixture matching the ID
 			assertThat(loaded.getId(), equalTo(created.getId()));
 
+			EntityManagerUtil.getEntityManager().clear();
+
+			assertThat(EntityManagerUtil.getEntityManager().contains(loaded), is(false));
+
+			loaded = getDao().reattach(loaded);
+
+			assertThat(EntityManagerUtil.getEntityManager().contains(loaded), is(true));
+
 		} finally {
+
+			if (!EntityManagerUtil.getEntityManager().contains(created)) {
+				created = getDao().reattach(created);
+			}
 
 			// when: we remove a fixture
 			getDao().remove(created);
