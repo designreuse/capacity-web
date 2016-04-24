@@ -136,11 +136,7 @@ public class IcalImporter {
 			progress.setSuccess(false);
 			progress.setMessage(e.getMessage());
 			throw new BadArgumentException("Not a valid URL");
-		} catch (IOException | ParserException e) {
-			progress.setSuccess(false);
-			progress.setMessage(e.getMessage());
-			throw new BadStateException(e.getMessage());
-		} catch (RuntimeException e) {
+		} catch (IOException | ParserException | RuntimeException e) {
 			progress.setSuccess(false);
 			progress.setMessage(e.getMessage());
 			throw new BadStateException(e.getMessage());
