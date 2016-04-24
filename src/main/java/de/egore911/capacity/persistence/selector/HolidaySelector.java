@@ -2,6 +2,7 @@ package de.egore911.capacity.persistence.selector;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
@@ -24,11 +25,13 @@ public class HolidaySelector extends AbstractResourceSelector<HolidayEntity> {
 	private LocationEntity onlyLocation;
 	private LocationEntity includingLocation;
 
+	@Nonnull
 	@Override
 	protected Class<HolidayEntity> getEntityClass() {
 		return HolidayEntity.class;
 	}
 
+	@Nonnull
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<HolidayEntity> from, CriteriaQuery<?> query) {
 		List<Predicate> predicates = super.generatePredicateList(builder, from, query);

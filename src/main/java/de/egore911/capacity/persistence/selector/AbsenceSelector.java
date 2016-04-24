@@ -2,6 +2,7 @@ package de.egore911.capacity.persistence.selector;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -21,13 +22,15 @@ public class AbsenceSelector extends AbstractResourceSelector<AbsenceEntity> {
 	private LocalDate startInclusive;
 	private LocalDate endInclusive;
 
+	@Nonnull
 	@Override
 	protected Class<AbsenceEntity> getEntityClass() {
 		return AbsenceEntity.class;
 	}
 
+	@Nonnull
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<AbsenceEntity> from, CriteriaQuery<?> query) {
+	protected List<Predicate> generatePredicateList(@Nonnull CriteriaBuilder builder, @Nonnull Root<AbsenceEntity> from, @Nonnull CriteriaQuery<?> query) {
 		List<Predicate> predicates = super.generatePredicateList(builder, from, query);
 
 		if (employeeId != null) {

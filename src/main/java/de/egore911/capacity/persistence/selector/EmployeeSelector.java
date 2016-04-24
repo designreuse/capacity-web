@@ -2,6 +2,7 @@ package de.egore911.capacity.persistence.selector;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
@@ -35,13 +36,15 @@ public class EmployeeSelector extends AbstractResourceSelector<EmployeeEntity> {
 		withSortColumn("name");
 	}
 
+	@Nonnull
 	@Override
 	protected Class<EmployeeEntity> getEntityClass() {
 		return EmployeeEntity.class;
 	}
 
+	@Nonnull
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<EmployeeEntity> from, CriteriaQuery<?> query) {
+	protected List<Predicate> generatePredicateList(@Nonnull CriteriaBuilder builder, @Nonnull Root<EmployeeEntity> from, @Nonnull CriteriaQuery<?> query) {
 		List<Predicate> predicates = super.generatePredicateList(builder, from, query);
 
 		if (contractRangeStartDate != null && contractRangeEndDate != null) {
