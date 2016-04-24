@@ -1,12 +1,12 @@
 package de.egore911.capacity.persistence.selector;
 
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
+import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -15,11 +15,16 @@ import org.hamcrest.Matchers;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
-import de.egore911.capacity.AbstractDatabaseTest;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
+import de.egore911.persistence.selector.AbstractSelector;
 
 @SuppressWarnings("unchecked")
-public class EmployeeSelectorTest extends AbstractDatabaseTest {
+public class EmployeeSelectorTest extends AbstractSelectorTest<EmployeeEntity> {
+
+	@Override
+	protected AbstractSelector<EmployeeEntity> getSelector() {
+		return new EmployeeSelector();
+	}
 
 	@Test
 	public void testContractRange_workingOnTenthOfFebruary() {
@@ -134,21 +139,6 @@ public class EmployeeSelectorTest extends AbstractDatabaseTest {
 		assertThat(employees, not(hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(17)))));
 		assertThat(employees, hasItems(Matchers.<EmployeeEntity> hasProperty("id", equalTo(18))));
 
-	}
-
-	@Test
-	public void testOffsetAndLimit() {
-		int max = (int) new EmployeeSelector().count();
-		assertThat(max, greaterThanOrEqualTo(16));
-
-		assertThat(new EmployeeSelector().findAll(), hasSize(max));
-		assertThat(new EmployeeSelector().withOffset(10).findAll(), hasSize(max - 10));
-		assertThat(new EmployeeSelector().withOffset(max).findAll(), hasSize(0));
-
-		assertThat(new EmployeeSelector().withLimit(3).findAll(), hasSize(3));
-		assertThat(new EmployeeSelector().withOffset(max - 3).findAll(), hasSize(3));
-		assertThat(new EmployeeSelector().withOffset(max - 1).findAll(), hasSize(1));
-		assertThat(new EmployeeSelector().withOffset(max).findAll(), hasSize(0));
 	}
 
 	@Test

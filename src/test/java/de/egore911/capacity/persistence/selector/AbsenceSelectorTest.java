@@ -3,9 +3,15 @@ package de.egore911.capacity.persistence.selector;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
-import de.egore911.capacity.AbstractDatabaseTest;
+import de.egore911.capacity.persistence.model.AbsenceEntity;
+import de.egore911.persistence.selector.AbstractSelector;
 
-public class AbsenceSelectorTest extends AbstractDatabaseTest {
+public class AbsenceSelectorTest extends AbstractSelectorTest<AbsenceEntity> {
+
+	@Override
+	protected AbstractSelector<AbsenceEntity> getSelector() {
+		return new AbsenceSelector();
+	}
 
 	@Test
 	public void smoketest() {

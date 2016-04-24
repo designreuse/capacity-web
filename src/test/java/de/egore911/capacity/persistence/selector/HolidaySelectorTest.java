@@ -10,12 +10,17 @@ import java.util.List;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import de.egore911.capacity.AbstractDatabaseTest;
 import de.egore911.capacity.persistence.dao.LocationDao;
 import de.egore911.capacity.persistence.model.HolidayEntity;
 import de.egore911.capacity.persistence.model.LocationEntity;
+import de.egore911.persistence.selector.AbstractSelector;
 
-public class HolidaySelectorTest extends AbstractDatabaseTest {
+public class HolidaySelectorTest extends AbstractSelectorTest<HolidayEntity> {
+
+	@Override
+	protected AbstractSelector<HolidayEntity> getSelector() {
+		return new HolidaySelector();
+	}
 
 	@Test
 	public void testHolidaysAtLocation1() {
@@ -49,7 +54,7 @@ public class HolidaySelectorTest extends AbstractDatabaseTest {
 		assertThat(holidays, hasItem(Matchers.<HolidayEntity> hasProperty("name", equalTo("Some vacation 16"))));
 		assertThat(holidays, hasItem(Matchers.<HolidayEntity> hasProperty("name", equalTo("Some vacation 13"))));
 	}
-	
+
 	@Test
 	public void testHolidaysAtLocation2Including() {
 		LocationEntity location = new LocationDao().findById(2);
