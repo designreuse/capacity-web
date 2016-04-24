@@ -1,7 +1,6 @@
 package de.egore911.capacity.persistence.model;
 
 import java.time.LocalDate;
-
 import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
