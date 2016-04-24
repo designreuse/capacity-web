@@ -30,7 +30,7 @@ public class CalendarServiceTest extends AbstractUiTest {
 		Calendar calendar = builder.build(new ByteArrayInputStream(ics.getBytes(StandardCharsets.UTF_8)));
 		ComponentList<CalendarComponent> components = calendar.getComponents("VEVENT");
 
-		assertThat(components, hasSize(3));
+		assertThat(components, hasSize(4));
 	}
 
 	@Test
