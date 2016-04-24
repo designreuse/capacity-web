@@ -37,14 +37,14 @@ public class EntityManagerUtil {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(EntityManagerUtil.class);
 
-	private static ThreadLocal<EntityManager> entityManagerHolder = new ThreadLocal<>();
+	private static final ThreadLocal<EntityManager> ENTITY_MANAGER_HOLDER = new ThreadLocal<>();
 
 	/**
 	 * @return the current entity manager for the request
 	 * @see #setEntityManager(EntityManager)
 	 */
 	public static EntityManager getEntityManager() {
-		return entityManagerHolder.get();
+		return ENTITY_MANAGER_HOLDER.get();
 	}
 
 	/**
@@ -53,16 +53,16 @@ public class EntityManagerUtil {
 	 * @see #getEntityManager()
 	 */
 	public static void setEntityManager(EntityManager entityManager) {
-		if (entityManagerHolder.get() != null) {
+		if (ENTITY_MANAGER_HOLDER.get() != null) {
 			LOG.error("Replacing existing EntityManger");
 		}
-		entityManagerHolder.set(entityManager);
+		ENTITY_MANAGER_HOLDER.set(entityManager);
 	}
 
 	/**
 	 * Remove the current entitymanager from the request.
 	 */
 	public static void clearEntityManager() {
-		entityManagerHolder.set(null);
+		ENTITY_MANAGER_HOLDER.set(null);
 	}
 }
