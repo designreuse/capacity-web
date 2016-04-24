@@ -170,7 +170,7 @@ angular.module('capacityApp')
 					id: ''
 				};
 				angular.forEach($scope.episodes, function(element, index) {
-					if (episodeId == element.id) {
+					if (episodeId === element.id) {
 						$scope._selectedEpisode = element;
 					}
 				});

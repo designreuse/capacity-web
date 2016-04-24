@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <label-group label="Start date" ng-show="_selectedEpisode.id == ''">
+    <label-group label="Start date" ng-show="_selectedEpisode.id === ''">
       <p class="input-group">
         <input type="text" class="form-control" ng-model="duration.start" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.startOpened" ng-change="loadChart()"/>
         <span class="input-group-btn">
@@ -42,7 +42,7 @@
         </span>
       </p>
     </label-group>
-    <label-group label="End date" ng-show="_selectedEpisode.id == ''">
+    <label-group label="End date" ng-show="_selectedEpisode.id === ''">
       <p class="input-group">
         <input type="text" class="form-control" ng-model="duration.end" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.endOpened" ng-change="loadChart()"/>
         <span class="input-group-btn">

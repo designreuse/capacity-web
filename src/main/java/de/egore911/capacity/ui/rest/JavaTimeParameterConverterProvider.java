@@ -9,13 +9,15 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import org.joda.time.format.ISODateTimeFormat;
 
 @Provider
-public class JodaParameterConverterProvider implements ParamConverterProvider {
+public class JavaTimeParameterConverterProvider implements ParamConverterProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -54,49 +56,55 @@ public class JodaParameterConverterProvider implements ParamConverterProvider {
 	}
 
 	private static class LocalDateParamConverter implements ParamConverter<LocalDate> {
+
+		private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		@Override
 		public LocalDate fromString(String value) {
 			if (StringUtils.isEmpty(value)) {
 				return null;
 			}
-			return ISODateTimeFormat.date().parseLocalDate(value);
+			return LocalDate.parse(value, FORMATTER);
 		}
 
 		@Override
 		public String toString(LocalDate value) {
-			return ISODateTimeFormat.date().print(value);
+			return FORMATTER.format(value);
 		}
 
 	}
 
 	private static class LocalTimeParamConverter implements ParamConverter<LocalTime> {
+
+		private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss.SSSZZ");
 		@Override
 		public LocalTime fromString(String value) {
 			if (StringUtils.isEmpty(value)) {
 				return null;
 			}
-			return ISODateTimeFormat.time().parseLocalTime(value);
+			return LocalTime.parse(value, FORMATTER);
 		}
 
 		@Override
 		public String toString(LocalTime value) {
-			return ISODateTimeFormat.time().print(value);
+			return FORMATTER.format(value);
 		}
 
 	}
 
 	private static class LocalDateTimeParamConverter implements ParamConverter<LocalDateTime> {
+
+		private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
 		@Override
 		public LocalDateTime fromString(String value) {
 			if (StringUtils.isEmpty(value)) {
 				return null;
 			}
-			return ISODateTimeFormat.dateTime().parseLocalDateTime(value);
+			return LocalDateTime.parse(value, FORMATTER);
 		}
 
 		@Override
 		public String toString(LocalDateTime value) {
-			return ISODateTimeFormat.dateTime().print(value);
+			return FORMATTER.format(value);
 		}
 
 	}
