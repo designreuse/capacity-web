@@ -20,14 +20,14 @@ angular.module('capacityApp')
 
 					// Holiday
 					$scope.holiday = new Holiday();
-					$scope.holiday.date = moment(date).format('YYYY-MM-DD');
+					$scope.holiday.date = date;
 					$scope.holiday.name = '';
 					$scope.holiday.hoursReduction = 8;
 
 					// Absence
 					$scope.absence = new Absence();
-					$scope.absence.start = moment(date).format('YYYY-MM-DD');
-					$scope.absence.end = moment(date).format('YYYY-MM-DD');
+					$scope.absence.start = date;
+					$scope.absence.end = date;
 					$scope.absence.reason = '';
 					$scope.employees = [];
 					$scope.employeesLookup = {};
@@ -56,7 +56,7 @@ angular.module('capacityApp')
 							$scope.holiday.$save(function(holiday) {
 								parentScope.allEvents[0].push({
 									title: holiday.name,
-									start: holiday.date,
+									start: new Date(holiday.date),
 									end: null,
 									className: 'holidays'
 								});
@@ -69,8 +69,8 @@ angular.module('capacityApp')
 							$scope.absence.$save(function(absence) {
 								parentScope.allEvents[0].push({
 									title: $scope.employeesLookup[absence.employeeId].name + ': ' + absence.reason,
-									start: absence.start,
-									end: absence.end,
+									start: new Date(absence.start),
+									end: new Date(absence.end),
 									color: $scope.employeesLookup[absence.employeeId].color,
 									className: 'employees'
 								});
@@ -85,7 +85,7 @@ angular.module('capacityApp')
 					};
 				},
 				resolve: {
-					date: date,
+					date: date.toDate(),
 					parentScope: $scope
 				}
 			});
@@ -115,6 +115,8 @@ angular.module('capacityApp')
 		$http.get('rest/calendar/events/holidays?start=' + $scope.start + '&end=' + $scope.end).then(function(response) {
 			response.data.forEach(function(element, index) {
 				element.className = 'holidays';
+				element.start = new Date(element.start);
+				element.end = new Date(element.end);
 			});
 			$scope.allEvents[0] = response.data;
 			publishEvents(0);
@@ -122,6 +124,8 @@ angular.module('capacityApp')
 		$http.get('rest/calendar/events/absences?start=' + $scope.start + '&end=' + $scope.end).then(function(response) {
 			response.data.forEach(function(element, index) {
 				element.className = 'employees';
+				element.start = new Date(element.start);
+				element.end = new Date(element.end);
 			});
 			$scope.allEvents[1] = response.data;
 			publishEvents(1);

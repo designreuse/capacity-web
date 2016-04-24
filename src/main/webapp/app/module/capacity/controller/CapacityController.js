@@ -23,8 +23,8 @@ angular.module('capacityApp')
 			endOpened: false
 		};
 		$scope.duration = {
-			start: moment().add(-10, 'd').format('YYYY-MM-DD'),
-			end: moment().add(10, 'd').format('YYYY-MM-DD')
+			start: moment().add(-10, 'd').toDate(),
+			end: moment().add(10, 'd').toDate()
 		};
 
 		$scope.chartConfig = {
@@ -90,11 +90,11 @@ angular.module('capacityApp')
 				episodeId: $scope._selectedEpisode.id
 			};
 			if ($scope._selectedEpisode.id == '') {
-				if ($scope.duration.start && typeof $scope.duration.start.getMonth === 'function') {
-					$scope.duration.start = moment($scope.duration.start).format('YYYY-MM-DD');
+				if ($scope.duration.start) {
+					$scope.duration.start = new Date($scope.duration.start);
 				}
-				if ($scope.duration.end && typeof $scope.duration.end.getMonth === 'function') {
-					$scope.duration.end = moment($scope.duration.end).format('YYYY-MM-DD');
+				if ($scope.duration.end) {
+					$scope.duration.end = new Date($scope.duration.end);
 				}
 				data.start = $scope.duration.start;
 				data.end = $scope.duration.end;

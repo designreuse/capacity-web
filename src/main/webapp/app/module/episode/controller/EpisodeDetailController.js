@@ -53,6 +53,8 @@ angular.module('capacityApp')
 						});
 					}
 				}
+				$scope.episode.start = new Date($scope.episode.start);
+				$scope.episode.end = new Date($scope.episode.end);
 			});
 			if (isClone) {
 				$scope.save = function() {

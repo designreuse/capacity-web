@@ -3,7 +3,7 @@
 angular.module('capacityApp')
 	.controller('AbsenceController', ['$scope', '$http', function($scope, $http) {
 
-		$scope.selectedDate = moment().format('YYYY-MM-DD');
+		$scope.selectedDate = new Date();
 		$scope.datepicker = {
 			opened: false
 		};
