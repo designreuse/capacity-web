@@ -23,7 +23,7 @@ import de.egore911.capacity.ui.dto.Employee;
 public class AbsentServiceTest extends AbstractUiTest {
 
 	@Test
-	public void checkAbsencesTenthOfFebruary() throws JsonParseException, JsonMappingException, IOException {
+	public void checkAbsencesTenthOfFebruary() throws IOException {
 		String absences = target("absent").queryParam("date", "2015-02-10").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -40,7 +40,7 @@ public class AbsentServiceTest extends AbstractUiTest {
 	}
 
 	@Test
-	public void checkAbsencesThirdOfMarch() throws JsonParseException, JsonMappingException, IOException {
+	public void checkAbsencesThirdOfMarch() throws IOException {
 		String absences = target("absent").queryParam("date", "2015-03-03").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -56,7 +56,7 @@ public class AbsentServiceTest extends AbstractUiTest {
 	}
 
 	@Test
-	public void checkAbsencesToday() throws JsonParseException, JsonMappingException, IOException {
+	public void checkAbsencesToday() throws IOException {
 		String absences = target("absent").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
