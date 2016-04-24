@@ -40,11 +40,8 @@ public class CalendarService {
 	private ServletContext servletContext;
 
 	private Uid generateUid(IntegerDbObject entity) {
-		final StringBuilder b = new StringBuilder();
-		b.append(entity.getClass().getSimpleName());
-		b.append('-');
-		b.append(entity.getId());
-		return new Uid(b.toString());
+		String b = entity.getClass().getSimpleName() + '-' + entity.getId();
+		return new Uid(b);
 	}
 
 	@GET
