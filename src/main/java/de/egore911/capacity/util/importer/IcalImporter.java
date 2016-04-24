@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashSet;
@@ -147,7 +146,7 @@ public class IcalImporter {
 	}
 
 	private Calendar loadCalendar(Progress<ImportResult> progress, String url)
-			throws MalformedURLException, IOException, ProtocolException, ParserException {
+			throws IOException, ParserException {
 		progress.setMessage("Downloading calendar");
 		URL validUrl = new URL(url);
 		URLConnection connection = validUrl.openConnection();
