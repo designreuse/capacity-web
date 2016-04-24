@@ -18,6 +18,20 @@ public class AbsenceSelectorTest extends AbstractSelectorTest<AbsenceEntity> {
 	}
 
 	@Test
+	public void testPartialContractRanges() {
+		LocalDate beforeRange = LocalDate.parse("2015-01-01");
+		LocalDate afterRange = LocalDate.parse("2015-10-31");
+
+		int all = (int) new AbsenceSelector().count();
+
+		assertThat(new AbsenceSelector().withStartInclusive(null).withEndInclusive(afterRange).findAll(), hasSize(all));
+
+		assertThat(new AbsenceSelector().withStartInclusive(beforeRange).withEndInclusive(null).findAll(), hasSize(all));
+
+		assertThat(new AbsenceSelector().withStartInclusive(null).withEndInclusive(null).findAll(), hasSize(all));
+	}
+
+	@Test
 	public void smoketest() {
 		LocalDate wayBeforeRange = LocalDate.parse("2014-01-01");
 		LocalDate beforeRange = LocalDate.parse("2015-01-01");

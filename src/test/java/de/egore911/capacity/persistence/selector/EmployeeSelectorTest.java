@@ -27,6 +27,20 @@ public class EmployeeSelectorTest extends AbstractSelectorTest<EmployeeEntity> {
 	}
 
 	@Test
+	public void testPartialContractRanges() {
+		LocalDate contractRangeStartDate = LocalDate.parse("2015-02-10");
+		LocalDate contractRangeEndDate = LocalDate.parse("2015-02-10");
+
+		int all = (int) new EmployeeSelector().count();
+
+		assertThat(new EmployeeSelector().withActiveContract(null, contractRangeEndDate).findAll(), hasSize(all));
+
+		assertThat(new EmployeeSelector().withActiveContract(contractRangeStartDate, null).findAll(), hasSize(all));
+
+		assertThat(new EmployeeSelector().withActiveContract(null, null).findAll(), hasSize(all));
+	}
+
+	@Test
 	public void testContractRange_workingOnTenthOfFebruary() {
 		LocalDate contractRangeStartDate = LocalDate.parse("2015-02-10");
 		LocalDate contractRangeEndDate = LocalDate.parse("2015-02-10");
