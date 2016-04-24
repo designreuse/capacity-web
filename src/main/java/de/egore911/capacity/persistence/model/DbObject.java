@@ -94,9 +94,12 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 
 	@Override
 	public int hashCode() {
+		if (getId() == null) {
+			return super.hashCode();
+		}
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		result = prime * result + getId().hashCode();
 		return result;
 	}
 
@@ -113,9 +116,7 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 		}
 		DbObject<?> other = (DbObject<?>) obj;
 		if (getId() == null) {
-			if (other.getId() != null) {
-				return false;
-			}
+			return false;
 		} else if (!getId().equals(other.getId())) {
 			return false;
 		}
