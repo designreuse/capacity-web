@@ -47,7 +47,7 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 	public void testNoAttendee() {
 		IcalImportEntity icalImport = mock(IcalImportEntity.class);
 		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/atendees/no_attendee.ics").toString());
-		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		when(icalImport.getId()).thenReturn(1);
 		Progress<ImportResult> progress = new Progress<>();
 		new IcalImporter().importIcal(icalImport, progress);
 		assertThat(progress.isCompleted(), equalTo(true));
@@ -61,7 +61,7 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 	public void testNoUUID() {
 		IcalImportEntity icalImport = mock(IcalImportEntity.class);
 		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/no_uuid.ics").toString());
-		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		when(icalImport.getId()).thenReturn(1);
 		Progress<ImportResult> progress = new Progress<>();
 		new IcalImporter().importIcal(icalImport, progress);
 		assertThat(progress.isCompleted(), equalTo(true));
@@ -75,7 +75,7 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 	public void testEmptyUUID() {
 		IcalImportEntity icalImport = mock(IcalImportEntity.class);
 		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/empty_uuid.ics").toString());
-		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		when(icalImport.getId()).thenReturn(1);
 		Progress<ImportResult> progress = new Progress<>();
 		new IcalImporter().importIcal(icalImport, progress);
 		assertThat(progress.isCompleted(), equalTo(true));
@@ -89,7 +89,7 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 	public void testWhitespaceUUID() {
 		IcalImportEntity icalImport = mock(IcalImportEntity.class);
 		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/whitespace_uuid.ics").toString());
-		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		when(icalImport.getId()).thenReturn(1);
 		Progress<ImportResult> progress = new Progress<>();
 		new IcalImporter().importIcal(icalImport, progress);
 		assertThat(progress.isCompleted(), equalTo(true));
@@ -103,7 +103,7 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 	public void testOneAttendee() {
 		IcalImportEntity icalImport = mock(IcalImportEntity.class);
 		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/atendees/one_attendee.ics").toString());
-		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		when(icalImport.getId()).thenReturn(1);
 		Progress<ImportResult> progress = new Progress<>();
 		new IcalImporter().importIcal(icalImport, progress);
 		assertThat(progress.isCompleted(), equalTo(true));
@@ -122,7 +122,7 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 
 		icalImport = mock(IcalImportEntity.class);
 		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/atendees/two_attendee.ics").toString());
-		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		when(icalImport.getId()).thenReturn(1);
 		progress = new Progress<>();
 		new IcalImporter().importIcal(icalImport, progress);
 		assertThat(progress.isCompleted(), equalTo(true));
@@ -145,7 +145,7 @@ public class IcalImporterTest extends AbstractDatabaseTest {
 	public void testTwoAttendee() {
 		IcalImportEntity icalImport = mock(IcalImportEntity.class);
 		when(icalImport.getUrl()).thenReturn(this.getClass().getResource("/ical/atendees/two_attendee.ics").toString());
-		when(icalImport.getId()).thenReturn(Integer.valueOf(1));
+		when(icalImport.getId()).thenReturn(1);
 		Progress<ImportResult> progress = new Progress<>();
 		new IcalImporter().importIcal(icalImport, progress);
 		assertThat(progress.isCompleted(), equalTo(true));
