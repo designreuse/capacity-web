@@ -116,9 +116,7 @@ public class CapacityService extends AbstractService {
 		}
 
 		// Put velocities into lookup (when they were not overridden in the episode)
-		employees.stream().filter(employee -> !velocities.containsKey(employee.getId())).forEach(employee -> {
-			velocities.put(employee.getId(), employee.getVelocity());
-		});
+		employees.stream().filter(employee -> !velocities.containsKey(employee.getId())).forEach(employee -> velocities.put(employee.getId(), employee.getVelocity()));
 
 		// Calculate the capatcity per employee
 		List<WorkingHoursPerEmployee> result = new ArrayList<>(employees.size());
@@ -173,9 +171,7 @@ public class CapacityService extends AbstractService {
 		List<HolidayEntity> holidays = new HolidaySelector().withStartInclusive(start).withEndInclusive(end)
 				.withIncludingLocation(employee.getLocation()).findAll();
 
-		holidays.stream().filter(holiday -> holiday.getDate().isBefore(end) && holiday.getDate().isAfter(start)).forEach(holiday -> {
-			reductions.put(holiday.getDate(), holiday.getHoursReduction());
-		});
+		holidays.stream().filter(holiday -> holiday.getDate().isBefore(end) && holiday.getDate().isAfter(start)).forEach(holiday -> reductions.put(holiday.getDate(), holiday.getHoursReduction()));
 
 		Map<Integer, Hours> durations = getWorkingHourDurations(employee);
 
