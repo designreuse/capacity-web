@@ -14,8 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 
 public class VersionExtractor {
 
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
-
 	@Nullable
 	private static String load(@Nonnull ServletContext context, @Nonnull String groupId,
 			@Nonnull String artifactId, @Nonnull String file, @Nonnull String property) {
@@ -67,7 +65,7 @@ public class VersionExtractor {
 			return null;
 		}
 		try {
-			return LocalDateTime.parse(string, FORMATTER);
+			return LocalDateTime.parse(string, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 		} catch (IllegalArgumentException e) {
 			return null;
 		}

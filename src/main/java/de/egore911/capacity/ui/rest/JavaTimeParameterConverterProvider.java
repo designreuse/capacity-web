@@ -35,78 +35,68 @@ public class JavaTimeParameterConverterProvider implements ParamConverterProvide
 
 	private static class DateTimeParamConverter implements ParamConverter<ZonedDateTime> {
 
-		private static final DateTimeFormatter FORMATTER_NO_MILLIS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZZ");
-		private static final DateTimeFormatter FORMATTER_MILLIS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
-
 		@Override
 		public ZonedDateTime fromString(String value) {
 			if (StringUtils.isEmpty(value)) {
 				return null;
 			}
-			try {
-				return ZonedDateTime.parse(value, FORMATTER_NO_MILLIS);
-			} catch (IllegalArgumentException e) {
-				return ZonedDateTime.parse(value, FORMATTER_MILLIS);
-			}
+			return ZonedDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 		}
 
 		@Override
 		public String toString(ZonedDateTime value) {
-			return FORMATTER_MILLIS.format(value);
+			return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(value);
 		}
 
 	}
 
 	private static class LocalDateParamConverter implements ParamConverter<LocalDate> {
 
-		private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		@Override
 		public LocalDate fromString(String value) {
 			if (StringUtils.isEmpty(value)) {
 				return null;
 			}
-			return LocalDate.parse(value, FORMATTER);
+			return LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
 		}
 
 		@Override
 		public String toString(LocalDate value) {
-			return FORMATTER.format(value);
+			return DateTimeFormatter.ISO_LOCAL_DATE.format(value);
 		}
 
 	}
 
 	private static class LocalTimeParamConverter implements ParamConverter<LocalTime> {
 
-		private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss.SSSZZ");
 		@Override
 		public LocalTime fromString(String value) {
 			if (StringUtils.isEmpty(value)) {
 				return null;
 			}
-			return LocalTime.parse(value, FORMATTER);
+			return LocalTime.parse(value, DateTimeFormatter.ISO_OFFSET_TIME);
 		}
 
 		@Override
 		public String toString(LocalTime value) {
-			return FORMATTER.format(value);
+			return DateTimeFormatter.ISO_OFFSET_TIME.format(value);
 		}
 
 	}
 
 	private static class LocalDateTimeParamConverter implements ParamConverter<LocalDateTime> {
 
-		private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
 		@Override
 		public LocalDateTime fromString(String value) {
 			if (StringUtils.isEmpty(value)) {
 				return null;
 			}
-			return LocalDateTime.parse(value, FORMATTER);
+			return LocalDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 		}
 
 		@Override
 		public String toString(LocalDateTime value) {
-			return FORMATTER.format(value);
+			return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(value);
 		}
 
 	}

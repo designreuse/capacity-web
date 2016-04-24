@@ -38,7 +38,6 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
 public class IcalImporter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(IcalImporter.class);
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
 	public void importIcal(@Nonnull IcalImportEntity icalImport, @Nonnull Progress<ImportResult> progress) {
 		String url = icalImport.getUrl();
@@ -99,8 +98,8 @@ public class IcalImporter {
 					String reason = summaryProperty != null ? summaryProperty.getValue() : "Unnamed";
 					absence.setReason(reason);
 					try {
-						absence.setStart(LocalDate.parse(component.getProperty("DTSTART").getValue(), FORMATTER));
-						absence.setEnd(LocalDate.parse(component.getProperty("DTEND").getValue(), FORMATTER).minusDays(1));
+						absence.setStart(LocalDate.parse(component.getProperty("DTSTART").getValue(), DateTimeFormatter.BASIC_ISO_DATE));
+						absence.setEnd(LocalDate.parse(component.getProperty("DTEND").getValue(), DateTimeFormatter.BASIC_ISO_DATE).minusDays(1));
 					} catch (IllegalArgumentException e) {
 						// TODO We don't handle vacations for half days
 						result.skip();
