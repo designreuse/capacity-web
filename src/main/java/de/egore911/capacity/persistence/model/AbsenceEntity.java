@@ -70,7 +70,7 @@ public class AbsenceEntity extends IntegerDbObject {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "icalimport_id", nullable = true)
+	@JoinColumn(name = "icalimport_id")
 	public IcalImportEntity getIcalImport() {
 		return icalImport;
 	}

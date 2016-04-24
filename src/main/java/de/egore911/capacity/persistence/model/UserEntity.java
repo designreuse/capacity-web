@@ -51,7 +51,7 @@ public class UserEntity extends IntegerDbObject {
 	private String email;
 	private List<RoleEntity> roles = new ArrayList<>(0);
 
-	@Column(nullable = false, length = 255)
+	@Column(nullable = false)
 	@NotNull
 	@Size(min = 1, max = 255)
 	public String getName() {
@@ -84,7 +84,7 @@ public class UserEntity extends IntegerDbObject {
 		this.password = password;
 	}
 
-	@Column(nullable = false, length = 255)
+	@Column(nullable = false)
 	@NotNull
 	@Size(min = 1, max = 255)
 	public String getEmail() {

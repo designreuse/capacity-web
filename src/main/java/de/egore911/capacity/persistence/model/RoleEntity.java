@@ -52,7 +52,7 @@ public class RoleEntity extends IntegerDbObject {
 	private List<Permission> permissions = new ArrayList<>(0);
 	private List<UserEntity> users = new ArrayList<>(0);
 
-	@Column(nullable = false, length = 255)
+	@Column(nullable = false)
 	@NotNull
 	@Size(min = 1, max = 255)
 	public String getName() {

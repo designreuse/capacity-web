@@ -67,8 +67,8 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 		this.modified = modified;
 	}
 
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "id_creator", nullable = true)
+	@ManyToOne
+	@JoinColumn(name = "id_creator")
 	public UserEntity getCreatedBy() {
 		return createdBy;
 	}
@@ -77,8 +77,8 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 		this.createdBy = createdBy;
 	}
 
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "id_modificator", nullable = true)
+	@ManyToOne
+	@JoinColumn(name = "id_modificator")
 	public UserEntity getModifiedBy() {
 		return modifiedBy;
 	}
