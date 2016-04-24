@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class CalendarServiceTest extends AbstractUiTest {
 		List<Event> events = target("calendar/events/absences").request().get(new GenericType<List<Event>>() {
 		});
 
-		assertThat(events, hasSize(1));
+		assertThat(events, hasSize(greaterThanOrEqualTo(1)));
 	}
 
 	@Test
@@ -60,7 +61,7 @@ public class CalendarServiceTest extends AbstractUiTest {
 		Calendar calendar = builder.build(new ByteArrayInputStream(ics.getBytes(StandardCharsets.UTF_8)));
 		ComponentList<CalendarComponent> components = calendar.getComponents("VEVENT");
 
-		assertThat("One ansence defined in import.sql, 'Whole February: User 2015 complete'", components, hasSize(1));
+		assertThat("One ansence defined in import.sql, 'Whole February: User 2015 complete'", components, hasSize(greaterThanOrEqualTo(1)));
 
 		// Check properties
 		CalendarComponent component = components.get(0);

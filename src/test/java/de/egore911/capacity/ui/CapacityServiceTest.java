@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.egore911.capacity.ui.dto.Employee;
 import de.egore911.capacity.ui.dto.WorkingHoursPerEmployee;
@@ -32,7 +32,7 @@ public class CapacityServiceTest extends AbstractUiTest {
 		String workingHours = target("capacity/workinghours").request().post(entity, String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JodaModule());
+		mapper.registerModule(new JavaTimeModule());
 
 		List<WorkingHoursPerEmployee> horkingHoursPerEmployee = mapper.readValue(workingHours,
 				new TypeReference<List<WorkingHoursPerEmployee>>() {
@@ -54,7 +54,7 @@ public class CapacityServiceTest extends AbstractUiTest {
 		String workingHours = target("capacity/workinghours").request().post(entity, String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JodaModule());
+		mapper.registerModule(new JavaTimeModule());
 
 		List<WorkingHoursPerEmployee> horkingHoursPerEmployee = mapper.readValue(workingHours,
 				new TypeReference<List<WorkingHoursPerEmployee>>() {

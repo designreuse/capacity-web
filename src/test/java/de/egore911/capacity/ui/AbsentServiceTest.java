@@ -6,15 +6,16 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.util.List;
 
 import org.hamcrest.Matchers;
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.egore911.capacity.ui.dto.Employee;
 
@@ -25,7 +26,7 @@ public class AbsentServiceTest extends AbstractUiTest {
 		String absences = target("absent").queryParam("date", "2015-02-10").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JodaModule());
+		mapper.registerModule(new JavaTimeModule());
 
 		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {
 		});
@@ -42,7 +43,7 @@ public class AbsentServiceTest extends AbstractUiTest {
 		String absences = target("absent").queryParam("date", "2015-03-03").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JodaModule());
+		mapper.registerModule(new JavaTimeModule());
 
 		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {
 		});
@@ -58,12 +59,12 @@ public class AbsentServiceTest extends AbstractUiTest {
 		String absences = target("absent").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JodaModule());
+		mapper.registerModule(new JavaTimeModule());
 
 		List<Employee> employees = mapper.readValue(absences, new TypeReference<List<Employee>>() {
 		});
 
-		if (2 == new LocalDate().getDayOfWeek()) {
+		if (DayOfWeek.TUESDAY == LocalDate.now().getDayOfWeek()) {
 			assertThat("Three employees expected: all have non-working day", employees, hasSize(3));
 		} else {
 			assertThat("Four employees expected: all have non-working day", employees, hasSize(4));

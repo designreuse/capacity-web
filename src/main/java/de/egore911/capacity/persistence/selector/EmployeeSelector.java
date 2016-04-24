@@ -1,5 +1,6 @@
 package de.egore911.capacity.persistence.selector;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -12,7 +13,6 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.AbsenceEntity_;
@@ -153,7 +153,7 @@ public class EmployeeSelector extends AbstractResourceSelector<EmployeeEntity> {
 			Root<EmployeeEntity> subfrom = subqueryWorkingDay.from(EmployeeEntity.class);
 			subqueryWorkingDay.select(subfrom.get(IntegerDbObject_.id));
 			subqueryWorkingDay.where(
-				builder.equal(subfrom.join(EmployeeEntity_.contract).join(ContractEntity_.workingHours).get(WorkingHoursEntity_.dayOfWeek), at.getDayOfWeek())
+				builder.equal(subfrom.join(EmployeeEntity_.contract).join(ContractEntity_.workingHours).get(WorkingHoursEntity_.dayOfWeek), at.getDayOfWeek().getValue())
 			);
 		}
 		return subqueryWorkingDay;

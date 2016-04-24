@@ -1,8 +1,7 @@
 package de.egore911.capacity.ui.dto;
 
+import java.time.LocalDate;
 import java.util.List;
-
-import org.joda.time.LocalDate;
 
 public class WorkingHoursList {
 	private LocalDate from;

@@ -1,6 +1,6 @@
 package de.egore911.capacity.ui.dto;
 
-import org.joda.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 public class IcalImport extends AbstractDto {
 

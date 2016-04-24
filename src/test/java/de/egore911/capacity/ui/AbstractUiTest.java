@@ -8,13 +8,15 @@ import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
 import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.junit.BeforeClass;
 
-import com.fasterxml.jackson.datatype.joda.JodaMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 import de.egore911.capacity.OnceInit;
 import de.egore911.capacity.ui.filter.EntityManagerFilter;
 import de.egore911.capacity.ui.rest.JerseyConfig;
-import de.egore911.capacity.ui.rest.JodaParameterConverterProvider;
+import de.egore911.capacity.ui.rest.JavaTimeParameterConverterProvider;
 
 public abstract class AbstractUiTest extends JerseyTest {
 
@@ -33,15 +35,16 @@ public abstract class AbstractUiTest extends JerseyTest {
 		// Use default configuration, but manually register the provider as
 		// @Provider is not picked up by JerseyTest
 		JerseyConfig application = new JerseyConfig();
-		application.register(JodaParameterConverterProvider.class);
+		application.register(JavaTimeParameterConverterProvider.class);
 		return application;
 	}
 	
 	@Override
 	protected void configureClient(ClientConfig config) {
-		JodaMapper jodaMapper = new JodaMapper();
-		jodaMapper.setWriteDatesAsTimestamps(false);
-		JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider(jodaMapper, JacksonJaxbJsonProvider.DEFAULT_ANNOTATIONS);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider(mapper, JacksonJaxbJsonProvider.DEFAULT_ANNOTATIONS);
 		config.register(provider);
 	}
 

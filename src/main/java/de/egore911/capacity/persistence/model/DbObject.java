@@ -22,6 +22,7 @@
 package de.egore911.capacity.persistence.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
@@ -30,8 +31,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Type;
-import org.joda.time.LocalDateTime;
 
 import de.egore911.capacity.persistence.listeners.ModifiedListener;
 
@@ -49,7 +48,6 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 	private UserEntity createdBy;
 	private UserEntity modifiedBy;
 
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
 	public LocalDateTime getCreated() {
 		return created;
 	}
@@ -58,7 +56,6 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 		this.created = created;
 	}
 
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
 	public LocalDateTime getModified() {
 		return modified;
 	}

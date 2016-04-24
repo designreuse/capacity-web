@@ -1,5 +1,8 @@
 package de.egore911.capacity.ui.rest;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,8 +23,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.joda.time.Hours;
-import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.dao.EmployeeDao;
 import de.egore911.capacity.persistence.model.AbilityEntity;
@@ -173,15 +174,15 @@ public class CapacityService extends AbstractService {
 
 		holidays.stream().filter(holiday -> holiday.getDate().isBefore(end) && holiday.getDate().isAfter(start)).forEach(holiday -> reductions.put(holiday.getDate(), holiday.getHoursReduction()));
 
-		Map<Integer, Hours> durations = getWorkingHourDurations(employee);
+		Map<DayOfWeek, Integer> durations = getWorkingHourDurations(employee);
 
 		List<AbsenceEntity> absences = employee.getAbsences();
 		for (AbsenceEntity absence : absences) {
 			LocalDate date = absence.getStart();
 			while (date.isBefore(end) && !date.isAfter(absence.getEnd())) {
 				if (!date.isBefore(start)) {
-					Hours hours = durations.get(date.getDayOfWeek());
-					reductions.put(date, hours != null ? hours.getHours() : 0);
+					Integer hours = durations.get(date.getDayOfWeek());
+					reductions.put(date, hours != null ? hours : 0);
 				}
 				date = date.plusDays(1);
 			}
@@ -195,7 +196,7 @@ public class CapacityService extends AbstractService {
 		double workinghours = 0;
 		List<WorkingHoursDetails> details = new ArrayList<>();
 
-		Map<Integer, Hours> durations = getWorkingHourDurations(employee);
+		Map<DayOfWeek, Integer> durations = getWorkingHourDurations(employee);
 
 		LocalDate date = start;
 		while (!date.isAfter(end)) {
@@ -204,9 +205,9 @@ public class CapacityService extends AbstractService {
 					employee.getContract().getEnd() != null && date.isAfter(employee.getContract().getEnd())) {
 				workinghoursOfDay = 0;
 			} else {
-				int dayOfWeek = date.getDayOfWeek();
-				Hours hours = durations.get(dayOfWeek);
-				workinghoursOfDay = hours != null ? hours.getHours() : 0;
+				DayOfWeek dayOfWeek = date.getDayOfWeek();
+				Integer hours = durations.get(dayOfWeek);
+				workinghoursOfDay = hours != null ? hours : 0;
 
 				if (reductions.containsKey(date)) {
 					workinghoursOfDay -= reductions.get(date);
@@ -224,11 +225,11 @@ public class CapacityService extends AbstractService {
 		return new WorkingHoursList(start, end, workinghours, details);
 	}
 
-	private Map<Integer, Hours> getWorkingHourDurations(EmployeeEntity employee) {
-		Map<Integer, Hours> durations = new HashMap<>(7);
+	private Map<DayOfWeek, Integer> getWorkingHourDurations(EmployeeEntity employee) {
+		Map<DayOfWeek, Integer> durations = new HashMap<>(7);
 		for (WorkingHoursEntity workingHours : employee.getContract().getWorkingHours()) {
-			durations.put(workingHours.getDayOfWeek(),
-					Hours.hoursBetween(workingHours.getStart(), workingHours.getEnd()));
+			durations.put(DayOfWeek.of(workingHours.getDayOfWeek()),
+					(int) workingHours.getStart().until(workingHours.getEnd(), ChronoUnit.HOURS));
 		}
 		return durations;
 	}

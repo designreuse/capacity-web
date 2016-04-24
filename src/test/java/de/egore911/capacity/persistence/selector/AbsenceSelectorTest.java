@@ -1,10 +1,11 @@
 package de.egore911.capacity.persistence.selector;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
+
 import org.junit.Test;
 
 import de.egore911.capacity.persistence.model.AbsenceEntity;

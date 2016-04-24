@@ -1,8 +1,7 @@
 package de.egore911.capacity.persistence.dao;
 
+import java.time.LocalDate;
 import java.util.UUID;
-
-import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.model.HolidayEntity;
 

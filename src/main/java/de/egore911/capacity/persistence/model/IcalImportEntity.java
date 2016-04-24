@@ -1,10 +1,9 @@
 package de.egore911.capacity.persistence.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.LocalDateTime;
 
 @Entity(name = "IcalImport")
 @Table(name = "ical_import")
@@ -32,7 +31,6 @@ public class IcalImportEntity extends IntegerDbObject {
 		this.url = url;
 	}
 
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
 	public LocalDateTime getLastImported() {
 		return lastImported;
 	}

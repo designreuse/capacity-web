@@ -1,6 +1,6 @@
 package de.egore911.capacity.ui.dto;
 
-import org.joda.time.LocalTime;
+import java.time.LocalTime;
 
 public class WorkingHours {
 

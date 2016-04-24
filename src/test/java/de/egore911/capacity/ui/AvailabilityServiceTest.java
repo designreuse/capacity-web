@@ -7,15 +7,16 @@ import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.util.List;
 
 import org.hamcrest.Matchers;
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.egore911.capacity.ui.dto.Employee;
 
@@ -26,7 +27,7 @@ public class AvailabilityServiceTest extends AbstractUiTest {
 		String availabilities = target("available").queryParam("date", "2015-02-10").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JodaModule());
+		mapper.registerModule(new JavaTimeModule());
 
 		List<Employee> employees = mapper.readValue(availabilities, new TypeReference<List<Employee>>() {
 		});
@@ -49,7 +50,7 @@ public class AvailabilityServiceTest extends AbstractUiTest {
 		String availabilities = target("available").queryParam("date", "2015-03-03").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JodaModule());
+		mapper.registerModule(new JavaTimeModule());
 
 		List<Employee> employees = mapper.readValue(availabilities, new TypeReference<List<Employee>>() {
 		});
@@ -71,12 +72,12 @@ public class AvailabilityServiceTest extends AbstractUiTest {
 		String availabilities = target("available").request().get(String.class);
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new JodaModule());
+		mapper.registerModule(new JavaTimeModule());
 
 		List<Employee> employees = mapper.readValue(availabilities, new TypeReference<List<Employee>>() {
 		});
 
-		if (2 == new LocalDate().getDayOfWeek()) {
+		if (DayOfWeek.TUESDAY == LocalDate.now().getDayOfWeek()) {
 			assertThat("One employee expected: ID 2 has a working day and a valid contract", employees, hasSize(1));
 
 			assertThat(employees, hasItem(Matchers.<Employee> hasProperty("id", equalTo(2))));

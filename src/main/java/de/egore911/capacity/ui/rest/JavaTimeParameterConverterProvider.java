@@ -2,19 +2,17 @@ package de.egore911.capacity.ui.rest;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
-import org.joda.time.format.ISODateTimeFormat;
 
 @Provider
 public class JavaTimeParameterConverterProvider implements ParamConverterProvider {
@@ -22,7 +20,7 @@ public class JavaTimeParameterConverterProvider implements ParamConverterProvide
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> ParamConverter<T> getConverter(Class<T> type, Type genericType, Annotation[] annotations) {
-		if (type.equals(DateTime.class)) {
+		if (type.equals(ZonedDateTime.class)) {
 			return (ParamConverter<T>) new DateTimeParamConverter();
 		} else if (type.equals(LocalDate.class)) {
 			return (ParamConverter<T>) new LocalDateParamConverter();
@@ -35,22 +33,26 @@ public class JavaTimeParameterConverterProvider implements ParamConverterProvide
 		}
 	}
 
-	private static class DateTimeParamConverter implements ParamConverter<DateTime> {
+	private static class DateTimeParamConverter implements ParamConverter<ZonedDateTime> {
+
+		private static final DateTimeFormatter FORMATTER_NO_MILLIS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZZ");
+		private static final DateTimeFormatter FORMATTER_MILLIS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
+
 		@Override
-		public DateTime fromString(String value) {
+		public ZonedDateTime fromString(String value) {
 			if (StringUtils.isEmpty(value)) {
 				return null;
 			}
 			try {
-				return ISODateTimeFormat.dateTimeNoMillis().parseDateTime(value);
+				return ZonedDateTime.parse(value, FORMATTER_NO_MILLIS);
 			} catch (IllegalArgumentException e) {
-				return ISODateTimeFormat.dateTime().parseDateTime(value);
+				return ZonedDateTime.parse(value, FORMATTER_MILLIS);
 			}
 		}
 
 		@Override
-		public String toString(DateTime value) {
-			return value.toString();
+		public String toString(ZonedDateTime value) {
+			return FORMATTER_MILLIS.format(value);
 		}
 
 	}

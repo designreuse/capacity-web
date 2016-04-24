@@ -9,10 +9,10 @@ import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hamcrest.Matchers;
-import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import de.egore911.capacity.persistence.model.EmployeeEntity;

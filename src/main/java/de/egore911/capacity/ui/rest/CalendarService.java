@@ -1,5 +1,10 @@
 package de.egore911.capacity.ui.rest;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +18,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.HolidayEntity;
@@ -36,6 +39,8 @@ import net.fortuna.ical4j.model.property.Version;
 @Path("calendar")
 public class CalendarService {
 
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
+
 	@Context
 	private ServletContext servletContext;
 
@@ -47,7 +52,7 @@ public class CalendarService {
 	@GET
 	@Path("{id}.ics")
 	@Produces("text/calendar")
-	public Response getIcal(@PathParam("id") String id) {
+	public Response getIcal(@PathParam("id") String id) throws ParseException {
 		Calendar calendar = new Calendar();
 		calendar.getProperties()
 				.add(new ProdId("-//Christoph Brill//capacity "
@@ -58,18 +63,18 @@ public class CalendarService {
 		if ("holidays".equals(id)) {
 			List<HolidayEntity> holidays = new HolidaySelector().findAll();
 			for (HolidayEntity holiday : holidays) {
-				VEvent event = new VEvent(new Date(holiday.getDate().toDate()), holiday.getName());
+				VEvent event = new VEvent(toIcalDate(holiday.getDate()), holiday.getName());
 				event.getProperties().add(generateUid(holiday));
-				event.getProperties().add(new DtStamp(new DateTime(holiday.getCreated().toDate())));
+				event.getProperties().add(toIcalDate(holiday.getCreated()));
 				calendar.getComponents().add(event);
 			}
 		} else if ("absences".equals(id)) {
 			List<AbsenceEntity> absences = new AbsenceSelector().findAll();
 			for (AbsenceEntity absence : absences) {
-				VEvent event = new VEvent(new Date(absence.getStart().toDate()), new Date(absence.getEnd().toDate()),
+				VEvent event = new VEvent(toIcalDate(absence.getStart()), toIcalDate(absence.getEnd()),
 						absence.getReason() + ": " + absence.getEmployee().getName());
 				event.getProperties().add(generateUid(absence));
-				event.getProperties().add(new DtStamp(new DateTime(absence.getCreated().toDate())));
+				event.getProperties().add(toIcalDate(absence.getCreated()));
 				calendar.getComponents().add(event);
 			}
 		} else {
@@ -77,6 +82,14 @@ public class CalendarService {
 		}
 
 		return Response.ok(calendar.toString()).build();
+	}
+
+	private Date toIcalDate(LocalDate date) {
+		return new Date(Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+	}
+
+	private DtStamp toIcalDate(LocalDateTime dateTime) {
+		return new DtStamp(new DateTime(Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant())));
 	}
 
 	@GET

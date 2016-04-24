@@ -1,13 +1,13 @@
 package de.egore911.capacity.ui.rest;
 
+import java.time.LocalDateTime;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
-import org.joda.time.LocalDateTime;
 
 import de.egore911.capacity.util.VersionExtractor;
 

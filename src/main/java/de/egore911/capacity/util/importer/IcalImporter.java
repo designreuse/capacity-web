@@ -6,13 +6,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 
-import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +38,7 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
 public class IcalImporter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(IcalImporter.class);
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
 	public void importIcal(@Nonnull IcalImportEntity icalImport, @Nonnull Progress<ImportResult> progress) {
 		String url = icalImport.getUrl();
@@ -97,10 +99,8 @@ public class IcalImporter {
 					String reason = summaryProperty != null ? summaryProperty.getValue() : "Unnamed";
 					absence.setReason(reason);
 					try {
-						absence.setStart(
-								ISODateTimeFormat.basicDate().parseLocalDate(component.getProperty("DTSTART").getValue()));
-						absence.setEnd(
-								ISODateTimeFormat.basicDate().parseLocalDate(component.getProperty("DTEND").getValue()).minusDays(1));
+						absence.setStart(LocalDate.parse(component.getProperty("DTSTART").getValue(), FORMATTER));
+						absence.setEnd(LocalDate.parse(component.getProperty("DTEND").getValue(), FORMATTER).minusDays(1));
 					} catch (IllegalArgumentException e) {
 						// TODO We don't handle vacations for half days
 						result.skip();

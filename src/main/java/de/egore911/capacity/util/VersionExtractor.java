@@ -2,6 +2,8 @@ package de.egore911.capacity.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 import javax.annotation.Nonnull;
@@ -9,10 +11,10 @@ import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
 
 public class VersionExtractor {
+
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
 
 	@Nullable
 	private static String load(@Nonnull ServletContext context, @Nonnull String groupId,
@@ -65,7 +67,7 @@ public class VersionExtractor {
 			return null;
 		}
 		try {
-			return LocalDateTime.parse(string, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ"));
+			return LocalDateTime.parse(string, FORMATTER);
 		} catch (IllegalArgumentException e) {
 			return null;
 		}

@@ -81,7 +81,7 @@ angular.module('capacityApp')
 			}
 		};
 
-		// Joda uses 1-7, while moment uses 0-6 (though both use 1 as monday)
+		// JSR 310 (Java 8 datetime) uses 1-7, while moment uses 0-6 (though both use 1 as monday)
 		function getOneBasedDayOfWeek(date) {
 			var dayOfWeek = date.day();
 			if (dayOfWeek === 0) {

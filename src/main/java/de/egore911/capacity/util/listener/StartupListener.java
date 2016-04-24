@@ -23,6 +23,12 @@ package de.egore911.capacity.util.listener;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,11 +40,6 @@ import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
-import org.joda.time.DateTime;
-import org.joda.time.Hours;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -55,8 +56,10 @@ import de.egore911.capacity.ui.dto.Episode;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.metadata.Type;
 
 /**
  * Listener executed during startup, responsible for setting up the
@@ -83,7 +86,7 @@ public class StartupListener implements ServletContextListener {
 						if (a.getWorkingHours() != null) {
 							int workingHoursPerWeek = 0;
 							for (WorkingHoursEntity workingHoursEntity : a.getWorkingHours()) {
-								workingHoursPerWeek += Hours.hoursBetween(workingHoursEntity.getStart(), workingHoursEntity.getEnd()).getHours();
+								workingHoursPerWeek += workingHoursEntity.getStart().until(workingHoursEntity.getEnd(), ChronoUnit.HOURS);
 							}
 							b.setWorkingHoursPerWeek(workingHoursPerWeek);
 						}
@@ -125,7 +128,7 @@ public class StartupListener implements ServletContextListener {
 
 		MAPPER_FACTORY
 			.getConverterFactory()
-			.registerConverter(new PassThroughConverter(DateTime.class));
+			.registerConverter(new PassThroughConverter(ZonedDateTime.class));
 
 		MAPPER_FACTORY
 			.getConverterFactory()
@@ -138,6 +141,21 @@ public class StartupListener implements ServletContextListener {
 		MAPPER_FACTORY
 			.getConverterFactory()
 			.registerConverter(new PassThroughConverter(LocalDateTime.class));
+
+		MAPPER_FACTORY
+			.getConverterFactory()
+			.registerConverter(new BidirectionalConverter<DayOfWeek, Integer>() {
+				@Override
+				public Integer convertTo(DayOfWeek source, Type<Integer> destinationType) {
+					return source == null ? null : source.getValue();
+				}
+
+				@Override
+				public DayOfWeek convertFrom(Integer source, Type<DayOfWeek> destinationType) {
+					return source == null ? null : DayOfWeek.of(source);
+				}
+
+			});
 	}
 
 	@Override

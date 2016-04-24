@@ -1,5 +1,6 @@
 package de.egore911.capacity.persistence.selector;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -9,8 +10,6 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.model.HolidayEntity;
 import de.egore911.capacity.persistence.model.HolidayEntity_;

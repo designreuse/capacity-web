@@ -1,5 +1,6 @@
 package de.egore911.capacity.ui.rest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.ws.rs.DefaultValue;
@@ -8,8 +9,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
-import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;

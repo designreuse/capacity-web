@@ -1,14 +1,12 @@
 package de.egore911.capacity.persistence.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.LocalDate;
 
 @Entity(name = "Holiday")
 @Table(name = "holiday")
@@ -21,7 +19,6 @@ public class HolidayEntity extends IntegerDbObject {
 	private int hoursReduction;
 	private List<LocationEntity> locations;
 
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	public LocalDate getDate() {
 		return date;
 	}

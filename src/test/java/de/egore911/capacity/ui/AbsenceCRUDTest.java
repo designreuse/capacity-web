@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import javax.ws.rs.core.GenericType;
 
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
 
 import de.egore911.capacity.ui.dto.Absence;
 

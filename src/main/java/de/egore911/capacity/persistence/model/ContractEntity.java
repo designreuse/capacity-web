@@ -1,5 +1,6 @@
 package de.egore911.capacity.persistence.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
@@ -7,9 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.LocalDate;
 
 @Embeddable
 public class ContractEntity {
@@ -19,7 +17,6 @@ public class ContractEntity {
 	private int vacationDaysPerYear;
 	private List<WorkingHoursEntity> workingHours;
 
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	public LocalDate getStart() {
 		return start;
 	}
@@ -29,7 +26,6 @@ public class ContractEntity {
 	}
 
 	@Column(name = "`end`")
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	public LocalDate getEnd() {
 		return end;
 	}

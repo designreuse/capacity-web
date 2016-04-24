@@ -1,5 +1,6 @@
 package de.egore911.capacity.persistence.selector;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -7,8 +8,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.joda.time.LocalDate;
 
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.AbsenceEntity_;

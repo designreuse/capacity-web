@@ -1,5 +1,6 @@
 package de.egore911.capacity.persistence.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -8,9 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.collection.internal.PersistentBag;
-import org.joda.time.LocalDate;
 
 @Entity(name = "Episode")
 @Table(name = "episode")
@@ -23,7 +22,6 @@ public class EpisodeEntity extends IntegerDbObject {
 	private String name;
 	private List<EmployeeEpisodeEntity> employeeEpisodes;
 
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	public LocalDate getStart() {
 		return start;
 	}
@@ -33,7 +31,6 @@ public class EpisodeEntity extends IntegerDbObject {
 	}
 
 	@Column(name = "`end`")
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	public LocalDate getEnd() {
 		return end;
 	}

@@ -21,10 +21,10 @@
  */
 package de.egore911.capacity.persistence.listeners;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-
-import org.joda.time.LocalDateTime;
 
 import de.egore911.capacity.persistence.model.DbObject;
 
