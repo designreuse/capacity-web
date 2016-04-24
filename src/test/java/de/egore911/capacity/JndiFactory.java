@@ -75,25 +75,17 @@ public class JndiFactory implements InitialContextFactory {
 
 		Context context = Mockito.mock(Context.class);
 		Mockito.when(context.getNameParser("")).thenReturn(nameParser);
-		Mockito.when(context.lookup(Matchers.any(Name.class))).then(new Answer<Object>() {
-
-			@Override
-			public Object answer(InvocationOnMock invocation) {
-				if (invocation.getArguments()[0] == name) {
-					return jdbcDataSource;
-				}
-				return null;
+		Mockito.when(context.lookup(Matchers.any(Name.class))).then(invocation -> {
+			if (invocation.getArguments()[0] == name) {
+				return jdbcDataSource;
 			}
+			return null;
 		});
-		Mockito.when(context.lookup(Matchers.anyString())).then(new Answer<Object>() {
-
-			@Override
-			public Object answer(InvocationOnMock invocation) {
-				if (DATASOURCE_NAME.equals(invocation.getArguments()[0])) {
-					return jdbcDataSource;
-				}
-				return null;
+		Mockito.when(context.lookup(Matchers.anyString())).then(invocation -> {
+			if (DATASOURCE_NAME.equals(invocation.getArguments()[0])) {
+				return jdbcDataSource;
 			}
+			return null;
 		});
 
 		return context;

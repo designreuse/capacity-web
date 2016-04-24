@@ -61,15 +61,12 @@ public class CapacityService extends AbstractService {
 			EpisodeEntity episode = new EpisodeSelector().withId(request.getEpisodeId()).find();
 			start = episode.getStart();
 			end = episode.getEnd();
-			employeeIds = (List<Integer>) CollectionUtils.collect(episode.getEmployeeEpisodes(), new Transformer<EmployeeEpisodeEntity, Integer>() {
-				@Override
-				public Integer transform(EmployeeEpisodeEntity employee) {
-					Integer velocity = employee.getVelocity();
-					if (velocity != null) {
-						velocities.put(employee.getEmployee().getId(), velocity);
-					}
-					return employee.getEmployee().getId();
+			employeeIds = (List<Integer>) CollectionUtils.collect(episode.getEmployeeEpisodes(), employee -> {
+				Integer velocity = employee.getVelocity();
+				if (velocity != null) {
+					velocities.put(employee.getEmployee().getId(), velocity);
 				}
+				return employee.getEmployee().getId();
 			});
 		} else {
 
@@ -118,11 +115,9 @@ public class CapacityService extends AbstractService {
 		}
 
 		// Put velocities into lookup (when they were not overridden in the episode)
-		for (EmployeeEntity employee : employees) {
-			if (!velocities.containsKey(employee.getId())) {
-				velocities.put(employee.getId(), employee.getVelocity());
-			}
-		}
+		employees.stream().filter(employee -> !velocities.containsKey(employee.getId())).forEach(employee -> {
+			velocities.put(employee.getId(), employee.getVelocity());
+		});
 
 		// Calculate the capatcity per employee
 		List<WorkingHoursPerEmployee> result = new ArrayList<>(employees.size());
@@ -177,11 +172,9 @@ public class CapacityService extends AbstractService {
 		List<HolidayEntity> holidays = new HolidaySelector().withStartInclusive(start).withEndInclusive(end)
 				.withIncludingLocation(employee.getLocation()).findAll();
 
-		for (HolidayEntity holiday : holidays) {
-			if (holiday.getDate().isBefore(end) && holiday.getDate().isAfter(start)) {
-				reductions.put(holiday.getDate(), holiday.getHoursReduction());
-			}
-		}
+		holidays.stream().filter(holiday -> holiday.getDate().isBefore(end) && holiday.getDate().isAfter(start)).forEach(holiday -> {
+			reductions.put(holiday.getDate(), holiday.getHoursReduction());
+		});
 
 		Map<Integer, Hours> durations = getWorkingHourDurations(employee);
 

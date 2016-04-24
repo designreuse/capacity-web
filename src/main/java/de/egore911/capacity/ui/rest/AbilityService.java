@@ -17,12 +17,7 @@ import de.egore911.capacity.ui.dto.Ability;
 @Path("abilities")
 public class AbilityService extends AbstractService {
 
-	private static final Transformer<String, Ability> TRANSFORMER = new Transformer<String, Ability>() {
-		@Override
-		public Ability transform(String name) {
-			return new Ability(name);
-		}
-	};
+	private static final Transformer<String, Ability> TRANSFORMER = Ability::new;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

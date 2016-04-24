@@ -55,22 +55,19 @@ public class IcalImportService extends AbstractResourceService<IcalImport, IcalI
 		ProgressEndpoint.CACHE.put(id, progress);
 		final EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		EntityManagerUtil.clearEntityManager();
-		StartupListener.EXECUTOR.execute(new Runnable() {
-			@Override
-			public void run() {
-				EntityManagerUtil.setEntityManager(entityManager);
-				try {
-					IcalImportEntity icalImportEntity = new IcalImportSelector().withId(icalImportId).find();
-					if (icalImportEntity == null) {
-						throw new BadArgumentException("Given ID not found in database");
-					}
-					new IcalImporter().importIcal(icalImportEntity, progress);
-					icalImportEntity.setLastImported(LocalDateTime.now());
-					new IcalImportDao().save(icalImportEntity);
-				} finally {
-					EntityManagerUtil.clearEntityManager();
-					entityManager.close();
+		StartupListener.EXECUTOR.execute(() -> {
+			EntityManagerUtil.setEntityManager(entityManager);
+			try {
+				IcalImportEntity icalImportEntity = new IcalImportSelector().withId(icalImportId).find();
+				if (icalImportEntity == null) {
+					throw new BadArgumentException("Given ID not found in database");
 				}
+				new IcalImporter().importIcal(icalImportEntity, progress);
+				icalImportEntity.setLastImported(LocalDateTime.now());
+				new IcalImportDao().save(icalImportEntity);
+			} finally {
+				EntityManagerUtil.clearEntityManager();
+				entityManager.close();
 			}
 		});
 		return id;

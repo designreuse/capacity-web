@@ -30,21 +30,17 @@ public class ProgressEndpoint {
 	@OnOpen
 	public void registerProgressListener(@PathParam("progressId") final String id, final Session session) {
 		final ObjectMapper mapper = new ObjectMapper();
-		ScheduledFuture<?> scheduleAtFixedRate = StartupListener.SCHEDULE_EXECUTOR.scheduleAtFixedRate(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					Progress<?> progress = CACHE.get(id);
-					if (progress.isCompleted()) {
-						session.getBasicRemote().sendText(mapper.writeValueAsString(progress), true);
-						RUNNING.get(id).cancel(false);
-					} else {
-						session.getBasicRemote().sendText(mapper.writeValueAsString(progress));
-					}
-				} catch (IOException e) {
-					LOG.error(e.getMessage(), e);
+		ScheduledFuture<?> scheduleAtFixedRate = StartupListener.SCHEDULE_EXECUTOR.scheduleAtFixedRate(() -> {
+			try {
+				Progress<?> progress = CACHE.get(id);
+				if (progress.isCompleted()) {
+					session.getBasicRemote().sendText(mapper.writeValueAsString(progress), true);
+					RUNNING.get(id).cancel(false);
+				} else {
+					session.getBasicRemote().sendText(mapper.writeValueAsString(progress));
 				}
+			} catch (IOException e) {
+				LOG.error(e.getMessage(), e);
 			}
 		}, 1, 1, TimeUnit.SECONDS);
 		RUNNING.put(id, scheduleAtFixedRate);
