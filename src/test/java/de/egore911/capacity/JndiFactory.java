@@ -32,8 +32,6 @@ import javax.naming.spi.InitialContextFactory;
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
