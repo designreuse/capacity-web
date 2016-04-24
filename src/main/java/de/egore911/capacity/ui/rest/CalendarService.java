@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +37,6 @@ import net.fortuna.ical4j.model.property.Version;
 
 @Path("calendar")
 public class CalendarService {
-
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
 	@Context
 	private ServletContext servletContext;
