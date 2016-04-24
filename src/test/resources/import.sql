@@ -18,9 +18,10 @@ INSERT INTO employee (id, created, modified, name, email, start, "end", location
 INSERT INTO employee (id, created, modified, name, email, start, "end", location_id, color, velocity) VALUES (17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'User from jan until mid october', 'until.mid@october', '2015-01-01', '2015-10-15', 1, '#ff0000', '50');
 INSERT INTO employee (id, created, modified, name, email, start, "end", location_id, color, velocity) VALUES (18, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'User from mid october until dec', 'from.mid@november', '2015-10-15', '2015-12-31', 2, '#ff0000', '50');
 
-INSERT INTO holiday (id, created, modified, name, date, hoursReduction) VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some vacation', '2015-01-14', 8);
-INSERT INTO holiday (id, created, modified, name, date, hoursReduction) VALUES (2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some vacation', '2015-01-15', 8);
-INSERT INTO holiday (id, created, modified, name, date, hoursReduction) VALUES (3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some vacation', '2015-01-16', 8);
+INSERT INTO holiday (id, created, modified, name, date, hoursReduction) VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some vacation 14', '2015-01-14', 8);
+INSERT INTO holiday (id, created, modified, name, date, hoursReduction) VALUES (2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some vacation 15', '2015-01-15', 8);
+INSERT INTO holiday (id, created, modified, name, date, hoursReduction) VALUES (3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some vacation 16', '2015-01-16', 8);
+INSERT INTO holiday (id, created, modified, name, date, hoursReduction) VALUES (4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some vacation 13', '2015-01-13', 8);
 
 INSERT INTO holiday_location (location_id, holiday_id) VALUES (1, 1);
 INSERT INTO holiday_location (location_id, holiday_id) VALUES (2, 2);

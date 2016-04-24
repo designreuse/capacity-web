@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -20,7 +21,8 @@ public class HolidaySelector extends AbstractResourceSelector<HolidayEntity> {
 
 	private LocalDate startInclusive;
 	private LocalDate endInclusive;
-	private LocationEntity location;
+	private LocationEntity onlyLocation;
+	private LocationEntity includingLocation;
 
 	@Override
 	protected Class<HolidayEntity> getEntityClass() {
@@ -36,9 +38,18 @@ public class HolidaySelector extends AbstractResourceSelector<HolidayEntity> {
 		if (endInclusive != null) {
 			predicates.add(builder.lessThanOrEqualTo(from.get(HolidayEntity_.date), endInclusive));
 		}
-		if (location != null) {
+		if (onlyLocation != null) {
 			ListJoin<HolidayEntity, LocationEntity> fromHoliday = from.join(HolidayEntity_.locations);
-			predicates.add(builder.equal(fromHoliday, location));
+			predicates.add(builder.equal(fromHoliday, onlyLocation));
+		}
+		if (includingLocation != null) {
+			ListJoin<HolidayEntity, LocationEntity> fromHoliday = from.join(HolidayEntity_.locations, JoinType.LEFT);
+			predicates.add(
+					builder.or(
+							builder.equal(fromHoliday, includingLocation),
+							builder.isEmpty(from.get(HolidayEntity_.locations))
+					)
+			);
 		}
 		return predicates;
 	}
@@ -53,8 +64,13 @@ public class HolidaySelector extends AbstractResourceSelector<HolidayEntity> {
 		return this;
 	}
 
-	public HolidaySelector withLocation(LocationEntity location) {
-		this.location = location;
+	public HolidaySelector withOnlyLocation(LocationEntity onlyLocation) {
+		this.onlyLocation = onlyLocation;
+		return this;
+	}
+
+	public HolidaySelector withIncludingLocation(LocationEntity includingLocation) {
+		this.includingLocation = includingLocation;
 		return this;
 	}
 

@@ -175,7 +175,7 @@ public class CapacityService extends AbstractService {
 		Map<LocalDate, Integer> reductions = new HashMap<>();
 
 		List<HolidayEntity> holidays = new HolidaySelector().withStartInclusive(start).withEndInclusive(end)
-				.withLocation(employee.getLocation()).findAll();
+				.withIncludingLocation(employee.getLocation()).findAll();
 
 		for (HolidayEntity holiday : holidays) {
 			if (holiday.getDate().isBefore(end) && holiday.getDate().isAfter(start)) {
