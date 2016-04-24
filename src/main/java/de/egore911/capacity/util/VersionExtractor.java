@@ -15,7 +15,7 @@ import org.joda.time.format.DateTimeFormat;
 public class VersionExtractor {
 
 	@Nullable
-	private static final String load(@Nonnull ServletContext context, @Nonnull String groupId,
+	private static String load(@Nonnull ServletContext context, @Nonnull String groupId,
 			@Nonnull String artifactId, @Nonnull String file, @Nonnull String property) {
 		Properties properties = new Properties();
 		try (InputStream pomPropertiesStream = context
