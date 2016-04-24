@@ -57,6 +57,9 @@ public class CapacityService extends AbstractService {
 		List<Integer> employeeIds;
 		if (request.getEpisodeId() != null) {
 			EpisodeEntity episode = new EpisodeSelector().withId(request.getEpisodeId()).find();
+			if (episode == null) {
+				throw new BadArgumentException("Episode with ID " + request.getEpisodeId() + " not found");
+			}
 			start = episode.getStart();
 			end = episode.getEnd();
 			employeeIds = (List<Integer>) CollectionUtils.collect(episode.getEmployeeEpisodes(), employee -> {
