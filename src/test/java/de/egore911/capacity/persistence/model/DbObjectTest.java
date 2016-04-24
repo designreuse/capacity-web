@@ -3,10 +3,28 @@ package de.egore911.capacity.persistence.model;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.endsWith;
 
 import org.junit.Test;
 
 public class DbObjectTest {
+
+	@Test
+	public void testToString_withId() {
+		IntegerDbObject object = new IntegerDbObject();
+		object.setId(1);
+
+		assertThat(object.toString(), equalTo("IntegerDbObject@1"));
+	}
+
+	@Test
+	public void testToString_withoutId() {
+		IntegerDbObject object = new IntegerDbObject();
+
+		assertThat(object.toString(), startsWith("IntegerDbObject#"));
+		assertThat(object.toString(), endsWith(Integer.toString(object.hashCode())));
+	}
 
 	@Test
 	public void testEquals_newObjects() {
