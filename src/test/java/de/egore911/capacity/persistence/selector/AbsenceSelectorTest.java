@@ -1,5 +1,9 @@
 package de.egore911.capacity.persistence.selector;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.hamcrest.Matchers.hasSize;
+
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
@@ -15,14 +19,23 @@ public class AbsenceSelectorTest extends AbstractSelectorTest<AbsenceEntity> {
 
 	@Test
 	public void smoketest() {
-		LocalDate startDate = LocalDate.parse("2015-10-01");
-		LocalDate endDate = LocalDate.parse("2015-10-31");
+		LocalDate wayBeforeRange = LocalDate.parse("2014-01-01");
+		LocalDate beforeRange = LocalDate.parse("2015-01-01");
+		LocalDate inRange = LocalDate.parse("2015-02-14");
+		LocalDate afterRange = LocalDate.parse("2015-10-31");
+		LocalDate wayAfterRange = LocalDate.parse("2016-10-31");
 
-		new AbsenceSelector()
-			.withEmployeeId(1)
-			.withStartInclusive(startDate)
-			.withEndInclusive(endDate)
-			.findAll();
+		assertThat(new AbsenceSelector().withEmployeeId(1).withStartInclusive(wayBeforeRange)
+				.withEndInclusive(beforeRange).findAll(), empty());
+
+		assertThat(new AbsenceSelector().withEmployeeId(1).withStartInclusive(beforeRange).withEndInclusive(inRange)
+				.findAll(), hasSize(1));
+
+		assertThat(new AbsenceSelector().withEmployeeId(1).withStartInclusive(inRange).withEndInclusive(afterRange)
+				.findAll(), hasSize(1));
+
+		assertThat(new AbsenceSelector().withEmployeeId(1).withStartInclusive(afterRange)
+				.withEndInclusive(wayAfterRange).findAll(), empty());
 	}
 
 }
