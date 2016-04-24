@@ -20,13 +20,4 @@ public class EpisodeSelector extends AbstractResourceSelector<EpisodeEntity> {
 		return EpisodeEntity.class;
 	}
 
-	@Override
-	@Nonnull
-	protected List<Predicate> generatePredicateList(@Nonnull CriteriaBuilder builder, @Nonnull Root<EpisodeEntity> from,
-			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
-
-		return predicates;
-	}
-
 }

@@ -20,12 +20,4 @@ public class IcalImportSelector extends AbstractResourceSelector<IcalImportEntit
 		return IcalImportEntity.class;
 	}
 
-	@Override
-	@Nonnull
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<IcalImportEntity> from,
-			CriteriaQuery<?> query) {
-		List<Predicate> predicates = super.generatePredicateList(builder, from, query);
-		return predicates;
-	}
-
 }
