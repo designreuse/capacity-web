@@ -20,7 +20,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Transformer;
 import org.joda.time.Hours;
 import org.joda.time.LocalDate;
 
@@ -28,7 +27,6 @@ import de.egore911.capacity.persistence.dao.EmployeeDao;
 import de.egore911.capacity.persistence.model.AbilityEntity;
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
-import de.egore911.capacity.persistence.model.EmployeeEpisodeEntity;
 import de.egore911.capacity.persistence.model.EpisodeEntity;
 import de.egore911.capacity.persistence.model.HolidayEntity;
 import de.egore911.capacity.persistence.model.WorkingHoursEntity;

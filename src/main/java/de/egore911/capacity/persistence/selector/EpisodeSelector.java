@@ -1,12 +1,6 @@
 package de.egore911.capacity.persistence.selector;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import de.egore911.capacity.persistence.model.EpisodeEntity;
 
