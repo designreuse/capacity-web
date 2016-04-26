@@ -22,4 +22,4 @@ context.xml
 /src/main/webapp/components
 
 # git-commit-id-plugin
-git.properties
+/git.properties
