@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Properties;
 
 import javax.annotation.Nonnull;
@@ -13,6 +14,8 @@ import javax.servlet.ServletContext;
 import org.apache.commons.lang3.StringUtils;
 
 public class VersionExtractor {
+
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
 
 	@Nullable
 	private static String load(@Nonnull ServletContext context, @Nonnull String groupId,
@@ -65,8 +68,8 @@ public class VersionExtractor {
 			return null;
 		}
 		try {
-			return LocalDateTime.parse(string, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-		} catch (IllegalArgumentException e) {
+			return LocalDateTime.parse(string, FORMATTER);
+		} catch (DateTimeParseException e) {
 			return null;
 		}
 	}
