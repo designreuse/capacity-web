@@ -31,11 +31,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -105,24 +102,6 @@ public class UserEntity extends IntegerDbObject {
 
 	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
-	}
-
-	@Transient
-	public boolean hasRole(RoleEntity role) {
-		return CollectionUtils.isNotEmpty(roles) && roles.contains(role);
-	}
-
-	@Transient
-	public boolean hasPermission(Permission permission) {
-		if (CollectionUtils.isEmpty(roles)) {
-			return false;
-		}
-		for (RoleEntity role : roles) {
-			if (role.hasPermission(permission)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }
