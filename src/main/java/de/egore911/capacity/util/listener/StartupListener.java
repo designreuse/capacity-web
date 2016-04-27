@@ -49,10 +49,12 @@ import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.ContractEntity;
 import de.egore911.capacity.persistence.model.EmployeeEpisodeEntity;
 import de.egore911.capacity.persistence.model.EpisodeEntity;
+import de.egore911.capacity.persistence.model.UserEntity;
 import de.egore911.capacity.persistence.model.WorkingHoursEntity;
 import de.egore911.capacity.ui.dto.Absence;
 import de.egore911.capacity.ui.dto.Contract;
 import de.egore911.capacity.ui.dto.Episode;
+import de.egore911.capacity.ui.dto.User;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -122,6 +124,18 @@ public class StartupListener implements ServletContextListener {
 					@Override
 					public void mapBtoA(AbsenceEntity a, Absence b, MappingContext context) {
 						b.setEmployeeId(a.getEmployee().getId());
+					}
+				})
+			.register();
+
+		MAPPER_FACTORY
+			.classMap(User.class, UserEntity.class)
+			.byDefault()
+			.customize(
+				new CustomMapper<User, UserEntity>() {
+					@Override
+					public void mapBtoA(UserEntity a, User b, MappingContext context) {
+						b.setPassword(null);
 					}
 				})
 			.register();
