@@ -3,17 +3,15 @@ package de.egore911.capacity.ui;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.core.GenericType;
 
-import java.time.LocalDate;
-import org.junit.Ignore;
-
 import de.egore911.capacity.ui.dto.Episode;
 
-@Ignore("A collection with cascade=\"all-delete-orphan\" was no longer referenced by the owning entity instance: de.egore911.capacity.persistence.model.EpisodeEntity.employeeEpisodes")
 public class EpisodeCRUDTest extends AbstractCRUDTest<Episode> {
 
 	@Override
@@ -22,6 +20,7 @@ public class EpisodeCRUDTest extends AbstractCRUDTest<Episode> {
 		fixture.setStart(LocalDate.now());
 		fixture.setEnd(LocalDate.now());
 		fixture.setName(UUID.randomUUID().toString());
+		fixture.setEmployeeEpisodes(Collections.emptyList());
 		return fixture;
 	}
 
