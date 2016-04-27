@@ -27,6 +27,21 @@ public class DbObjectTest {
 	}
 
 	@Test
+	public void testEquals_null() {
+		IntegerDbObject object = new IntegerDbObject();
+
+		assertThat(object, not(equalTo(null)));
+	}
+
+	@Test
+	public void testEquals_differentClasses() {
+		IntegerDbObject object1 = new IntegerDbObject();
+		Object object2 = new Object();
+
+		assertThat(object1, not(equalTo(object2)));
+	}
+
+	@Test
 	public void testEquals_newObjects() {
 		IntegerDbObject object1 = new IntegerDbObject();
 		IntegerDbObject object2 = new IntegerDbObject();
