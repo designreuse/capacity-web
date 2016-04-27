@@ -39,6 +39,7 @@ INSERT INTO working_hours (id, dayOfWeek, start, "end", employee_id) VALUES (15,
 INSERT INTO ability(employee_id, name) VALUES (1, 'Working');
 INSERT INTO ability(employee_id, name) VALUES (2, 'Working');
 INSERT INTO ability(employee_id, name) VALUES (2, 'Relaxing');
+INSERT INTO ability(employee_id, name) VALUES (3, 'Relaxing');
 
 INSERT INTO absence (id, created, modified, employee_id, start, "end", reason, externalId) VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, '2015-02-01', '2015-02-28', 'Whole February', NULL);
 
@@ -49,7 +50,8 @@ INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, ve
 INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 2, NULL);
 INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 1, 33);
 INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 2, 66);
-INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3, 2, 15);
-INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4, 2, 15);
+INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3, 1, NULL);
+INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3, 2, 15);
+INSERT INTO employee_episode (id, created, modified, employee_id, episode_id, velocity) VALUES (7, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4, 2, 15);
 
 INSERT INTO ical_import (id, created, modified, name, url, lastImported) VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Test', 'http://localhost', NULL);
