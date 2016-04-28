@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -100,7 +101,7 @@ public class IcalImporter {
 					try {
 						absence.setStart(LocalDate.parse(component.getProperty("DTSTART").getValue(), DateTimeFormatter.BASIC_ISO_DATE));
 						absence.setEnd(LocalDate.parse(component.getProperty("DTEND").getValue(), DateTimeFormatter.BASIC_ISO_DATE).minusDays(1));
-					} catch (IllegalArgumentException e) {
+					} catch (DateTimeParseException e) {
 						// TODO We don't handle vacations for half days
 						result.skip();
 						e.printStackTrace();
