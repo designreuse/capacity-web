@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.ws.rs.Consumes;
@@ -63,13 +64,14 @@ public class CapacityService extends AbstractService {
 			}
 			start = episode.getStart();
 			end = episode.getEnd();
-			employeeIds = (List<Integer>) CollectionUtils.collect(episode.getEmployeeEpisodes(), employee -> {
-				Integer velocity = employee.getVelocity();
-				if (velocity != null) {
-					velocities.put(employee.getEmployee().getId(), velocity);
-				}
-				return employee.getEmployee().getId();
-			});
+			employeeIds = episode.getEmployeeEpisodes().stream()
+					.map(employee -> {
+						Integer velocity = employee.getVelocity();
+						if (velocity != null) {
+							velocities.put(employee.getEmployee().getId(), velocity);
+						}
+						return employee.getEmployee().getId();
+					}).collect(Collectors.toList());
 		} else {
 
 			// Check if valid dates are passed, otherwise look for 10 days into the future and into the past
