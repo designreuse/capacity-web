@@ -54,8 +54,12 @@ angular.module('capacityApp')
 			Employee.get({id: $route.current.params.id}, function(employee) {
 				$scope.employee = employee;
 				workingHoursToEvents($scope.employee);
-				$scope.employee.contract.start = new Date($scope.employee.contract.start);
-				$scope.employee.contract.end = new Date($scope.employee.contract.end);
+				if ($scope.employee.contract.start) {
+					$scope.employee.contract.start = new Date($scope.employee.contract.start);
+				}
+				if ($scope.employee.contract.end) {
+					$scope.employee.contract.end = new Date($scope.employee.contract.end);
+				}
 			});
 			$scope.save = function() {
 				prepareDto();
