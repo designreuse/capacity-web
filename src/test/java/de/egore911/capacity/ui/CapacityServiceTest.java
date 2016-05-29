@@ -149,7 +149,7 @@ public class CapacityServiceTest extends AbstractUiTest {
 	}
 
 	@Test(expected = BadRequestException.class)
-	public void testEpisodeThree() throws IOException {
+	public void testEpisodeThree() {
 		WorkingHoursRequest request = new WorkingHoursRequest();
 		request.setEpisodeId(3);
 		Entity<WorkingHoursRequest> entity = Entity.entity(request, MediaType.APPLICATION_JSON);
