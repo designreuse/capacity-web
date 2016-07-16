@@ -111,7 +111,7 @@
 		};
 
 		vm.publishEvents = function(index) {
-			if (vm.calendars[index].selected) {
+			if (vm.calendars[index].selected && vm.allEvents[index] !== undefined) {
 				vm.eventSources[index] = vm.allEvents[index];
 			} else {
 				vm.eventSources[index] = [];
