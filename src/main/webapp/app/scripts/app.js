@@ -1,10 +1,15 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calendar', 'highcharts-ng', 'color.picker', 'ui.bootstrap', 'ui.bootstrap-slider'])
-	.config(function (uibDatepickerConfig) {
-		uibDatepickerConfig.startingDay = 1;
-	})
-	.controller('MainCtrl', ['$scope', '$location', '$http', function($scope, $location, $http) {
+	angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calendar', 'highcharts-ng', 'color.picker', 'ui.bootstrap', 'ui.bootstrap-slider'])
+		.config(function (uibDatepickerConfig) {
+			uibDatepickerConfig.startingDay = 1;
+		})
+		.controller('MainCtrl', MainCtrl);
+
+	MainCtrl.$inject = ['$scope', '$location', '$http'];
+
+	function MainCtrl($scope, $location, $http) {
 		$scope.currentModule = function() {
 			var currentPath = $location.path();
 			if (currentPath.startsWith('/')) {
@@ -20,5 +25,5 @@ angular.module('capacityApp', ['ngResource', 'ngRoute', 'ngTagsInput', 'ui.calen
 		$http.get('rest/version').then(function(response) {
 			$scope.version = response.data;
 		});
-
-	}]);
+	}
+})();

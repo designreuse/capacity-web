@@ -1,7 +1,12 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.controller('EmployeeListController', ['$scope', '$location', '$rootScope', 'Employee', function ($scope, $location, $rootScope, Employee) {
+	angular.module('capacityApp')
+		.controller('EmployeeListController', EmployeeListController);
+
+	EmployeeListController.$inject = ['$scope', '$location', '$rootScope', 'Employee'];
+
+	function EmployeeListController($scope, $location, $rootScope, Employee) {
 		Employee.query(function(employees) {
 			$scope.employees = employees;
 		});
@@ -20,5 +25,5 @@ angular.module('capacityApp')
 		$scope.searchFilter = function(string) {
 			$rootScope.search = string;
 		};
-	}]
-);
+	}
+})();

@@ -1,7 +1,12 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.controller('IcalImportDetailController', ['$scope', '$route', '$location', 'IcalImport', function ($scope, $route, $location, IcalImport) {
+	angular.module('capacityApp')
+		.controller('IcalImportDetailController', IcalImportDetailController);
+
+	IcalImportDetailController.$inject = ['$scope', '$route', '$location', 'IcalImport'];
+
+	function IcalImportDetailController($scope, $route, $location, IcalImport) {
 		$scope.id = $route.current.params.id;
 
 		if ($scope.id == 'new') {
@@ -27,5 +32,5 @@ angular.module('capacityApp')
 				});
 			};
 		}
-
-	}]);
+	}
+})();

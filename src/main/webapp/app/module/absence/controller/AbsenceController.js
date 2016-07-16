@@ -1,8 +1,12 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.controller('AbsenceController', ['$scope', '$http', function($scope, $http) {
+	angular.module('capacityApp')
+		.controller('AbsenceController', AbsenceController);
 
+	AbsenceController.$inject = ['$scope', '$http'];
+
+	function AbsenceController($scope, $http) {
 		$scope.selectedDate = new Date();
 		$scope.datepicker = {
 			opened: false
@@ -22,5 +26,5 @@ angular.module('capacityApp')
 		};
 
 		$scope.loadAbsencesAndAvailabilities();
-
-	}]);
+	}
+})();

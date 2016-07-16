@@ -1,7 +1,12 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.controller('EpisodeDetailController', ['$scope', '$route', '$location', 'Episode', 'Employee', function ($scope, $route, $location, Episode, Employee) {
+	angular.module('capacityApp')
+		.controller('EpisodeDetailController', EpisodeDetailController);
+
+	EpisodeDetailController.$inject = ['$scope', '$route', '$location', 'Episode', 'Employee'];
+
+	function EpisodeDetailController($scope, $route, $location, Episode, Employee) {
 		$scope.id = $route.current.params.id;
 
 		$scope.selection = [];
@@ -91,5 +96,5 @@ angular.module('capacityApp')
 		Employee.query(function(employees) {
 			$scope.employees = employees;
 		});
-
-	}]);
+	}
+})();

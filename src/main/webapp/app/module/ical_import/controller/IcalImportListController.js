@@ -1,7 +1,12 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.controller('IcalImportListController', ['$scope', '$location', '$rootScope', '$http', '$uibModal', 'IcalImport', function ($scope, $location, $rootScope, $http, $uibModal, IcalImport) {
+	angular.module('capacityApp')
+		.controller('IcalImportListController', IcalImportListController);
+
+	IcalImportListController.$inject = ['$scope', '$location', '$rootScope', '$http', '$uibModal', 'IcalImport'];
+
+	function IcalImportListController($scope, $location, $rootScope, $http, $uibModal, IcalImport) {
 		IcalImport.query(function(icalImports) {
 			$scope.icalImports = icalImports;
 		});
@@ -101,5 +106,5 @@ angular.module('capacityApp')
 
 			});
 		};
-	}]
-);
+	}
+})();

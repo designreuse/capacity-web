@@ -1,7 +1,10 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.directive('labelGroup', function() {
+	angular.module('capacityApp')
+		.directive('labelGroup', labelGroup);
+	
+	function labelGroup() {
 		var autoincrementId = 0;
 		
 		return {
@@ -24,4 +27,5 @@ angular.module('capacityApp')
 				}
 			}
 		};
-	});
+	}
+})();

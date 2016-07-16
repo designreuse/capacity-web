@@ -1,8 +1,12 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.controller('EmployeeDetailController', ['$scope', '$route', '$location', '$http', '$filter', 'Employee', function ($scope, $route, $location, $http, $filter, Employee) {
+	angular.module('capacityApp')
+		.controller('EmployeeDetailController', EmployeeDetailController);
 
+	EmployeeDetailController.$inject = ['$scope', '$route', '$location', '$http', '$filter', 'Employee'];
+
+	function EmployeeDetailController($scope, $route, $location, $http, $filter, Employee) {
 		$scope.datepicker = {
 			startOpened: false,
 			endOpened: false
@@ -186,5 +190,5 @@ angular.module('capacityApp')
 			slotLabelFormat: 'HH:mm'
 		};
 
-	}]
-);
+	}
+})();

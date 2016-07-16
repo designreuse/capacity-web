@@ -1,8 +1,12 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.controller('CalendarController', ['$scope', '$http', 'uiCalendarConfig', '$uibModal', function($scope, $http, uiCalendarConfig, $uibModal) {
+	angular.module('capacityApp')
+		.controller('CalendarController', CalendarController);
 
+	CalendarController.$inject = ['$scope', '$http', 'uiCalendarConfig', '$uibModal'];
+
+	function CalendarController($scope, $http, uiCalendarConfig, $uibModal) {
 		$scope.calendars = [
 			{ id: 'holidays', name: 'Holidays', selected: true },
 			{ id: 'employees', name: 'Absences', selected: true }
@@ -131,4 +135,5 @@ angular.module('capacityApp')
 			publishEvents(1);
 		});
 		// Ideally we would do this: $scope.eventSources = [ 'rest/calendar/events' ];
-	}]);
+	}
+})();

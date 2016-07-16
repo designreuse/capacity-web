@@ -1,7 +1,12 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.controller('CapacityController', ['$scope', '$http', 'Episode', '$filter', function($scope, $http, Episode, $filter) {
+	angular.module('capacityApp')
+		.controller('CapacityController', CapacityController);
+
+	CapacityController.$inject = ['$scope', '$http', 'Episode', '$filter'];
+
+	function CapacityController($scope, $http, Episode, $filter) {
 
 		// Boolean option: Whether or not to calculate the capacity using the velocity per employee or not
 		$scope.useVelocity = true;
@@ -217,5 +222,5 @@ angular.module('capacityApp')
 		$scope.isPast = function(date) {
 			return moment(date).diff(moment(), 'minutes') < 0;
 		}
-
-	}]);
+	}
+})();

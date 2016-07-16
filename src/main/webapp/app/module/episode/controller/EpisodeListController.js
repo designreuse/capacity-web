@@ -1,7 +1,12 @@
-'use strict';
+(function() {
+	'use strict';
 
-angular.module('capacityApp')
-	.controller('EpisodeListController', ['$scope', '$location', '$rootScope', 'Episode', function ($scope, $location, $rootScope, Episode) {
+	angular.module('capacityApp')
+		.controller('EpisodeListController', EpisodeListController);
+
+	EpisodeListController.$inject = ['$scope', '$location', '$rootScope', 'Episode'];
+
+	function EpisodeListController($scope, $location, $rootScope, Episode) {
 		Episode.query(function(episodes) {
 			$scope.episodes = episodes;
 		});
@@ -24,5 +29,5 @@ angular.module('capacityApp')
 		$scope.clone = function(id) {
 			$location.path('/episodes/clone/'+id);
 		}
-	}]
-);
+	}
+})();
