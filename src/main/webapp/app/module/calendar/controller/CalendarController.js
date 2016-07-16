@@ -56,7 +56,7 @@
 						end: null,
 						className: 'holidays'
 					});
-					publishEvents(0);
+					parentScope.publishEvents(0);
 					$uibModalInstance.close(value);
 				});
 			} else if (vm.selected.calendar.id == 'employees') {
@@ -70,7 +70,7 @@
 						color: vm.employeesLookup[absence.employeeId].color,
 						className: 'employees'
 					});
-					publishEvents(1);
+					parentScope.publishEvents(1);
 					$uibModalInstance.close(value);
 				});
 			}
@@ -92,12 +92,13 @@
 			{ id: 'employees', name: 'Absences', selected: true }
 		];
 
-		vm.alertEventOnClick = function(date, jsEvent, view) {
+		vm.addEvent = function(date, jsEvent, view) {
 
 			var modalInstance = $uibModal.open({
 				animation: vm.animationsEnabled,
 				templateUrl: 'app/module/calendar/view/event.html',
 				controller: EventController,
+				controllerAs: 'vm',
 				resolve: {
 					date: date.toDate(),
 					parentScope: vm
@@ -106,10 +107,10 @@
 		};
 
 		vm.calendarConfig = {
-			dayClick: vm.alertEventOnClick
+			dayClick: vm.addEvent
 		};
 
-		var publishEvents = function(index) {
+		vm.publishEvents = function(index) {
 			if (vm.calendars[index].selected) {
 				vm.eventSources[index] = vm.allEvents[index];
 			} else {
@@ -118,8 +119,8 @@
 		};
 
 		vm.publishAllEvents = function() {
-			publishEvents(0);
-			publishEvents(1);
+			vm.publishEvents(0);
+			vm.publishEvents(1);
 		};
 
 		vm.start = moment().startOf('month').format('YYYY-MM-DD');
@@ -133,7 +134,7 @@
 				element.end = new Date(element.end);
 			});
 			vm.allEvents[0] = response.data;
-			publishEvents(0);
+			vm.publishEvents(0);
 		});
 		$http.get('rest/calendar/events/absences?start=' + vm.start + '&end=' + vm.end).then(function(response) {
 			response.data.forEach(function(element, index) {
@@ -142,7 +143,7 @@
 				element.end = new Date(element.end);
 			});
 			vm.allEvents[1] = response.data;
-			publishEvents(1);
+			vm.publishEvents(1);
 		});
 		// Ideally we would do this: vm.eventSources = [ 'rest/calendar/events' ];
 	}

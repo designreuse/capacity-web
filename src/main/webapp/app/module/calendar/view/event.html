@@ -2,91 +2,89 @@
 	<h3 class="modal-title" ng-bind="vm.title"></h3>
 </div>
 <div class="modal-body">
-	<div class="row">
-		<form class="form-horizontal">
-			<label-group label="Type">
-			<div class="btn-group">
-				<button type="button" class="btn btn-default dropdown-toggle"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					{{selected.calendar.name}} <span class="caret"></span>
+	<form class="form-horizontal">
+		<label-group label="Type">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				{{vm.selected.calendar.name}} <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li ng-repeat="calendar in vm.parentScope.calendars"
+					ng-class="{active : calendar.id == vm.selected.calendar.id}"><a
+					href ng-click="vm.selected.calendar = calendar">{{calendar.name}}</a>
+				</li>
+			</ul>
+		</div>
+		</label-group>
+
+		<label-group label="Date" ng-show="'holidays' == vm.selected.calendar.id">
+		<p class="input-group">
+			<input type="text" class="form-control" ng-model="vm.holiday.date"
+				uib-datepicker-popup="yyyy-MM-dd" is-open="vm.datepicker.dateOpened" />
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-default"
+					ng-click="vm.datepicker.dateOpened = true;">
+					<i class="fa fa-calendar"></i>
 				</button>
-				<ul class="dropdown-menu">
-					<li ng-repeat="calendar in parentScope.calendars"
-						ng-class="{active : calendar.id == vm.selected.calendar.id}"><a
-						href ng-click="vm.selected.calendar = calendar">{{calendar.name}}</a>
-					</li>
-				</ul>
-			</div>
-			</label-group>
+			</span>
+		</p>
+		</label-group>
 
-			<label-group label="Date" ng-show="'holidays' == vm.selected.calendar.id">
-			<p class="input-group">
-				<input type="text" class="form-control" ng-model="vm.holiday.date"
-					uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.dateOpened" />
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default"
-						ng-click="vm.datepicker.dateOpened = true;">
-						<i class="fa fa-calendar"></i>
-					</button>
-				</span>
-			</p>
-			</label-group>
+		<label-group label="Name" ng-show="'holidays' == vm.selected.calendar.id">
+			<input type="text" class="form-control" ng-model="vm.holiday.name" />
+		</label-group>
 
-			<label-group label="Name" ng-show="'holidays' == vm.selected.calendar.id">
-				<input type="text" class="form-control" ng-model="vm.holiday.name" />
-			</label-group>
+		<label-group label="Hours reduction" ng-show="'holidays' == vm.selected.calendar.id">
+			<input type="text" class="form-control" ng-model="vm.holiday.hoursReduction" />
+		</label-group>
 
-			<label-group label="Hours reduction" ng-show="'holidays' == vm.selected.calendar.id">
-				<input type="text" class="form-control" ng-model="vm.holiday.hoursReduction" />
-			</label-group>
-
-			<label-group label="Start date" ng-show="'employees' == vm.selected.calendar.id">
-			<p class="input-group">
-				<input type="text" class="form-control" ng-model="vm.absence.start"
-					uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.startOpened" />
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default"
-						ng-click="vm.datepicker.startOpened = true;">
-						<i class="fa fa-calendar"></i>
-					</button>
-				</span>
-			</p>
-			</label-group>
-
-			<label-group label="End date" ng-show="'employees' == vm.selected.calendar.id">
-			<p class="input-group">
-				<input type="text" class="form-control" ng-model="vm.absence.end"
-					uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.endOpened" />
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default"
-						ng-click="vm.datepicker.endOpened = true;">
-						<i class="fa fa-calendar"></i>
-					</button>
-				</span>
-			</p>
-			</label-group>
-
-			<label-group label="Reason" ng-show="'employees' == vm.selected.calendar.id">
-				<input type="text" class="form-control" ng-model="vm.absence.reason" />
-			</label-group>
-
-			<label-group label="Employee" ng-show="'employees' == vm.selected.calendar.id">
-			<div class="btn-group">
-				<button type="button" class="btn btn-default dropdown-toggle"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					{{employeesLookup[absence.employeeId].name}} <span class="caret"></span>
+		<label-group label="Start date" ng-show="'employees' == vm.selected.calendar.id">
+		<p class="input-group">
+			<input type="text" class="form-control" ng-model="vm.absence.start"
+				uib-datepicker-popup="yyyy-MM-dd" is-open="vm.datepicker.startOpened" />
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-default"
+					ng-click="vm.datepicker.startOpened = true;">
+					<i class="fa fa-calendar"></i>
 				</button>
-				<ul class="dropdown-menu">
-					<li ng-repeat="employee in vm.employees"
-						ng-class="{active : vm.absence.employeeId == employee.id}"><a
-						href ng-click="vm.absence.employeeId = employee.id">{{employee.name}}</a>
-					</li>
-				</ul>
-			</div>
-			</label-group>
+			</span>
+		</p>
+		</label-group>
 
-		</form>
-	</div>
+		<label-group label="End date" ng-show="'employees' == vm.selected.calendar.id">
+		<p class="input-group">
+			<input type="text" class="form-control" ng-model="vm.absence.end"
+				uib-datepicker-popup="yyyy-MM-dd" is-open="vm.datepicker.endOpened" />
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-default"
+					ng-click="vm.datepicker.endOpened = true;">
+					<i class="fa fa-calendar"></i>
+				</button>
+			</span>
+		</p>
+		</label-group>
+
+		<label-group label="Reason" ng-show="'employees' == vm.selected.calendar.id">
+			<input type="text" class="form-control" ng-model="vm.absence.reason" />
+		</label-group>
+
+		<label-group label="Employee" ng-show="'employees' == vm.selected.calendar.id">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				{{vm.employeesLookup[vm.absence.employeeId].name}} <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li ng-repeat="employee in vm.employees"
+					ng-class="{active : vm.absence.employeeId == employee.id}"><a
+					href ng-click="vm.absence.employeeId = employee.id">{{employee.name}}</a>
+				</li>
+			</ul>
+		</div>
+		</label-group>
+
+	</form>
 </div>
 <div class="modal-footer">
 	<div class="control-content">
