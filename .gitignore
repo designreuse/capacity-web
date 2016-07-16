@@ -18,8 +18,5 @@ release
 # Tomcat
 context.xml
 
-# Bower
-/src/main/webapp/components
-
 # git-commit-id-plugin
 /git.properties
