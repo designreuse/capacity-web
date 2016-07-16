@@ -4,7 +4,7 @@
 	angular.module('capacityApp')
 		.controller('CalendarController', CalendarController);
 
-    EventController.$inject = ['$uibModalInstance', 'date', 'parentScope', 'Holiday', 'Absence', 'Employee', '$filter'];
+	EventController.$inject = ['$uibModalInstance', 'date', 'parentScope', 'Holiday', 'Absence', 'Employee', '$filter'];
 
 	function EventController($uibModalInstance, date, parentScope, Holiday, Absence, Employee, $filter) {
 		/* jshint validthis: true */
