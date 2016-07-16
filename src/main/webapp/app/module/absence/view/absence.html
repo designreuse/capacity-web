@@ -7,9 +7,9 @@
     <label class="col-sm-2 control-label" for="selectedDate">Date</label>
     <div class="col-sm-10 label-group-content" id="selectedDate">
       <p class="input-group">
-        <input type="text" class="form-control" ng-model="selectedDate" ng-change="loadAbsencesAndAvailabilities()" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.opened"/>
+        <input type="text" class="form-control" ng-model="vm.selectedDate" ng-change="vm.loadAbsencesAndAvailabilities()" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.opened"/>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="datepicker.opened = true;"><i class="fa fa-calendar"></i></button>
+          <button type="button" class="btn btn-default" ng-click="vm.datepicker.opened = true;"><i class="fa fa-calendar"></i></button>
         </span>
       </p>
     </div>
@@ -26,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="employee in absent | filter: search | orderBy: 'name'">
+        <tr ng-repeat="employee in vm.absent | filter: search | orderBy: 'name'">
           <td><employee-name employee="employee" /></td>
         </tr>
       </tbody>
@@ -40,7 +40,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="employee in available | filter: search | orderBy: 'name'">
+        <tr ng-repeat="employee in vm.available | filter: search | orderBy: 'name'">
           <td><employee-name employee="employee" /></td>
         </tr>
       </tbody>

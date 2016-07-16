@@ -1,20 +1,20 @@
-<h1 class="page-header"><i class="fa fa-calendar-plus-o"></i>{{!icalImport.name ? '&nbsp;' : icalImport.name}}</h1>
+<h1 class="page-header"><i class="fa fa-calendar-plus-o"></i>{{!vm.icalImport.name ? '&nbsp;' : vm.icalImport.name}}</h1>
 
 <form class="form-horizontal">
 	<label-group label="ID">
 		<p>
-			<input type="text" class="form-control" ng-model="icalImport.id" disabled />
+			<input type="text" class="form-control" ng-model="vm.icalImport.id" disabled />
 		</p>
 	</label-group>
 	<label-group label="Name">
 		<p>
-			<input type="text" class="form-control" ng-model="icalImport.name" />
+			<input type="text" class="form-control" ng-model="vm.icalImport.name" />
 		</p>
 	</label-group>
 	<label-group label="URL">
 		<p>
-			<input type="text" class="form-control" ng-model="icalImport.url" />
+			<input type="text" class="form-control" ng-model="vm.icalImport.url" />
 		</p>
 	</label-group>
-	<button type="submit" ng-click="save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
+	<button type="submit" ng-click="vm.save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
 </form>

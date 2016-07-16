@@ -3,10 +3,13 @@
         .module('capacityApp')
 		.controller('MainCtrl', MainCtrl);
 
-	MainCtrl.$inject = ['$scope', '$location', '$http'];
+	MainCtrl.$inject = ['$location', '$http'];
 
-	function MainCtrl($scope, $location, $http) {
-		$scope.currentModule = function() {
+	function MainCtrl($location, $http) {
+		/* jshint validthis: true */
+		var vm = this;
+
+		vm.currentModule = function() {
 			var currentPath = $location.path();
 			if (currentPath.startsWith('/')) {
 				currentPath = currentPath.substring(1);
@@ -19,7 +22,7 @@
 		};
 
 		$http.get('rest/version').then(function(response) {
-			$scope.version = response.data;
+			vm.version = response.data;
 		});
 	}
 })();

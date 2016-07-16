@@ -4,25 +4,28 @@
 	angular.module('capacityApp')
 		.controller('EmployeeListController', EmployeeListController);
 
-	EmployeeListController.$inject = ['$scope', '$location', '$rootScope', 'Employee'];
+	EmployeeListController.$inject = ['$location', '$rootScope', 'Employee'];
 
-	function EmployeeListController($scope, $location, $rootScope, Employee) {
+	function EmployeeListController($location, $rootScope, Employee) {
+		/* jshint validthis: true */
+		var vm = this;
+		
 		Employee.query(function(employees) {
-			$scope.employees = employees;
+			vm.employees = employees;
 		});
 
-		$scope.add = function() {
+		vm.add = function() {
 			$location.path('/employees/new');
 		};
 
-		$scope.predicate = 'name';
-		$scope.reverse = false;
-		$scope.order = function(predicate) {
-			$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-			$scope.predicate = predicate;
+		vm.predicate = 'name';
+		vm.reverse = false;
+		vm.order = function(predicate) {
+			vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
+			vm.predicate = predicate;
 		};
 
-		$scope.searchFilter = function(string) {
+		vm.searchFilter = function(string) {
 			$rootScope.search = string;
 		};
 	}

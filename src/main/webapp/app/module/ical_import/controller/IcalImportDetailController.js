@@ -4,30 +4,33 @@
 	angular.module('capacityApp')
 		.controller('IcalImportDetailController', IcalImportDetailController);
 
-	IcalImportDetailController.$inject = ['$scope', '$route', '$location', 'IcalImport'];
+	IcalImportDetailController.$inject = ['$route', '$location', 'IcalImport'];
 
-	function IcalImportDetailController($scope, $route, $location, IcalImport) {
-		$scope.id = $route.current.params.id;
+	function IcalImportDetailController($route, $location, IcalImport) {
+		/* jshint validthis: true */
+		var vm = this;
 
-		if ($scope.id == 'new') {
-			$scope.icalImport = new IcalImport();
-			$scope.save = function() {
-				$scope.icalImport.$save(function() {
+		vm.id = $route.current.params.id;
+
+		if (vm.id == 'new') {
+			vm.icalImport = new IcalImport();
+			vm.save = function() {
+				vm.icalImport.$save(function() {
 					$location.path('/ical_imports');
 				});
 			};
 		} else {
-			$scope.icalImport = {};
-			IcalImport.get({id: $scope.id}, function(icalImport) {
-				$scope.icalImport = icalImport;
-				if ($scope.icalImport.employeeIcalImports) {
-					angular.forEach($scope.icalImport.employeeIcalImports, function(element, index) {
-						$scope.selection[element.employee.id] = element;
+			vm.icalImport = {};
+			IcalImport.get({id: vm.id}, function(icalImport) {
+				vm.icalImport = icalImport;
+				if (vm.icalImport.employeeIcalImports) {
+					angular.forEach(vm.icalImport.employeeIcalImports, function(element, index) {
+						vm.selection[element.employee.id] = element;
 					});
 				}
 			});
-			$scope.save = function() {
-				$scope.icalImport.$update(function() {
+			vm.save = function() {
+				vm.icalImport.$update(function() {
 					$location.path('/ical_imports');
 				});
 			};

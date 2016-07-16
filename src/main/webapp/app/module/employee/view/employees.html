@@ -4,10 +4,10 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><span ng-click="order('id')">ID</span>
-         <span class="sortorder" ng-show="predicate === 'id'" ng-class="{reverse:reverse}"></span></th>
-      <th><span ng-click="order('name')">Name</span>
-         <span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span></th>
+      <th><span ng-click="vm.order('id')">ID</span>
+         <span class="sortorder" ng-show="vm.predicate === 'id'" ng-class="{reverse: vm.reverse}"></span></th>
+      <th><span ng-click="vm.order('name')">Name</span>
+         <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span></th>
       <th>E-Mail</th>
       <th>Abilities</th>
       <th>Working hours</th>
@@ -15,14 +15,14 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="employee in employees | filter: search | orderBy:predicate:reverse">
+    <tr ng-repeat="employee in vm.employees | filter: search | orderBy:predicate:reverse">
       <td>{{employee.id}}</td>
       <td><employee-name employee="employee" /></td>
       <td>{{employee.email}}</td>
-      <td><ul class="abilities"><li ng-repeat="ability in employee.abilities | orderBy: 'name'" ng-click="searchFilter(ability.name)" style="cursor: pointer;">{{ability.name}}</li></ul></td>
+      <td><ul class="abilities"><li ng-repeat="ability in employee.abilities | orderBy: 'name'" ng-click="vm.searchFilter(ability.name)" style="cursor: pointer;">{{ability.name}}</li></ul></td>
       <td>{{employee.contract.workingHoursPerWeek}} ({{(employee.contract.workingHoursPerWeek / 40) * 100 | number: 0 }}%)</td>
       <td>{{employee.velocity}}%</td>
     </tr>
   </tbody>
 </table>
-<button ng-click="add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add</button>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add</button>

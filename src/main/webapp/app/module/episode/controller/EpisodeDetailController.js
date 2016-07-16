@@ -4,89 +4,92 @@
 	angular.module('capacityApp')
 		.controller('EpisodeDetailController', EpisodeDetailController);
 
-	EpisodeDetailController.$inject = ['$scope', '$route', '$location', 'Episode', 'Employee'];
+	EpisodeDetailController.$inject = ['$route', '$location', 'Episode', 'Employee'];
 
-	function EpisodeDetailController($scope, $route, $location, Episode, Employee) {
-		$scope.id = $route.current.params.id;
+	function EpisodeDetailController($route, $location, Episode, Employee) {
+		/* jshint validthis: true */
+		var vm = this;
 
-		$scope.selection = [];
+		vm.id = $route.current.params.id;
 
-		$scope.datepicker = {
+		vm.selection = [];
+
+		vm.datepicker = {
 			startOpened: false,
 			endOpened: false
 		};
 
 		function prepareDto() {
-			$scope.episode.employeeEpisodes = [];
-			angular.forEach($scope.selection, function(element, index) {
-				$scope.episode.employeeEpisodes.push(element);
+			vm.episode.employeeEpisodes = [];
+			angular.forEach(vm.selection, function(element, index) {
+				vm.episode.employeeEpisodes.push(element);
 			});
-			if ($scope.episode.start && typeof $scope.episode.start.getMonth === 'function') {
-				$scope.episode.start = moment($scope.episode.start).format('YYYY-MM-DD');
+			if (vm.episode.start && typeof vm.episode.start.getMonth === 'function') {
+				vm.episode.start = moment(vm.episode.start).format('YYYY-MM-DD');
 			}
-			if ($scope.episode.end && typeof $scope.episode.end.getMonth === 'function') {
-				$scope.episode.end = moment($scope.episode.end).format('YYYY-MM-DD');
+			if (vm.episode.end && typeof vm.episode.end.getMonth === 'function') {
+				vm.episode.end = moment(vm.episode.end).format('YYYY-MM-DD');
 			}
 		}
 
-		if ($scope.id == 'new') {
-			$scope.episode = new Episode();
-			$scope.save = function() {
+		if (vm.id == 'new') {
+			vm.episode = new Episode();
+			vm.save = function() {
 				prepareDto();
-				$scope.episode.$save(function() {
+				vm.episode.$save(function() {
 					$location.path('/episodes');
 				});
 			};
 		} else {
 			var isClone = $location.path().slice(0, '/episodes/clone'.length) == '/episodes/clone';
-			$scope.episode = {};
-			Episode.get({id: $scope.id}, function(episode) {
-				$scope.episode = episode;
+			vm.episode = {};
+			Episode.get({id: vm.id}, function(episode) {
+				vm.episode = episode;
 				if (isClone) {
-					$scope.episode.name = 'Clone of ' + $scope.episode.name;
-					$scope.episode.id = undefined;
-					if ($scope.episode.employeeEpisodes) {
-						angular.forEach($scope.episode.employeeEpisodes, function(element, index) {
+					vm.episode.name = 'Clone of ' + vm.episode.name;
+					vm.episode.id = undefined;
+					if (vm.episode.employeeEpisodes) {
+						angular.forEach(vm.episode.employeeEpisodes, function(element, index) {
 							element.id = undefined;
-							$scope.selection[element.employee.id] = element;
+							vm.selection[element.employee.id] = element;
 						});
 					}
 				} else {
-					if ($scope.episode.employeeEpisodes) {
-						angular.forEach($scope.episode.employeeEpisodes, function(element, index) {
-							$scope.selection[element.employee.id] = element;
+					if (vm.episode.employeeEpisodes) {
+						angular.forEach(vm.episode.employeeEpisodes, function(element, index) {
+							vm.selection[element.employee.id] = element;
 						});
 					}
 				}
-				$scope.episode.start = new Date($scope.episode.start);
-				$scope.episode.end = new Date($scope.episode.end);
+				vm.episode.start = new Date(vm.episode.start);
+				vm.episode.end = new Date(vm.episode.end);
 			});
 			if (isClone) {
-				$scope.save = function() {
+				vm.save = function() {
 					prepareDto();
-					$scope.episode.$save(function() {
+					vm.episode.$save(function() {
 						$location.path('/episodes');
 					});
 				};
 			} else {
-				$scope.save = function() {
+				vm.save = function() {
 					prepareDto();
-					$scope.episode.$update(function() {
+					vm.episode.$update(function() {
 						$location.path('/episodes');
 					});
 				};
 			}
 		}
 
-		$scope.isSelected = function(employeeId) {
-			return $scope.selection[employeeId] !== undefined;
+		vm.isSelected = function(employeeId) {
+			return vm.selection[employeeId] !== undefined;
 		};
 
-		$scope.toggleSelection = function(employee) {
-			if ($scope.isSelected(employee.id)) {
-				$scope.selection[employee.id] = undefined;
+		vm.toggleSelection = function(employee) {
+			if (vm.isSelected(employee.id)) {
+				vm.selection[employee.id] = undefined;
 			} else {
-				$scope.selection[employee.id] = {
+				vm.selection[employee.id] = {
 					employee: employee,
 					velocity: employee.velocity
 				};
@@ -94,7 +97,7 @@
 		};
 
 		Employee.query(function(employees) {
-			$scope.employees = employees;
+			vm.employees = employees;
 		});
 	}
 })();

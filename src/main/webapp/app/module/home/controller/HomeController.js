@@ -4,9 +4,10 @@
 	angular.module('capacityApp')
 		.controller('HomeController', HomeController);
 
-	HomeController.$inject = ['$scope'];
+	function HomeController() {
+		/* jshint validthis: true */
+		var vm = this;
 
-	function HomeController($scope) {
-		$scope.title = 'Welcome';
+		vm.title = 'Welcome';
 	}
 })();

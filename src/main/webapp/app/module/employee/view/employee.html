@@ -1,60 +1,60 @@
-<h1 class="page-header"><i class="fa fa-users"></i>{{!employee.name ? '&nbsp;' : employee.name}}</h1>
+<h1 class="page-header"><i class="fa fa-users"></i>{{!vm.employee.name ? '&nbsp;' : vm.employee.name}}</h1>
 
 <form class="form-horizontal">
 	<h2 class="sub-header">Personal data</h2>
 	<label-group label="ID">
 		<p>
-			<input type="text" class="form-control" ng-model="employee.id" disabled />
+			<input type="text" class="form-control" ng-model="vm.employee.id" disabled />
 		</p>
 	</label-group>
 	<label-group label="Name">
 		<p>
-			<input type="text" class="form-control" ng-model="employee.name" />
+			<input type="text" class="form-control" ng-model="vm.employee.name" />
 		</p>
 	</label-group>
 	<label-group label="E-Mail">
 		<p>
-			<input type="text" class="form-control" ng-model="employee.email" />
+			<input type="text" class="form-control" ng-model="vm.employee.email" />
 		</p>
 	</label-group>
 	<label-group label="Abilities">
 		<p>
-			<tags-input ng-model="employee.abilities" display-property="name" placeholder="..." replace-spaces-with-dashes="false" class="bootstrap">
-				<auto-complete source="loadAbilities($query)" min-length="2" max-results-to-show="32"></auto-complete>
+			<tags-input ng-model="vm.employee.abilities" display-property="name" placeholder="..." replace-spaces-with-dashes="false" class="bootstrap">
+				<auto-complete source="vm.loadAbilities($query)" min-length="2" max-results-to-show="32"></auto-complete>
 			</tags-input>
 		</p>
 	</label-group>
 	<label-group label="Color">
-		<color-picker ng-model="employee.color" ng-required="true" color-picker-format="'hex'" color-picker-alpha="false" color-picker-swatch-pos="'right'"></color-picker>
+		<color-picker ng-model="vm.employee.color" ng-required="true" color-picker-format="'hex'" color-picker-alpha="false" color-picker-swatch-pos="'right'"></color-picker>
 	</label-group>
 	<h2 class="sub-header">Contract</h2>
 	<label-group label="Start date">
 		<p class="input-group">
-			<input type="text" class="form-control" ng-model="employee.contract.start" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.startOpened" />
+			<input type="text" class="form-control" ng-model="vm.employee.contract.start" uib-datepicker-popup="yyyy-MM-dd" is-open="vm.datepicker.startOpened" />
 			<span class="input-group-btn">
-				<button type="button" class="btn btn-default" ng-click="datepicker.startOpened = true;"><i class="fa fa-calendar"></i></button>
+				<button type="button" class="btn btn-default" ng-click="vm.datepicker.startOpened = true;"><i class="fa fa-calendar"></i></button>
 			</span>
 		</p>
 	</label-group>
 	<label-group label="End date">
 		<p class="input-group">
-			<input type="text" class="form-control" ng-model="employee.contract.end" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.endOpened" />
+			<input type="text" class="form-control" ng-model="vm.employee.contract.end" uib-datepicker-popup="yyyy-MM-dd" is-open="vm.datepicker.endOpened" />
 			<span class="input-group-btn">
-				<button type="button" class="btn btn-default" ng-click="datepicker.endOpened = true;"><i class="fa fa-calendar"></i></button>
+				<button type="button" class="btn btn-default" ng-click="vm.datepicker.endOpened = true;"><i class="fa fa-calendar"></i></button>
 			</span>
 		</p>
 	</label-group>
 	<label-group label="Vacation (days/year)">
-		<input type="number" class="form-control" ng-model="employee.contract.vacationDaysPerYear" />
+		<input type="number" class="form-control" ng-model="vm.employee.contract.vacationDaysPerYear" />
 	</label-group>
 	<h2 class="sub-header">Working Hours</h2>
 	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10"><div ui-calendar="calendarConfig" ng-model="eventSources"></div></div>
+		<div class="col-sm-offset-2 col-sm-10"><div ui-calendar="vm.calendarConfig" ng-model="vm.eventSources"></div></div>
 	</div>
 	<label-group label="Velocity {{employee.velocity}}%">
 		<p>
-			<slider ng-model="employee.velocity" min="0" step="1" max="100"></slider>
+			<slider ng-model="vm.employee.velocity" min="0" step="1" max="100"></slider>
 		</p>
 	</label-group>
-	<button type="submit" ng-click="save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
+	<button type="submit" ng-click="vm.save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
 </form>

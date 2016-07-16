@@ -2,32 +2,38 @@
 	'use strict';
 
 	angular.module('capacityApp')
-		.config(['$routeProvider', function($routeProvider) {
-			
-			function addRoute(route, templateUrl, controller) {
-				$routeProvider.when(route, {
-					templateUrl: templateUrl,
-					controller: controller
-				});
-			}
+		.config(config);
 
-			addRoute('/', 'app/module/home/view/home.html', 'HomeController');
+	config.$inject = ['$routeProvider'];
+	
+	function config($routeProvider) {
 
-			addRoute('/employees', 'app/module/employee/view/employees.html', 'EmployeeListController');
-			addRoute('/employees/:id', 'app/module/employee/view/employee.html', 'EmployeeDetailController');
+		function addRoute(route, templateUrl, controller) {
+			$routeProvider.when(route, {
+				templateUrl: templateUrl,
+				controller: controller,
+				controllerAs: 'vm'
+			});
+		}
 
-			addRoute('/calendar', 'app/module/calendar/view/calendar.html', 'CalendarController');
+		addRoute('/', 'app/module/home/view/home.html', 'HomeController');
 
-			addRoute('/episodes', 'app/module/episode/view/episodes.html', 'EpisodeListController');
-			addRoute('/episodes/:id', 'app/module/episode/view/episode.html', 'EpisodeDetailController');
-			addRoute('/episodes/clone/:id', 'app/module/episode/view/episode.html', 'EpisodeDetailController');
+		addRoute('/employees', 'app/module/employee/view/employees.html', 'EmployeeListController');
+		addRoute('/employees/:id', 'app/module/employee/view/employee.html', 'EmployeeDetailController');
 
-			addRoute('/ical_imports', 'app/module/ical_import/view/ical_imports.html', 'IcalImportListController');
-			addRoute('/ical_imports/:id', 'app/module/ical_import/view/ical_import.html', 'IcalImportDetailController');
+		addRoute('/calendar', 'app/module/calendar/view/calendar.html', 'CalendarController');
 
-			addRoute('/capacity', 'app/module/capacity/view/capacity.html', 'CapacityController');
+		addRoute('/episodes', 'app/module/episode/view/episodes.html', 'EpisodeListController');
+		addRoute('/episodes/:id', 'app/module/episode/view/episode.html', 'EpisodeDetailController');
+		addRoute('/episodes/clone/:id', 'app/module/episode/view/episode.html', 'EpisodeDetailController');
 
-			addRoute('/absence', 'app/module/absence/view/absence.html', 'AbsenceController');
+		addRoute('/ical_imports', 'app/module/ical_import/view/ical_imports.html', 'IcalImportListController');
+		addRoute('/ical_imports/:id', 'app/module/ical_import/view/ical_import.html', 'IcalImportDetailController');
 
-		}]);
+		addRoute('/capacity', 'app/module/capacity/view/capacity.html', 'CapacityController');
+
+		addRoute('/absence', 'app/module/absence/view/absence.html', 'AbsenceController');
+
+	}
+
 })();

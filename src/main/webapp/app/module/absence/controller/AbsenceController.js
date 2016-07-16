@@ -4,27 +4,30 @@
 	angular.module('capacityApp')
 		.controller('AbsenceController', AbsenceController);
 
-	AbsenceController.$inject = ['$scope', '$http'];
+	AbsenceController.$inject = ['$http'];
 
-	function AbsenceController($scope, $http) {
-		$scope.selectedDate = new Date();
-		$scope.datepicker = {
+	function AbsenceController($http) {
+		/* jshint validthis: true */
+		var vm = this;
+
+		vm.selectedDate = new Date();
+		vm.datepicker = {
 			opened: false
 		};
 
-		$scope.loadAbsencesAndAvailabilities = function() {
-			if (typeof $scope.selectedDate.getMonth === 'function') {
-				$scope.selectedDate = moment($scope.selectedDate).format('YYYY-MM-DD');
+		vm.loadAbsencesAndAvailabilities = function() {
+			if (typeof vm.selectedDate.getMonth === 'function') {
+				vm.selectedDate = moment(vm.selectedDate).format('YYYY-MM-DD');
 			}
-			$http.get('rest/absent?date=' + $scope.selectedDate).then(function(response) {
-				$scope.absent = response.data;
+			$http.get('rest/absent?date=' + vm.selectedDate).then(function(response) {
+				vm.absent = response.data;
 			});
 
-			$http.get('rest/available?date=' + $scope.selectedDate).then(function(response) {
-				$scope.available = response.data;
+			$http.get('rest/available?date=' + vm.selectedDate).then(function(response) {
+				vm.available = response.data;
 			});
 		};
 
-		$scope.loadAbsencesAndAvailabilities();
+		vm.loadAbsencesAndAvailabilities();
 	}
 })();

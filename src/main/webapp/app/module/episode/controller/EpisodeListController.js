@@ -4,29 +4,32 @@
 	angular.module('capacityApp')
 		.controller('EpisodeListController', EpisodeListController);
 
-	EpisodeListController.$inject = ['$scope', '$location', '$rootScope', 'Episode'];
+	EpisodeListController.$inject = ['$location', '$rootScope', 'Episode'];
 
-	function EpisodeListController($scope, $location, $rootScope, Episode) {
+	function EpisodeListController($location, $rootScope, Episode) {
+		/* jshint validthis: true */
+		var vm = this;
+
 		Episode.query(function(episodes) {
-			$scope.episodes = episodes;
+			vm.episodes = episodes;
 		});
 
-		$scope.add = function() {
+		vm.add = function() {
 			$location.path('/episodes/new');
 		};
 
-		$scope.predicate = 'name';
-		$scope.reverse = false;
-		$scope.order = function(predicate) {
-			$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-			$scope.predicate = predicate;
+		vm.predicate = 'name';
+		vm.reverse = false;
+		vm.order = function(predicate) {
+			vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
+			vm.predicate = predicate;
 		};
 
-		$scope.searchFilter = function(string) {
+		vm.searchFilter = function(string) {
 			$rootScope.search = string;
 		};
 
-		$scope.clone = function(id) {
+		vm.clone = function(id) {
 			$location.path('/episodes/clone/'+id);
 		}
 	}

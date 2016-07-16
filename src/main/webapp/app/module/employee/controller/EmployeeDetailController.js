@@ -4,31 +4,34 @@
 	angular.module('capacityApp')
 		.controller('EmployeeDetailController', EmployeeDetailController);
 
-	EmployeeDetailController.$inject = ['$scope', '$route', '$location', '$http', '$filter', 'Employee'];
+	EmployeeDetailController.$inject = ['$route', '$location', '$http', '$filter', 'Employee'];
 
-	function EmployeeDetailController($scope, $route, $location, $http, $filter, Employee) {
-		$scope.datepicker = {
+	function EmployeeDetailController($route, $location, $http, $filter, Employee) {
+		/* jshint validthis: true */
+		var vm = this;
+
+		vm.datepicker = {
 			startOpened: false,
 			endOpened: false
 		};
 
 		function prepareDto() {
-			if ($scope.employee.contract.start && typeof $scope.employee.contract.start.getMonth === 'function') {
-				$scope.employee.contract.start = moment($scope.employee.contract.start).format('YYYY-MM-DD');
+			if (vm.employee.contract.start && typeof vm.employee.contract.start.getMonth === 'function') {
+				vm.employee.contract.start = moment(vm.employee.contract.start).format('YYYY-MM-DD');
 			}
-			if ($scope.employee.contract.end && typeof $scope.employee.contract.end.getMonth === 'function') {
-				$scope.employee.contract.end = moment($scope.employee.contract.end).format('YYYY-MM-DD');
+			if (vm.employee.contract.end && typeof vm.employee.contract.end.getMonth === 'function') {
+				vm.employee.contract.end = moment(vm.employee.contract.end).format('YYYY-MM-DD');
 			}
 		}
 
-		$scope.events = [];
-		$scope.eventSources = [ $scope.events ];
+		vm.events = [];
+		vm.eventSources = [ vm.events ];
 		function workingHoursToEvents(employee) {
-			$scope.events.splice(0, $scope.events.length);
+			vm.events.splice(0, vm.events.length);
 			angular.forEach(employee.contract.workingHours, function(element, index) {
 				var start = moment(element.start, 'HH:mm:ss.SSS').day(element.dayOfWeek);
 				var end = moment(element.end, 'HH:mm:ss.SSS').day(element.dayOfWeek);
-				$scope.events.push({
+				vm.events.push({
 					title: moment.duration(end.diff(start)).asHours() + 'h',
 					start: start,
 					end: end
@@ -37,8 +40,8 @@
 		}
 
 		if ($route.current.params.id == 'new') {
-			$scope.employee = new Employee();
-			$scope.employee.contract = {
+			vm.employee = new Employee();
+			vm.employee.contract = {
 				workingHours: [
 					{dayOfWeek:1,start:'08:00:00.000',end:'16:00:00.000'},
 					{dayOfWeek:2,start:'08:00:00.000',end:'16:00:00.000'},
@@ -46,34 +49,34 @@
 					{dayOfWeek:4,start:'08:00:00.000',end:'16:00:00.000'},
 					{dayOfWeek:5,start:'08:00:00.000',end:'16:00:00.000'}]
 			};
-			workingHoursToEvents($scope.employee);
-			$scope.save = function() {
+			workingHoursToEvents(vm.employee);
+			vm.save = function() {
 				prepareDto();
-				$scope.employee.$save(function() {
+				vm.employee.$save(function() {
 					$location.path('/employees');
 				});
 			};
 		} else {
-			$scope.employee = {};
+			vm.employee = {};
 			Employee.get({id: $route.current.params.id}, function(employee) {
-				$scope.employee = employee;
-				workingHoursToEvents($scope.employee);
-				if ($scope.employee.contract.start) {
-					$scope.employee.contract.start = new Date($scope.employee.contract.start);
+				vm.employee = employee;
+				workingHoursToEvents(vm.employee);
+				if (vm.employee.contract.start) {
+					vm.employee.contract.start = new Date(vm.employee.contract.start);
 				}
-				if ($scope.employee.contract.end) {
-					$scope.employee.contract.end = new Date($scope.employee.contract.end);
+				if (vm.employee.contract.end) {
+					vm.employee.contract.end = new Date(vm.employee.contract.end);
 				}
 			});
-			$scope.save = function() {
+			vm.save = function() {
 				prepareDto();
-				$scope.employee.$update(function() {
+				vm.employee.$update(function() {
 					$location.path('/employees');
 				});
 			};
 		}
 
-		$scope.loadAbilities = function($query) {
+		vm.loadAbilities = function($query) {
 			return $http.get('rest/abilities').then(function(response) {
 				var abilities = response.data;
 				return abilities.filter(function(abilitiy) {
@@ -82,11 +85,11 @@
 			});
 		};
 
-		$scope.removeWorkingHours = function(dayOfWeek) {
-			var i = $scope.employee.contract.workingHours.length;
+		vm.removeWorkingHours = function(dayOfWeek) {
+			var i = vm.employee.contract.workingHours.length;
 			while (i--){
-				if ($scope.employee.contract.workingHours[i].dayOfWeek == dayOfWeek){
-					$scope.employee.contract.workingHours.splice(i, 1);
+				if (vm.employee.contract.workingHours[i].dayOfWeek == dayOfWeek){
+					vm.employee.contract.workingHours.splice(i, 1);
 				}
 			}
 		};
@@ -100,7 +103,7 @@
 			return dayOfWeek;
 		}
 
-		$scope.calendarConfig = {
+		vm.calendarConfig = {
 			// Hide the header completely 
 			header: {
 				left: '',
@@ -120,7 +123,7 @@
 			select: function(start, end, jsEvent, view) {
 				var dayOfWeek = getOneBasedDayOfWeek(start);
 				var workingHours;
-				$scope.employee.contract.workingHours.forEach(function(element, index) {
+				vm.employee.contract.workingHours.forEach(function(element, index) {
 					if (element.dayOfWeek == dayOfWeek) {
 						workingHours = element;
 					}
@@ -129,11 +132,11 @@
 					workingHours = {
 						dayOfWeek: dayOfWeek
 					};
-					$scope.employee.contract.workingHours.push(workingHours);
+					vm.employee.contract.workingHours.push(workingHours);
 				}
 				workingHours.start = start.format('HH:mm:ss.SSS');
 				workingHours.end = end.format('HH:mm:ss.SSS');
-				workingHoursToEvents($scope.employee);
+				workingHoursToEvents(vm.employee);
 				view.calendar.unselect();
 			},
 			// Make events movable
@@ -145,7 +148,7 @@
 				}
 				var dayOfWeek = getOneBasedDayOfWeek(event.start);
 				var workingHours;
-				$scope.employee.contract.workingHours.forEach(function(element, index) {
+				vm.employee.contract.workingHours.forEach(function(element, index) {
 					if (element.dayOfWeek == dayOfWeek) {
 						workingHours = element;
 					}
@@ -163,7 +166,7 @@
 				}
 				var dayOfWeek = getOneBasedDayOfWeek(event.start);
 				var workingHours;
-				$scope.employee.contract.workingHours.forEach(function(element, index) {
+				vm.employee.contract.workingHours.forEach(function(element, index) {
 					if (element.dayOfWeek == dayOfWeek) {
 						workingHours = element;
 					}

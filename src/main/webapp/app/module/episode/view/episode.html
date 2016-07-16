@@ -3,38 +3,39 @@
 <form class="form-horizontal">
 	<label-group label="ID">
 		<p>
-			<input type="text" class="form-control" ng-model="episode.id" disabled />
+			<input type="text" class="form-control" ng-model="vm.episode.id" disabled />
 		</p>
 	</label-group>
 	<label-group label="Name">
 		<p>
-			<input type="text" class="form-control" ng-model="episode.name" />
+			<input type="text" class="form-control" ng-model="vm.episode.name" />
 		</p>
 	</label-group>
 	<label-group label="Start date">
 		<p class="input-group">
-			<input type="text" class="form-control" ng-model="episode.start" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.startOpened" />
+			<input type="text" class="form-control" ng-model="vm.episode.start" uib-datepicker-popup="yyyy-MM-dd" is-open="vm.datepicker.startOpened" />
 			<span class="input-group-btn">
-				<button type="button" class="btn btn-default" ng-click="datepicker.startOpened = true;"><i class="fa fa-calendar"></i></button>
+				<button type="button" class="btn btn-default" ng-click="vm.datepicker.startOpened = true;"><i class="fa fa-calendar"></i></button>
 			</span>
 		</p>
 	</label-group>
 	<label-group label="End date">
 		<p class="input-group">
-			<input type="text" class="form-control" ng-model="episode.end" uib-datepicker-popup="yyyy-MM-dd" is-open="datepicker.endOpened" />
+			<input type="text" class="form-control" ng-model="vm.episode.end" uib-datepicker-popup="yyyy-MM-dd" is-open="vm.datepicker.endOpened" />
 			<span class="input-group-btn">
-				<button type="button" class="btn btn-default" ng-click="datepicker.endOpened = true;"><i class="fa fa-calendar"></i></button>
+				<button type="button" class="btn btn-default" ng-click="vm.datepicker.endOpened = true;"><i class="fa fa-calendar"></i></button>
 			</span>
 		</p>
 	</label-group>
 	<label-group label="Employees">
+		{{vm.selection}}
 		<table class="table table-striped">
-			<tr ng-repeat="employee in employees | orderBy: 'name'" ng-class="{selected: isSelected(employee.id)}">
-				<td class="col-sm-6" ng-bind="employee.name" ng-click="toggleSelection(employee)"></td>
-				<td class="col-sm-1"><span ng-hide="isSelected(employee.id)">{{employee.velocity}}%</span><span ng-hide="!isSelected(employee.id)">{{selection[employee.id].velocity}}%</span></td>
-				<td class="col-sm-2"><slider ng-hide="!isSelected(employee.id)" ng-model="selection[employee.id].velocity" min="0" step="1" max="100"></slider></td>
+			<tr ng-repeat="employee in vm.employees | orderBy: 'name'" ng-class="{selected: vm.isSelected(employee.id)}">
+				<td class="col-sm-6" ng-bind="employee.name" ng-click="vm.toggleSelection(employee)"></td>
+				<td class="col-sm-1"><span ng-hide="vm.isSelected(employee.id)">{{employee.velocity}}%</span><span ng-hide="!vm.isSelected(employee.id)">{{selection[employee.id].velocity}}%</span></td>
+				<td class="col-sm-2"><slider ng-hide="!vm.isSelected(employee.id)" ng-model="vm.selection[employee.id].velocity" min="0" step="1" max="100"></slider></td>
 			</tr>
 		</table>
 	</label-group>
-	<button type="submit" ng-click="save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
+	<button type="submit" ng-click="vm.save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
 </form>

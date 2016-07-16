@@ -4,27 +4,27 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><span ng-click="order('id')">ID</span>
-         <span class="sortorder" ng-show="predicate === 'id'" ng-class="{reverse:reverse}"></span></th>
-      <th><span ng-click="order('name')">Name</span>
-         <span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span></th>
-      <th><span ng-click="order('start')">Start</span>
-         <span class="sortorder" ng-show="predicate === 'start'" ng-class="{reverse:reverse}"></span></th>
-      <th><span ng-click="order('end')">End</span>
-         <span class="sortorder" ng-show="predicate === 'end'" ng-class="{reverse:reverse}"></span></th>
+      <th><span ng-click="vm.order('id')">ID</span>
+         <span class="sortorder" ng-show="vm.predicate === 'id'" ng-class="{reverse: vm.reverse}"></span></th>
+      <th><span ng-click="vm.order('name')">Name</span>
+         <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span></th>
+      <th><span ng-click="vm.order('start')">Start</span>
+         <span class="sortorder" ng-show="vm.predicate === 'start'" ng-class="{reverse: vm.reverse}"></span></th>
+      <th><span ng-click="vm.order('end')">End</span>
+         <span class="sortorder" ng-show="vm.predicate === 'end'" ng-class="{reverse: vm.reverse}"></span></th>
       <th>Employees</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="episode in episodes | filter: search | orderBy:predicate:reverse">
+    <tr ng-repeat="episode in vm.episodes | filter: search | orderBy:predicate:reverse">
       <td class="col-sm-1">{{episode.id}}</td>
       <td class="col-sm-7"><a href="#episodes/{{episode.id}}" ng-bind="episode.name"></a></td>
       <td class="col-sm-1">{{episode.start}}</td>
       <td class="col-sm-1">{{episode.end}}</td>
       <td class="col-sm-1">{{episode.employeeEpisodes.length}}</td>
-      <td class="col-sm-1"><button ng-click="clone(episode.id)" class="btn btn-default"><i class="fa fa-clone"></i> Clone</button></td>
+      <td class="col-sm-1"><button ng-click="vm.clone(episode.id)" class="btn btn-default"><i class="fa fa-clone"></i> Clone</button></td>
     </tr>
   </tbody>
 </table>
-<button ng-click="add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add</button>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add</button>

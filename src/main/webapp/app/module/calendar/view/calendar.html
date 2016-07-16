@@ -1,7 +1,7 @@
 <h1 class="page-header"><i class="fa fa-calendar"></i>Calendar</h1>
 
 <div class="btn-group">
-	<label class="btn btn-primary active {{calendar.id}}" ng-model="calendar.selected" ng-repeat="calendar in calendars" ng-click="publishAllEvents()" uib-btn-checkbox>{{calendar.name}}</label>
+	<label class="btn btn-primary active {{calendar.id}}" ng-model="vm.calendar.selected" ng-repeat="calendar in vm.calendars" ng-click="vm.publishAllEvents()" uib-btn-checkbox>{{calendar.name}}</label>
 </div>
 
-<div ui-calendar="calendarConfig" ng-model="eventSources" calendar="myCalendar"></div>
+<div ui-calendar="calendarConfig" ng-model="vm.eventSources" calendar="myCalendar"></div>

@@ -4,35 +4,39 @@
 	angular.module('capacityApp')
 		.controller('CapacityController', CapacityController);
 
-	CapacityController.$inject = ['$scope', '$http', 'Episode', '$filter'];
+	CapacityController.$inject = ['$http', 'Episode', '$filter'];
 
-	function CapacityController($scope, $http, Episode, $filter) {
+	function CapacityController($http, Episode, $filter) {
+		/* jshint validthis: true */
+		var vm = this;
+
+		vm.list = [];
 
 		// Boolean option: Whether or not to calculate the capacity using the velocity per employee or not
-		$scope.useVelocity = true;
+		vm.useVelocity = true;
 		// Selection option which display format to use (default "hours", other possible values "days" and "weeks")
-		$scope.units = "hours";
+		vm.units = "hours";
 
-		$scope.selected = 'chart';
-		$scope.select = function(tab) {
-			$scope.selected = tab;
+		vm.selected = 'chart';
+		vm.select = function(tab) {
+			vm.selected = tab;
 		};
 
-		$scope.switchUnits = function(units) {
-			$scope.units = units;
-			$scope.loadChart();
+		vm.switchUnits = function(units) {
+			vm.units = units;
+			vm.loadChart();
 		};
 
-		$scope.datepicker = {
+		vm.datepicker = {
 			startOpened: false,
 			endOpened: false
 		};
-		$scope.duration = {
+		vm.duration = {
 			start: moment().add(-10, 'd').toDate(),
 			end: moment().add(10, 'd').toDate()
 		};
 
-		$scope.chartConfig = {
+		vm.chartConfig = {
 			options: {
 				chart: {
 					type: 'column',
@@ -61,7 +65,7 @@
 			yAxis: {
 				min: 0,
 				title: {
-					text: 'Capacity (' + $filter('limitTo')($scope.units, 1) + ')'
+					text: 'Capacity (' + $filter('limitTo')(vm.units, 1) + ')'
 				}
 			},
 			series: [],
@@ -70,16 +74,18 @@
 			}
 		};
 
-		$scope.andFilters = {1: []};
-		$scope.lastIndex = 1;
-		$scope.addAndFilter = function() {
-			$scope.lastIndex++;
-			$scope.andFilters[$scope.lastIndex] = [];
+		vm.andFilters = {1: []};
+		vm.lastIndex = 1;
+		vm.addAndFilter = function() {
+			vm.lastIndex++;
+			vm.andFilters[vm.lastIndex] = [];
+			vm.loadChart();
 		};
-		$scope.removeAndFilter = function(id) {
-			delete $scope.andFilters[id];
+		vm.removeAndFilter = function(id) {
+			delete vm.andFilters[id];
+			vm.loadChart();
 		};
-		$scope.loadAbilities = function($query) {
+		vm.loadAbilities = function($query) {
 			return $http.get('rest/abilities').then(function(response) {
 				var abilities = response.data;
 				return abilities.filter(function(abilitiy) {
@@ -88,30 +94,30 @@
 			});
 		};
 
-		$scope.loadChart = function() {
+		vm.loadChart = function() {
 			var url = 'rest/capacity/workinghours';
 			var data = {
-				useVelocity: $scope.useVelocity,
-				episodeId: $scope._selectedEpisode.id
+				useVelocity: vm.useVelocity,
+				episodeId: vm._selectedEpisode.id
 			};
-			if ($scope._selectedEpisode.id == '') {
-				if ($scope.duration.start) {
-					$scope.duration.start = new Date($scope.duration.start);
+			if (vm._selectedEpisode.id == '') {
+				if (vm.duration.start) {
+					vm.duration.start = new Date(vm.duration.start);
 				}
-				if ($scope.duration.end) {
-					$scope.duration.end = new Date($scope.duration.end);
+				if (vm.duration.end) {
+					vm.duration.end = new Date(vm.duration.end);
 				}
-				data.start = $scope.duration.start;
-				data.end = $scope.duration.end;
+				data.start = vm.duration.start;
+				data.end = vm.duration.end;
 			}
-			var andFilters = Object.keys($scope.andFilters);
+			var andFilters = Object.keys(vm.andFilters);
 			if (andFilters.length > 0) {
 				var filter = [];
-				for (var k in $scope.andFilters) {
-					if (!$scope.andFilters.hasOwnProperty(k)) {
+				for (var k in vm.andFilters) {
+					if (!vm.andFilters.hasOwnProperty(k)) {
 						continue;
 					}
-					var andFilter = $scope.andFilters[k];
+					var andFilter = vm.andFilters[k];
 					if (andFilter.length > 0) {
 						filter.push(andFilter);
 					}
@@ -126,23 +132,23 @@
 					var seriesvalues = [];
 					element.workingHours.details.forEach(function(childelement, childindex) {
 						var value = childelement.hours;
-						if ($scope.units == 'hours') {
+						if (vm.units == 'hours') {
 							// No calculation necessary
-						} else if ($scope.units == 'days') {
+						} else if (vm.units == 'days') {
 							value /= 8;
-						} else if ($scope.units == 'weeks') {
+						} else if (vm.units == 'weeks') {
 							value /= 40;
 						}
 						seriesvalues.push(value);
 					});
 					series.push({
-						name: $scope.useVelocity ? (element.employee.name + ' (' + element.velocity + '%)') : element.employee.name,
+						name: vm.useVelocity ? (element.employee.name + ' (' + element.velocity + '%)') : element.employee.name,
 						data: seriesvalues,
 						color: element.employee.color
 					});
 				});
-				$scope.chartConfig.series = series;
-				$scope.chartConfig.yAxis.title.text = 'Capacity (' + $filter('limitTo')($scope.units, 1) + ')';
+				vm.chartConfig.series = series;
+				vm.chartConfig.yAxis.title.text = 'Capacity (' + $filter('limitTo')(vm.units, 1) + ')';
 
 				var categories = [];
 				if (response.data.length > 0) {
@@ -151,49 +157,49 @@
 						categories.push({y: element.date, color: (dayOfWeek == 0 || dayOfWeek == 6) ? '#aaaaaa' : '#000000' });
 					});
 				}
-				$scope.chartConfig.xAxis.categories = categories;
+				vm.chartConfig.xAxis.categories = categories;
 
 				if (response.data.length > 0) {
-					$scope.chartConfig.title.text = 'Capacity (in ' + $scope.units + ') for ' + response.data[0].workingHours.from + ' - ' + response.data[0].workingHours.until;
+					vm.chartConfig.title.text = 'Capacity (in ' + vm.units + ') for ' + response.data[0].workingHours.from + ' - ' + response.data[0].workingHours.until;
 				} else {
-					$scope.chartConfig.title.text = 'No capacities';
+					vm.chartConfig.title.text = 'No capacities';
 				}
 			});
 		};
 
 		Episode.query(function(episodes) {
-			$scope.episodes = episodes;
-			$scope.loadChart();
+			vm.episodes = episodes;
+			vm.loadChart();
 		});
 
-		$scope._selectedEpisode = {
+		vm._selectedEpisode = {
 			id: ''
 		};
-		$scope.selectedEpisode = function(episodeId) {
+		vm.selectedEpisode = function(episodeId) {
 			if (arguments.length) {
-				$scope._selectedEpisode = {
+				vm._selectedEpisode = {
 					id: ''
 				};
-				angular.forEach($scope.episodes, function(element, index) {
+				angular.forEach(vm.episodes, function(element, index) {
 					if (episodeId === element.id) {
-						$scope._selectedEpisode = element;
+						vm._selectedEpisode = element;
 					}
 				});
-				$scope.loadChart();
+				vm.loadChart();
 			} else {
-				return $scope._selectedEpisode.id + '';
+				return vm._selectedEpisode.id + '';
 			}
 		};
 
-		$scope.episodeName = function() {
-			if ($scope._selectedEpisode && $scope._selectedEpisode.id) {
-				return $scope._selectedEpisode.name + " " + $scope._selectedEpisode.start + " - " + $scope._selectedEpisode.end + ")";
+		vm.episodeName = function() {
+			if (vm._selectedEpisode && vm._selectedEpisode.id) {
+				return vm._selectedEpisode.name + " " + vm._selectedEpisode.start + " - " + vm._selectedEpisode.end + ")";
 			}
 			return "None";
 		};
 
 
-		$scope.sum = function(values) {
+		vm.sum = function(values) {
 			var result = 0;
 			values.forEach(function(element, index) {
 				result += element;
@@ -201,17 +207,17 @@
 			return result;
 		};
 
-		$scope.rowsum = function(columnIndex) {
+		vm.rowsum = function(columnIndex) {
 			var result = 0;
-			$scope.chartConfig.series.forEach(function(element, index) {
+			vm.chartConfig.series.forEach(function(element, index) {
 				result += element.data[columnIndex];
 			});
 			return result;
 		};
 
-		$scope.sumsum = function() {
+		vm.sumsum = function() {
 			var result = 0;
-			$scope.chartConfig.series.forEach(function(element, index) {
+			vm.chartConfig.series.forEach(function(element, index) {
 				element.data.forEach(function(subelement, subindex) {
 					result += subelement;
 				});
@@ -219,7 +225,7 @@
 			return result;
 		};
 
-		$scope.isPast = function(date) {
+		vm.isPast = function(date) {
 			return moment(date).diff(moment(), 'minutes') < 0;
 		}
 	}

@@ -4,136 +4,146 @@
 	angular.module('capacityApp')
 		.controller('CalendarController', CalendarController);
 
-	CalendarController.$inject = ['$scope', '$http', 'uiCalendarConfig', '$uibModal'];
+    EventController.$inject = ['$uibModalInstance', 'date', 'parentScope', 'Holiday', 'Absence', 'Employee', '$filter'];
 
-	function CalendarController($scope, $http, uiCalendarConfig, $uibModal) {
-		$scope.calendars = [
+	function EventController($uibModalInstance, date, parentScope, Holiday, Absence, Employee, $filter) {
+		/* jshint validthis: true */
+		var vm = this;
+
+		vm.title = 'Add event';
+		vm.confirmButtons = [{ value: 'ok', label: 'OK' }];
+		vm.cancelButtons = [{ value: 'cancel', label: 'Cancel' }];
+
+		// Holiday
+		vm.holiday = new Holiday();
+		vm.holiday.date = date;
+		vm.holiday.name = '';
+		vm.holiday.hoursReduction = 8;
+
+		// Absence
+		vm.absence = new Absence();
+		vm.absence.start = date;
+		vm.absence.end = date;
+		vm.absence.reason = '';
+		vm.employees = [];
+		vm.employeesLookup = {};
+		Employee.query(function(employees) {
+			employees = $filter('orderBy')(employees, 'name');
+			angular.forEach(employees, function(element, index) {
+				vm.employeesLookup[element.id] = element;
+			});
+			vm.employees = employees;
+			vm.absence.employeeId = employees[0].id;
+		});
+
+		vm.datepicker = {
+			dateOpened: false,
+			startOpened: false,
+			endOpened: false
+		};
+		vm.parentScope = parentScope;
+		vm.selected = {
+			calendar: parentScope.calendars[0]
+		};
+
+		vm.ok = function(value) {
+			if (vm.selected.calendar.id == 'holidays') {
+				vm.holiday.date = moment(vm.holiday.date).format('YYYY-MM-DD');
+				vm.holiday.$save(function(holiday) {
+					parentScope.allEvents[0].push({
+						title: holiday.name,
+						start: new Date(holiday.date),
+						end: null,
+						className: 'holidays'
+					});
+					publishEvents(0);
+					$uibModalInstance.close(value);
+				});
+			} else if (vm.selected.calendar.id == 'employees') {
+				vm.absence.start = moment(vm.absence.start).format('YYYY-MM-DD');
+				vm.absence.end = moment(vm.absence.end).format('YYYY-MM-DD');
+				vm.absence.$save(function(absence) {
+					parentScope.allEvents[0].push({
+						title: vm.employeesLookup[absence.employeeId].name + ': ' + absence.reason,
+						start: new Date(absence.start),
+						end: new Date(absence.end),
+						color: vm.employeesLookup[absence.employeeId].color,
+						className: 'employees'
+					});
+					publishEvents(1);
+					$uibModalInstance.close(value);
+				});
+			}
+		};
+
+		vm.cancel = function(value) {
+			$uibModalInstance.dismiss(value);
+		};
+	}
+
+	CalendarController.$inject = ['$http', 'uiCalendarConfig', '$uibModal'];
+
+	function CalendarController($http, uiCalendarConfig, $uibModal) {
+		/* jshint validthis: true */
+		var vm = this;
+
+		vm.calendars = [
 			{ id: 'holidays', name: 'Holidays', selected: true },
 			{ id: 'employees', name: 'Absences', selected: true }
 		];
 
-		$scope.alertEventOnClick = function(date, jsEvent, view) {
+		vm.alertEventOnClick = function(date, jsEvent, view) {
 
 			var modalInstance = $uibModal.open({
-				animation: $scope.animationsEnabled,
+				animation: vm.animationsEnabled,
 				templateUrl: 'app/module/calendar/view/event.html',
-				controller: function ($scope, $uibModalInstance, date, parentScope, Holiday, Absence, Employee, $filter) {
-					$scope.title = 'Add event';
-					$scope.confirmButtons = [{ value: 'ok', label: 'OK' }];
-					$scope.cancelButtons = [{ value: 'cancel', label: 'Cancel' }];
-
-					// Holiday
-					$scope.holiday = new Holiday();
-					$scope.holiday.date = date;
-					$scope.holiday.name = '';
-					$scope.holiday.hoursReduction = 8;
-
-					// Absence
-					$scope.absence = new Absence();
-					$scope.absence.start = date;
-					$scope.absence.end = date;
-					$scope.absence.reason = '';
-					$scope.employees = [];
-					$scope.employeesLookup = {};
-					Employee.query(function(employees) {
-						employees = $filter('orderBy')(employees, 'name');
-						angular.forEach(employees, function(element, index) {
-							$scope.employeesLookup[element.id] = element;
-						});
-						$scope.employees = employees;
-						$scope.absence.employeeId = employees[0].id;
-					});
-
-					$scope.datepicker = {
-						dateOpened: false,
-						startOpened: false,
-						endOpened: false
-					};
-					$scope.parentScope = parentScope;
-					$scope.selected = {
-						calendar: parentScope.calendars[0]
-					};
-
-					$scope.ok = function(value) {
-						if ($scope.selected.calendar.id == 'holidays') {
-							$scope.holiday.date = moment($scope.holiday.date).format('YYYY-MM-DD');
-							$scope.holiday.$save(function(holiday) {
-								parentScope.allEvents[0].push({
-									title: holiday.name,
-									start: new Date(holiday.date),
-									end: null,
-									className: 'holidays'
-								});
-								publishEvents(0);
-								$uibModalInstance.close(value);
-							});
-						} else if ($scope.selected.calendar.id == 'employees') {
-							$scope.absence.start = moment($scope.absence.start).format('YYYY-MM-DD');
-							$scope.absence.end = moment($scope.absence.end).format('YYYY-MM-DD');
-							$scope.absence.$save(function(absence) {
-								parentScope.allEvents[0].push({
-									title: $scope.employeesLookup[absence.employeeId].name + ': ' + absence.reason,
-									start: new Date(absence.start),
-									end: new Date(absence.end),
-									color: $scope.employeesLookup[absence.employeeId].color,
-									className: 'employees'
-								});
-								publishEvents(1);
-								$uibModalInstance.close(value);
-							});
-						}
-					};
-
-					$scope.cancel = function(value) {
-						$uibModalInstance.dismiss(value);
-					};
-				},
+				controller: EventController,
 				resolve: {
 					date: date.toDate(),
-					parentScope: $scope
+					parentScope: vm
 				}
 			});
 		};
 
-		$scope.calendarConfig = {
-			dayClick: $scope.alertEventOnClick
+		vm.calendarConfig = {
+			dayClick: vm.alertEventOnClick
 		};
 
 		var publishEvents = function(index) {
-			if ($scope.calendars[index].selected) {
-				$scope.eventSources[index] = $scope.allEvents[index];
+			if (vm.calendars[index].selected) {
+				vm.eventSources[index] = vm.allEvents[index];
 			} else {
-				$scope.eventSources[index] = [];
+				vm.eventSources[index] = [];
 			}
 		};
 
-		$scope.publishAllEvents = function() {
+		vm.publishAllEvents = function() {
 			publishEvents(0);
 			publishEvents(1);
 		};
 
-		$scope.start = moment().startOf('month').format('YYYY-MM-DD');
-		$scope.end = moment().endOf('month').format('YYYY-MM-DD');
-		$scope.eventSources = [];
-		$scope.allEvents = [[],[]];
-		$http.get('rest/calendar/events/holidays?start=' + $scope.start + '&end=' + $scope.end).then(function(response) {
+		vm.start = moment().startOf('month').format('YYYY-MM-DD');
+		vm.end = moment().endOf('month').format('YYYY-MM-DD');
+		vm.eventSources = [];
+		vm.allEvents = [[],[]];
+		$http.get('rest/calendar/events/holidays?start=' + vm.start + '&end=' + vm.end).then(function(response) {
 			response.data.forEach(function(element, index) {
 				element.className = 'holidays';
 				element.start = new Date(element.start);
 				element.end = new Date(element.end);
 			});
-			$scope.allEvents[0] = response.data;
+			vm.allEvents[0] = response.data;
 			publishEvents(0);
 		});
-		$http.get('rest/calendar/events/absences?start=' + $scope.start + '&end=' + $scope.end).then(function(response) {
+		$http.get('rest/calendar/events/absences?start=' + vm.start + '&end=' + vm.end).then(function(response) {
 			response.data.forEach(function(element, index) {
 				element.className = 'employees';
 				element.start = new Date(element.start);
 				element.end = new Date(element.end);
 			});
-			$scope.allEvents[1] = response.data;
+			vm.allEvents[1] = response.data;
 			publishEvents(1);
 		});
-		// Ideally we would do this: $scope.eventSources = [ 'rest/calendar/events' ];
+		// Ideally we would do this: vm.eventSources = [ 'rest/calendar/events' ];
 	}
 })();
