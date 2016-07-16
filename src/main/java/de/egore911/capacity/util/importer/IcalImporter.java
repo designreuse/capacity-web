@@ -61,6 +61,7 @@ public class IcalImporter {
 					if (uid == null) {
 						LOG.warn("Event did not have an UID, skipping");
 						result.skip();
+						progress.setValue(++i);
 						continue;
 					}
 					Property emailProperty = component.getProperty("ATTENDEE");
@@ -68,6 +69,7 @@ public class IcalImporter {
 					if (email == null) {
 						LOG.warn("Event " + uid + " did not have an email");
 						result.skip();
+						progress.setValue(++i);
 						continue;
 					}
 					if (email.startsWith("mailto:")) {
@@ -78,6 +80,7 @@ public class IcalImporter {
 					if (employee == null) {
 						LOG.warn("Employee with e-mail " + email + " not found, skipping");
 						result.skip();
+						progress.setValue(++i);
 						continue;
 					}
 					AbsenceEntity absence = null;
@@ -105,6 +108,7 @@ public class IcalImporter {
 						// TODO We don't handle vacations for half days
 						result.skip();
 						e.printStackTrace();
+						progress.setValue(++i);
 						continue;
 					}
 					if (absence.getId() != null) {
