@@ -27,14 +27,6 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
 public class CalendarServiceTest extends AbstractUiTest {
 
 	@Test
-	public void testHolidays() throws IOException, ParserException {
-		List<Event> events = target("calendar/events/holidays").request().get(new GenericType<List<Event>>() {
-		});
-
-		assertThat(events, hasSize(4));
-	}
-
-	@Test
 	public void testHolidaysIcs() throws IOException, ParserException {
 		String ics = target("calendar/holidays.ics").request().get(String.class);
 
@@ -43,14 +35,6 @@ public class CalendarServiceTest extends AbstractUiTest {
 		ComponentList<CalendarComponent> components = calendar.getComponents("VEVENT");
 
 		assertThat(components, hasSize(4));
-	}
-
-	@Test
-	public void testAbsences() throws IOException, ParserException {
-		List<Event> events = target("calendar/events/absences").request().get(new GenericType<List<Event>>() {
-		});
-
-		assertThat(events, hasSize(greaterThanOrEqualTo(1)));
 	}
 
 	@Test
