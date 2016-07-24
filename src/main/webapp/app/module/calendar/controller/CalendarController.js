@@ -182,21 +182,11 @@
 			vm.publishEvents(1);
 		};
 
-		vm.start = moment().startOf('month').format('YYYY-MM-DD');
-		vm.end = moment().endOf('month').format('YYYY-MM-DD');
-		vm.eventSources = [];
-		vm.allEvents = [[],[]];
-
-		vm.employees = {};
-		vm.employeesLookup = {};
-		Employee.query(function(employees) {
-			employees = $filter('orderBy')(employees, 'name');
-			angular.forEach(employees, function(element) {
-				vm.employeesLookup[element.id] = element;
-			});
-			vm.employees = employees;
-
-			vm.allEvents[0] = Holiday.query({start: vm.start, end: vm.end}, function() {
+		vm.loadEvents = function(start, end, timezone, callback) {
+			start = moment(start).format('YYYY-MM-DD');
+			end = moment(end).format('YYYY-MM-DD');
+			return Holiday.query({start: start, end: end}).$promise.then(function(data) {
+				vm.allEvents[0] = data;
 				vm.allEvents[0].forEach(function(element) {
 					element.className = 'holidays';
 					if (element.imported) {
@@ -206,9 +196,9 @@
 					element.title = element.name;
 					element.start = element.date;
 				});
-				vm.publishEvents(0);
 
-				vm.allEvents[1] = Absence.query({start: vm.start, end: vm.end}, function() {
+				return Absence.query({start: start, end: end}).$promise.then(function(data) {
+					vm.allEvents[1] = data;
 					vm.allEvents[1].forEach(function(element) {
 						element.className = 'employees';
 						if (element.imported) {
@@ -219,9 +209,29 @@
 						element.title = vm.employeesLookup[element.employeeId].name + ': ' + element.reason;
 						element.color = vm.employeesLookup[element.employeeId].color;
 					});
-					vm.publishEvents(1);
+					vm.publishAllEvents();
+
+					angular.forEach(vm.eventSources, function(element) {
+						if (typeof element !== 'function') {
+							callback(element);
+						}
+					});
 				});
 			});
+		};
+
+		vm.eventSources = [[], []];
+		vm.allEvents = [[],[]];
+
+		vm.employees = {};
+		vm.employeesLookup = {};
+		Employee.query(function(employees) {
+			employees = $filter('orderBy')(employees, 'name');
+			angular.forEach(employees, function(element) {
+				vm.employeesLookup[element.id] = element;
+			});
+			vm.employees = employees;
+			vm.eventSources.push(vm.loadEvents);
 		});
 	}
 })();
