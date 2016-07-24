@@ -51,7 +51,7 @@
 			$rootScope.$apply();
 		};
 
-		ws.onerror = function(event){
+		ws.onerror = function(){
 			ws.close();
 		};
 
@@ -68,7 +68,7 @@
 						progress: vm.progress
 					}
 				});
-				modalInstanceCompleted.result.then(function(value) {
+				modalInstanceCompleted.result.then(function() {
 					IcalImport.query(function(icalImports) {
 						vm.icalImports = icalImports;
 					});
@@ -107,9 +107,9 @@
 			$http.get('rest/ical_import/import/' + id).then(function (response) {
 				var ws;
 				if (window.location.protocol == 'https:') {
-					ws = new WebSocket("wss://" + window.location.host + window.location.pathname + "async/progress/" + response.data);
+					ws = new WebSocket('wss://' + window.location.host + window.location.pathname + 'async/progress/' + response.data);
 				} else {
-					ws = new WebSocket("ws://" + window.location.host + window.location.pathname + "async/progress/" + response.data);
+					ws = new WebSocket('ws://' + window.location.host + window.location.pathname + 'async/progress/' + response.data);
 				}
 				var modalInstance = $uibModal.open({
 					templateUrl: 'app/views/progressDialog.html',
@@ -121,7 +121,7 @@
 						ws: ws
 					}
 				});
-				modalInstance.result.then(function(value) {
+				modalInstance.result.then(function() {
 					if (ws) {
 						ws.close();
 					}

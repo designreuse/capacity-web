@@ -28,7 +28,7 @@
 		vm.eventSources = [ vm.events ];
 		function workingHoursToEvents(employee) {
 			vm.events.splice(0, vm.events.length);
-			angular.forEach(employee.contract.workingHours, function(element, index) {
+			angular.forEach(employee.contract.workingHours, function(element) {
 				var start = moment(element.start, 'HH:mm:ss.SSS').day(element.dayOfWeek);
 				var end = moment(element.end, 'HH:mm:ss.SSS').day(element.dayOfWeek);
 				vm.events.push({
@@ -104,7 +104,7 @@
 		}
 
 		vm.calendarConfig = {
-			// Hide the header completely 
+			// Hide the header completely
 			header: {
 				left: '',
 				center: '',
@@ -123,7 +123,7 @@
 			select: function(start, end, jsEvent, view) {
 				var dayOfWeek = getOneBasedDayOfWeek(start);
 				var workingHours;
-				vm.employee.contract.workingHours.forEach(function(element, index) {
+				vm.employee.contract.workingHours.forEach(function(element) {
 					if (element.dayOfWeek == dayOfWeek) {
 						workingHours = element;
 					}
@@ -148,7 +148,7 @@
 				}
 				var dayOfWeek = getOneBasedDayOfWeek(event.start);
 				var workingHours;
-				vm.employee.contract.workingHours.forEach(function(element, index) {
+				vm.employee.contract.workingHours.forEach(function(element) {
 					if (element.dayOfWeek == dayOfWeek) {
 						workingHours = element;
 					}
@@ -166,7 +166,7 @@
 				}
 				var dayOfWeek = getOneBasedDayOfWeek(event.start);
 				var workingHours;
-				vm.employee.contract.workingHours.forEach(function(element, index) {
+				vm.employee.contract.workingHours.forEach(function(element) {
 					if (element.dayOfWeek == dayOfWeek) {
 						workingHours = element;
 					}

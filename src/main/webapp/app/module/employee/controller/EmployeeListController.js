@@ -9,7 +9,7 @@
 	function EmployeeListController($location, $rootScope, Employee) {
 		/* jshint validthis: true */
 		var vm = this;
-		
+
 		Employee.query(function(employees) {
 			vm.employees = employees;
 		});

@@ -24,7 +24,7 @@
 			IcalImport.get({id: vm.id}, function(icalImport) {
 				vm.icalImport = icalImport;
 				if (vm.icalImport.employeeIcalImports) {
-					angular.forEach(vm.icalImport.employeeIcalImports, function(element, index) {
+					angular.forEach(vm.icalImport.employeeIcalImports, function(element) {
 						vm.selection[element.employee.id] = element;
 					});
 				}

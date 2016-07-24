@@ -15,7 +15,7 @@
 		// Boolean option: Whether or not to calculate the capacity using the velocity per employee or not
 		vm.useVelocity = true;
 		// Selection option which display format to use (default "hours", other possible values "days" and "weeks")
-		vm.units = "hours";
+		vm.units = 'hours';
 
 		vm.selected = 'chart';
 		vm.select = function(tab) {
@@ -100,7 +100,7 @@
 				useVelocity: vm.useVelocity,
 				episodeId: vm._selectedEpisode.id
 			};
-			if (vm._selectedEpisode.id == '') {
+			if (vm._selectedEpisode.id === '') {
 				if (vm.duration.start) {
 					vm.duration.start = new Date(vm.duration.start);
 				}
@@ -128,9 +128,9 @@
 			}
 			$http.post(url, data).then(function(response) {
 				var series = [];
-				response.data.forEach(function(element, index) {
+				response.data.forEach(function(element) {
 					var seriesvalues = [];
-					element.workingHours.details.forEach(function(childelement, childindex) {
+					element.workingHours.details.forEach(function(childelement) {
 						var value = childelement.hours;
 						if (vm.units == 'hours') {
 							// No calculation necessary
@@ -152,9 +152,9 @@
 
 				var categories = [];
 				if (response.data.length > 0) {
-					response.data[0].workingHours.details.forEach(function(element, index) {
+					response.data[0].workingHours.details.forEach(function(element) {
 						var dayOfWeek = moment(element.date).day();
-						categories.push({y: element.date, color: (dayOfWeek == 0 || dayOfWeek == 6) ? '#aaaaaa' : '#000000' });
+						categories.push({y: element.date, color: (dayOfWeek === 0 || dayOfWeek === 6) ? '#aaaaaa' : '#000000' });
 					});
 				}
 				vm.chartConfig.xAxis.categories = categories;
@@ -180,7 +180,7 @@
 				vm._selectedEpisode = {
 					id: ''
 				};
-				angular.forEach(vm.episodes, function(element, index) {
+				angular.forEach(vm.episodes, function(element) {
 					if (episodeId === element.id) {
 						vm._selectedEpisode = element;
 					}
@@ -193,15 +193,15 @@
 
 		vm.episodeName = function() {
 			if (vm._selectedEpisode && vm._selectedEpisode.id) {
-				return vm._selectedEpisode.name + " " + vm._selectedEpisode.start + " - " + vm._selectedEpisode.end + ")";
+				return vm._selectedEpisode.name + ' ' + vm._selectedEpisode.start + ' - ' + vm._selectedEpisode.end + ')';
 			}
-			return "None";
+			return 'None';
 		};
 
 
 		vm.sum = function(values) {
 			var result = 0;
-			values.forEach(function(element, index) {
+			values.forEach(function(element) {
 				result += element;
 			});
 			return result;
@@ -209,7 +209,7 @@
 
 		vm.rowsum = function(columnIndex) {
 			var result = 0;
-			vm.chartConfig.series.forEach(function(element, index) {
+			vm.chartConfig.series.forEach(function(element) {
 				result += element.data[columnIndex];
 			});
 			return result;
@@ -217,8 +217,8 @@
 
 		vm.sumsum = function() {
 			var result = 0;
-			vm.chartConfig.series.forEach(function(element, index) {
-				element.data.forEach(function(subelement, subindex) {
+			vm.chartConfig.series.forEach(function(element) {
+				element.data.forEach(function(subelement) {
 					result += subelement;
 				});
 			});
@@ -227,6 +227,6 @@
 
 		vm.isPast = function(date) {
 			return moment(date).diff(moment(), 'minutes') < 0;
-		}
+		};
 	}
 })();

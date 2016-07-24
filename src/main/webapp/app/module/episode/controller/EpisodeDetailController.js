@@ -21,7 +21,7 @@
 
 		function prepareDto() {
 			vm.episode.employeeEpisodes = [];
-			angular.forEach(vm.selection, function(element, index) {
+			angular.forEach(vm.selection, function(element) {
 				vm.episode.employeeEpisodes.push(element);
 			});
 			if (vm.episode.start && typeof vm.episode.start.getMonth === 'function') {
@@ -49,14 +49,14 @@
 					vm.episode.name = 'Clone of ' + vm.episode.name;
 					vm.episode.id = undefined;
 					if (vm.episode.employeeEpisodes) {
-						angular.forEach(vm.episode.employeeEpisodes, function(element, index) {
+						angular.forEach(vm.episode.employeeEpisodes, function(element) {
 							element.id = undefined;
 							vm.selection[element.employee.id] = element;
 						});
 					}
 				} else {
 					if (vm.episode.employeeEpisodes) {
-						angular.forEach(vm.episode.employeeEpisodes, function(element, index) {
+						angular.forEach(vm.episode.employeeEpisodes, function(element) {
 							vm.selection[element.employee.id] = element;
 						});
 					}

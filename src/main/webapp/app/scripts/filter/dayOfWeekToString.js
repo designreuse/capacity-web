@@ -6,7 +6,7 @@
 	angular
 		.module('capacityApp')
 		.filter('dayOfWeekToString', dayOfWeekToString);
-	
+
 	function dayOfWeekToString() {
 		return function(input) {
 			switch (input) {

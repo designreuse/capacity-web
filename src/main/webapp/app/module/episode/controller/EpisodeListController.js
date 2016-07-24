@@ -31,6 +31,6 @@
 
 		vm.clone = function(id) {
 			$location.path('/episodes/clone/'+id);
-		}
+		};
 	}
 })();
