@@ -45,6 +45,9 @@
 
 		addRoute('/absence', 'app/module/absence/view/absence.html', 'AbsenceController');
 
+		addRoute('/roles', 'app/module/role/roles.html', 'RoleListController');
+		addRoute('/roles/:id', 'app/module/role/role.html', 'RoleDetailController');
+
 	}
 
 })();

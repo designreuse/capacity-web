@@ -1,0 +1,22 @@
+<h1 class="page-header"><i class="fa fa-puzzle-piece"></i>Roles</h1>
+
+<h2 class="sub-header">Listing ({{vm.roles.length}})</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th><span ng-click="vm.order('id')">ID</span>
+            <span class="sortorder" ng-show="vm.predicate === 'id'" ng-class="{reverse: vm.reverse}"></span></th>
+        <th class="col-sm-4"><span ng-click="vm.order('name')">Name</span>
+            <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span></th>
+        <th ng-repeat="permission in vm.permissions" ng-bind="permission | roleName"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="role in vm.roles | filter: search | orderBy:predicate:reverse">
+        <td ng-bind="role.id"></td>
+        <td><a href="#roles/{{role.id}}" ng-bind="role.name"></a></td>
+        <td ng-repeat="permission in vm.permissions"><i class="fa fa-check" ng-if="vm.isSelected(permission, role)"></i></td>
+    </tr>
+    </tbody>
+</table>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add</button>

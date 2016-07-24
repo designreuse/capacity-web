@@ -1,0 +1,22 @@
+<h1 class="page-header"><i class="fa fa-puzzle-piece"></i>{{!vm.role.name ? '&nbsp;' : vm.role.name}}</h1>
+
+<form class="form-horizontal">
+	<label-group label="ID">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.role.id" disabled />
+		</p>
+	</label-group>
+	<label-group label="Name">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.role.name" />
+		</p>
+	</label-group>
+	<label-group label="Permissions">
+		<table class="table table-striped">
+			<tr ng-repeat="permission in vm.permissions | orderBy: 'name'" ng-class="{selected: vm.isSelected(permission)}">
+				<td class="col-sm-6" ng-bind="permission | roleName" ng-click="vm.toggleSelection(permission)"></td>
+			</tr>
+		</table>
+	</label-group>
+	<button type="submit" ng-click="vm.save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
+</form>
