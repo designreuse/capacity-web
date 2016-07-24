@@ -1,3 +1,5 @@
+/// <reference path="../../../../../../../typings/globals/angular/index.d.ts" />
+
 (function() {
 	'use strict';
 

@@ -1,3 +1,5 @@
+/// <reference path="../../../../../../../typings/globals/angular/index.d.ts" />
+
 (function() {
 	'use strict';
 
@@ -6,6 +8,9 @@
 
 	AbsenceController.$inject = ['$http'];
 
+	/**
+	 * @param {ng.IHttpService} $http
+	 */
 	function AbsenceController($http) {
 		/* jshint validthis: true */
 		var vm = this;

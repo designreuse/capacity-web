@@ -1,10 +1,16 @@
+/// <reference path="../../../../../typings/globals/angular/index.d.ts" />
+
 (function() {
-    angular
-        .module('capacityApp')
+	angular
+		.module('capacityApp')
 		.controller('MainCtrl', MainCtrl);
 
 	MainCtrl.$inject = ['$location', '$http'];
 
+	/**
+	 * @param {ng.ILocationService} $location
+	 * @param {ng.IHttpService} $http
+	 */
 	function MainCtrl($location, $http) {
 		/* jshint validthis: true */
 		var vm = this;

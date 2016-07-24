@@ -1,6 +1,7 @@
 {
   "globalDependencies": {
     "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts",
+    "angular-resource": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-resource.d.ts",
     "angular-route": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-route.d.ts"
   }
 }

@@ -1,3 +1,6 @@
+/// <reference path="../../../../../typings/globals/angular/index.d.ts" />
+/// <reference path="../../../../../typings/globals/angular-route/index.d.ts" />
+
 (function() {
 	'use strict';
 
@@ -5,9 +8,17 @@
 		.config(config);
 
 	config.$inject = ['$routeProvider'];
-	
+
+	/**
+	 * @param {ng.route.IRouteProvider} $routeProvider
+	 */
 	function config($routeProvider) {
 
+		/**
+		 * @param {string} route
+		 * @param {string} templateUrl
+		 * @param {string} controller
+		 */
 		function addRoute(route, templateUrl, controller) {
 			$routeProvider.when(route, {
 				templateUrl: templateUrl,
