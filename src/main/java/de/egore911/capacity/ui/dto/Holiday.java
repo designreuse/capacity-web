@@ -3,7 +3,7 @@ package de.egore911.capacity.ui.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Holiday extends AbstractDto {
+public class Holiday extends AbstractDto implements Event {
 
 	private LocalDate date;
 	private String name;

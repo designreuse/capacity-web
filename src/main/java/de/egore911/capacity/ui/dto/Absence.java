@@ -2,7 +2,7 @@ package de.egore911.capacity.ui.dto;
 
 import java.time.LocalDate;
 
-public class Absence extends AbstractDto {
+public class Absence extends AbstractDto implements Event {
 
 	private int employeeId;
 	private LocalDate start;
