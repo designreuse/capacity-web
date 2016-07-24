@@ -24,9 +24,9 @@
 		};
 	}
 
-	ProgressController.$inject = ['$uibModalInstance', 'response', 'ws', '$uibModal', '$rootScope'];
+	ProgressController.$inject = ['$uibModalInstance', 'response', 'ws', '$uibModal', '$rootScope', 'IcalImport'];
 
-	function ProgressController($uibModalInstance, response, ws, $uibModal, $rootScope) {
+	function ProgressController($uibModalInstance, response, ws, $uibModal, $rootScope, IcalImport) {
 		/* jshint validthis: true */
 		var vm = this;
 
