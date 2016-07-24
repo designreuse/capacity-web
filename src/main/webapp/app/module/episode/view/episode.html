@@ -28,7 +28,6 @@
 		</p>
 	</label-group>
 	<label-group label="Employees">
-		{{vm.selection}}
 		<table class="table table-striped">
 			<tr ng-repeat="employee in vm.employees | orderBy: 'name'" ng-class="{selected: vm.isSelected(employee.id)}">
 				<td class="col-sm-6" ng-bind="employee.name" ng-click="vm.toggleSelection(employee)"></td>
