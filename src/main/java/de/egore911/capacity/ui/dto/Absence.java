@@ -8,6 +8,7 @@ public class Absence extends AbstractDto {
 	private LocalDate start;
 	private LocalDate end;
 	private String reason;
+	private boolean imported;
 
 	public int getEmployeeId() {
 		return employeeId;
@@ -39,5 +40,13 @@ public class Absence extends AbstractDto {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	public boolean isImported() {
+		return imported;
+	}
+
+	public void setImported(boolean imported) {
+		this.imported = imported;
 	}
 }

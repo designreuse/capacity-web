@@ -122,6 +122,7 @@ public class StartupListener implements ServletContextListener {
 					@Override
 					public void mapBtoA(AbsenceEntity a, Absence b, MappingContext context) {
 						b.setEmployeeId(a.getEmployee().getId());
+						b.setImported(a.getIcalImport() != null);
 					}
 				})
 			.register();
