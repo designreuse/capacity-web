@@ -15,7 +15,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="icalImport in vm.icalImports | filter: search | orderBy:predicate:reverse">
+    <tr ng-repeat="icalImport in vm.icalImports | filter: search | orderBy:vm.predicate:vm.reverse">
       <td class="col-sm-1">{{icalImport.id}}</td>
       <td class="col-sm-3"><a href="#ical_imports/{{icalImport.id}}" ng-bind="icalImport.name"></a></td>
       <td class="col-sm-6">{{icalImport.url}}</td>

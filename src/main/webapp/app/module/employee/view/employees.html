@@ -15,7 +15,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="employee in vm.employees | filter: search | orderBy:predicate:reverse">
+    <tr ng-repeat="employee in vm.employees | filter: search | orderBy:vm.predicate:vm.reverse">
       <td>{{employee.id}}</td>
       <td><employee-name employee="employee" /></td>
       <td>{{employee.email}}</td>

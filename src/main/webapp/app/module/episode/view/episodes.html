@@ -17,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="episode in vm.episodes | filter: search | orderBy:predicate:reverse">
+    <tr ng-repeat="episode in vm.episodes | filter: search | orderBy:vm.predicate:vm.reverse">
       <td class="col-sm-1">{{episode.id}}</td>
       <td class="col-sm-7"><a href="#episodes/{{episode.id}}" ng-bind="episode.name"></a></td>
       <td class="col-sm-1">{{episode.start}}</td>
