@@ -11,9 +11,23 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 @Ignore("Requires UI access not available on build server")
 public class SeleniumRoleTest extends AbstractSeleniumTest {
+
+    private void assertTwoRolesExist() {
+        // given: a clickable element
+        wait.until(ExpectedConditions.numberOfElementsToBe(By.xpath("//div[@id='page-wrapper']/h2[contains(text(),'Listing (2)')]"), 1));
+    }
+
+    private void assertRolesVisibleInOrder(String... roleNames) {
+        List<WebElement> roles = driver.findElements(By.xpath("//div[@id='page-wrapper']/table/tbody/tr/td/a"));
+        assertThat(roles, hasSize(roleNames.length));
+        for (int i = 0; i < roleNames.length; i++) {
+            assertThat(roles.get(i).getText(), equalTo(roleNames[i]));
+        }
+    }
 
     @Test
     public void listRoles() {
@@ -21,14 +35,10 @@ public class SeleniumRoleTest extends AbstractSeleniumTest {
         clickNavigationAndCheck("menu_roles", "Roles");
 
         // then: the site tells us two roles exist
-        List<WebElement> subheadline = driver.findElements(By.xpath("//div[@id='page-wrapper']/h2[contains(text(),'Listing (2)')]"));
-        assertThat(subheadline, hasSize(1));
+        assertTwoRolesExist();
 
         // then: We find the roles in the alphabetical order
-        List<WebElement> roles = driver.findElements(By.xpath("//div[@id='page-wrapper']/table/tbody/tr/td/a"));
-        assertThat(roles, hasSize(2));
-        assertThat(roles.get(0).getText(), equalTo("Administrators"));
-        assertThat(roles.get(1).getText(), equalTo("Users"));
+        assertRolesVisibleInOrder("Administrators", "Users");
     }
 
     @Test
@@ -43,27 +53,20 @@ public class SeleniumRoleTest extends AbstractSeleniumTest {
         // when: we search for 'Admin'
         siteSearchElement.sendKeys("Admin");
 
-        // then: the site still tells us that two roles exist
-        List<WebElement> subheadline = driver.findElements(By.xpath("//div[@id='page-wrapper']/h2[contains(text(),'Listing (2)')]"));
-        assertThat(subheadline, hasSize(1));
+        // then: the site tells us two roles exist
+        assertTwoRolesExist();
 
         // then: we only get the role 'Administrators' listed
-        List<WebElement> roles = driver.findElements(By.xpath("//div[@id='page-wrapper']/table/tbody/tr/td/a"));
-        assertThat(roles, hasSize(1));
-        assertThat(roles.get(0).getText(), equalTo("Administrators"));
+        assertRolesVisibleInOrder("Administrators");
 
         // when: we clear the search field
         siteSearchElement.clear();
 
         // then: the site tells us two roles exist
-        subheadline = driver.findElements(By.xpath("//div[@id='page-wrapper']/h2[contains(text(),'Listing (2)')]"));
-        assertThat(subheadline, hasSize(1));
+        assertTwoRolesExist();
 
         // then: We find the roles in the alphabetical order
-        roles = driver.findElements(By.xpath("//div[@id='page-wrapper']/table/tbody/tr/td/a"));
-        assertThat(roles, hasSize(2));
-        assertThat(roles.get(0).getText(), equalTo("Administrators"));
-        assertThat(roles.get(1).getText(), equalTo("Users"));
+        assertRolesVisibleInOrder("Administrators", "Users");
     }
 
 }
