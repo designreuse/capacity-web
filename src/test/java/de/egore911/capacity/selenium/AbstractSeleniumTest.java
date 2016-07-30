@@ -37,7 +37,7 @@ public abstract class AbstractSeleniumTest {
 
     @AfterClass
     public static void after() {
-        driver.close();
+        driver.quit();
     }
 
     protected final void clickAndCheck(String elementToClick, String textToBePresent) {
