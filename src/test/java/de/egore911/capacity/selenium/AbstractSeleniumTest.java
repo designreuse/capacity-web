@@ -40,11 +40,17 @@ public abstract class AbstractSeleniumTest {
         driver.quit();
     }
 
-    protected final void clickAndCheck(String elementToClick, String textToBePresent) {
+    protected final void clickNavigationAndCheck(String elementToClick, String textToBePresent) {
+        // given: a clickable element
         wait.until(ExpectedConditions.elementToBeClickable(By.id(elementToClick)));
+
+        // when: we click the element
         driver.findElement(By.id(elementToClick)).click();
-        wait.until(ExpectedConditions.numberOfElementsToBe(By.xpath("//div[@id='page-wrapper']/*[contains(text(),'" + textToBePresent + "')]"), 1));
-        List<WebElement> elements = driver.findElements(By.xpath("//div[@id='page-wrapper']/*[contains(text(),'" + textToBePresent + "')]"));
+
+        // then: the router navigates us to our target and we find the text expexted
+        By xpath = By.xpath("//div[@id='page-wrapper']/*[contains(text(),'" + textToBePresent + "')]");
+        wait.until(ExpectedConditions.numberOfElementsToBe(xpath, 1));
+        List<WebElement> elements = driver.findElements(xpath);
         assertThat(elements, not(empty()));
         assertThat(elements, hasSize(1));
     }

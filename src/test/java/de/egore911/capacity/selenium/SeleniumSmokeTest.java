@@ -8,42 +8,42 @@ public class SeleniumSmokeTest extends AbstractSeleniumTest {
 
     @Test
     public void clickHome() {
-        clickAndCheck("menu_home", "Welcome");
+        clickNavigationAndCheck("menu_home", "Welcome");
     }
 
     @Test
     public void clickEmployees() {
-        clickAndCheck("menu_employees", "Employees");
+        clickNavigationAndCheck("menu_employees", "Employees");
     }
 
     @Test
     public void clickEpisodes() {
-        clickAndCheck("menu_episodes", "Episodes");
+        clickNavigationAndCheck("menu_episodes", "Episodes");
     }
 
     @Test
     public void clickCalendar() {
-        clickAndCheck("menu_calendar", "Calendar");
+        clickNavigationAndCheck("menu_calendar", "Calendar");
     }
 
     @Test
     public void clickIcalImports() {
-        clickAndCheck("menu_ical_imports", "iCal Imports");
+        clickNavigationAndCheck("menu_ical_imports", "iCal Imports");
     }
 
     @Test
     public void clickCapacity() {
-        clickAndCheck("menu_capacity", "Capacity");
+        clickNavigationAndCheck("menu_capacity", "Capacity");
     }
 
     @Test
     public void clickAbsence() {
-        clickAndCheck("menu_absence", "Absences");
+        clickNavigationAndCheck("menu_absence", "Absences");
     }
 
     @Test
     public void clickRoles() {
-        clickAndCheck("menu_roles", "Roles");
+        clickNavigationAndCheck("menu_roles", "Roles");
     }
 }
 
