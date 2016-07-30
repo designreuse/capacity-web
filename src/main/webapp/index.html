@@ -97,7 +97,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#/">Capacity planning tools {{version.maven}}</a>
+          <a class="navbar-brand" href="#/" id="menu_home">Capacity planning tools {{version.maven}}</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -114,17 +114,17 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li ng-class="{active : main.currentModule() == 'employees'}"><a href="#/employees"><i class="fa fa-users"></i> Employees <span class="sr-only">(current)</span></a></li>
-            <li ng-class="{active : main.currentModule() == 'episodes'}"><a href="#/episodes"><i class="fa fa-caret-square-o-right"></i> Episodes</a></li>
-            <li ng-class="{active : main.currentModule() == 'calendar'}"><a href="#/calendar"><i class="fa fa-calendar"></i> Calendar</a></li>
-            <li ng-class="{active : main.currentModule() == 'ical_imports'}"><a href="#/ical_imports"><i class="fa fa-calendar-plus-o"></i> iCal Imports</a></li>
+            <li ng-class="{active : main.currentModule() == 'employees'}"><a href="#/employees" id="menu_employees"><i class="fa fa-users"></i> Employees <span class="sr-only">(current)</span></a></li>
+            <li ng-class="{active : main.currentModule() == 'episodes'}"><a href="#/episodes" id="menu_episodes"><i class="fa fa-caret-square-o-right"></i> Episodes</a></li>
+            <li ng-class="{active : main.currentModule() == 'calendar'}"><a href="#/calendar" id="menu_calendar"><i class="fa fa-calendar"></i> Calendar</a></li>
+            <li ng-class="{active : main.currentModule() == 'ical_imports'}"><a href="#/ical_imports" id="menu_ical_imports"><i class="fa fa-calendar-plus-o"></i> iCal Imports</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li ng-class="{active : main.currentModule() == 'capacity'}"><a href="#/capacity"><i class="fa fa-line-chart"></i> Capacity</a></li>
-            <li ng-class="{active : main.currentModule() == 'absence'}"><a href="#/absence"><i class="fa fa-pie-chart"></i> Absence</a></li>
+            <li ng-class="{active : main.currentModule() == 'capacity'}"><a href="#/capacity" id="menu_capacity"><i class="fa fa-line-chart"></i> Capacity</a></li>
+            <li ng-class="{active : main.currentModule() == 'absence'}"><a href="#/absence" id="menu_absence"><i class="fa fa-pie-chart"></i> Absence</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles"><i class="fa fa-puzzle-piece"></i> Roles</a></li>
+            <li ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles" id="menu_roles"><i class="fa fa-puzzle-piece"></i> Roles</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="page-wrapper" ng-view>
