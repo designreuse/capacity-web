@@ -4,8 +4,8 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th class="sortable" ng-click="vm.order('id')">ID<span class="sortorder" ng-show="vm.predicate === 'id'" ng-class="{reverse: vm.reverse}"></span></th>
-        <th class="col-sm-4 sortable" ng-click="vm.order('name')">Name<span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span></th>
+        <th class="sortable" ng-click="vm.order('id')" id="sort_id">ID<span class="sortorder" ng-show="vm.predicate === 'id'" ng-class="{reverse: vm.reverse}"></span></th>
+        <th class="col-sm-4 sortable" ng-click="vm.order('name')" id="sort_name">Name<span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span></th>
         <th ng-repeat="permission in vm.permissions" ng-bind="permission | roleName"></th>
     </tr>
     </thead>

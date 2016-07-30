@@ -69,4 +69,42 @@ public class SeleniumRoleTest extends AbstractSeleniumTest {
         assertRolesVisibleInOrder("Administrators", "Users");
     }
 
+    @Test
+    public void sortRoles() {
+        // when: we navigate to the roles administration
+        clickNavigationAndCheck("menu_roles", "Roles");
+
+        WebElement sortNameElement = driver.findElement(By.id("sort_name"));
+        WebElement sortedByName = sortNameElement.findElement(By.className("sortorder"));
+        WebElement sortIdElement = driver.findElement(By.id("sort_id"));
+        WebElement sortedById = sortIdElement.findElement(By.className("sortorder"));
+
+        // then: we are sorted by name by default
+        assertThat(sortedByName.isDisplayed(), equalTo(true));
+        assertThat(sortedById.isDisplayed(), equalTo(false));
+
+        // then: We find the roles in the alphabetical order
+        assertRolesVisibleInOrder("Administrators", "Users");
+
+        // when: we click sort by name
+        sortNameElement.click();
+
+        // then: we are still sorted by name
+        assertThat(sortedByName.isDisplayed(), equalTo(true));
+        assertThat(sortedById.isDisplayed(), equalTo(false));
+
+        // then: We find the roles in the alphabetical order
+        assertRolesVisibleInOrder("Users", "Administrators");
+
+        // when: we click sort by name
+        sortNameElement.click();
+
+        // then: we are still sorted by name
+        assertThat(sortedByName.isDisplayed(), equalTo(true));
+        assertThat(sortedById.isDisplayed(), equalTo(false));
+
+        // then: We find the roles in the alphabetical order
+        assertRolesVisibleInOrder("Administrators", "Users");
+    }
+
 }
