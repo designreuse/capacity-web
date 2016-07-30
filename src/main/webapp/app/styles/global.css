@@ -28,6 +28,10 @@ h1.page-header i.fa {
 	margin-right: 8px;
 }
 
+.sortable {
+	cursor: pointer;
+}
+
 .sortorder:after {
 	content: '\25bc';
 }
