@@ -1,0 +1,31 @@
+<h1 class="page-header"><i class="fa fa-user"></i>{{!vm.user.name ? '&nbsp;' : vm.user.name}}</h1>
+
+<form class="form-horizontal" name="form">
+	<label-group label="ID">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.user.id" disabled />
+		</p>
+	</label-group>
+	<label-group label="Name" ng-class="{'has-error': form.name.$touched && form.name.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.user.name" name="name" required />
+		</p>
+	</label-group>
+	<label-group label="E-Mail" ng-class="{'has-error': form.email.$touched && (form.email.$error.email || form.email.$error.required)}">
+		<p>
+			<input type="email" class="form-control" ng-model="vm.user.email" name="email" required />
+		</p>
+	</label-group>
+	<label-group label="Login" ng-class="{'has-error': form.login.$touched && (form.login.$error.pattern || form.login.$error.required)}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.user.login" name="login" required pattern="[A-Za-z]{3,50}"/>
+		</p>
+	</label-group>
+	<label-group label="Password" ng-class="{'has-error': (form.password.$touched || form.passwordRepeated.$touched) && (form.passwordRepeated.$error.equal || form.passwordRepeated.$error.required)}">
+		<p>
+			<input type="password" class="form-control" ng-model="vm.user.password" name="password" equal="{{vm.user.passwordRepeated}}" ng-required="vm.user.id === undefined"/>
+			<input type="password" class="form-control" ng-model="vm.user.passwordRepeated" name="passwordRepeated" equal="{{vm.user.password}}" ng-required="vm.user.id === undefined"/>
+		</p>
+	</label-group>
+	<button type="submit" ng-click="vm.save()" class="btn btn-default" ng-disabled="form.$invalid"><i class="fa fa-floppy-o"></i> Save</button>
+</form>

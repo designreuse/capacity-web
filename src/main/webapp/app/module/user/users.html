@@ -1,0 +1,24 @@
+<h1 class="page-header"><i class="fa fa-user"></i>Users</h1>
+
+<h2 class="sub-header">Listing ({{vm.users.length}})</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th><span ng-click="vm.order('id')">ID</span>
+            <span class="sortorder" ng-show="vm.predicate === 'id'" ng-class="{reverse: vm.reverse}"></span></th>
+        <th class="col-sm-4"><span ng-click="vm.order('name')">Name</span>
+            <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span></th>
+        <th>E-Mail</th>
+        <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in vm.users | filter: search | orderBy:vm.predicate:vm.reverse">
+        <td ng-bind="user.id"></td>
+        <td><a href="#users/{{user.id}}" ng-bind="user.name"></a></td>
+        <td ng-bind="user.email"></td>
+        <td><span ng-repeat="roleId in user.roleIds">{{vm.roleLookup[roleId].name}}{{$last ? '' : ', '}}</span></td>
+    </tr>
+    </tbody>
+</table>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> Add</button>

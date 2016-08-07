@@ -83,6 +83,11 @@
   <script  type="text/javascript" src="app/module/role/roles.controller.js"></script>
   <script  type="text/javascript" src="app/module/role/role.filter.js"></script>
 
+  <script  type="text/javascript" src="app/module/user/user.factory.js"></script>
+  <script  type="text/javascript" src="app/module/user/user.controller.js"></script>
+  <script  type="text/javascript" src="app/module/user/users.controller.js"></script>
+  <script  type="text/javascript" src="app/module/user/passwords-equal.directive.js"></script>
+
 </head>
 <body ng-controller="MainCtrl as main">
 
@@ -125,6 +130,7 @@
           </ul>
           <ul class="nav nav-sidebar">
             <li ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles" id="menu_roles"><i class="fa fa-puzzle-piece"></i> Roles</a></li>
+            <li ng-class="{active : main.currentModule() == 'users'}"><a href="#/users" id="menu_users"><i class="fa fa-user"></i> Users</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="page-wrapper" ng-view>

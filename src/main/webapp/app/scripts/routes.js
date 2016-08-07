@@ -48,6 +48,8 @@
 		addRoute('/roles', 'app/module/role/roles.html', 'RoleListController');
 		addRoute('/roles/:id', 'app/module/role/role.html', 'RoleDetailController');
 
+		addRoute('/users', 'app/module/user/users.html', 'UserListController');
+		addRoute('/users/:id', 'app/module/user/user.html', 'UserDetailController');
 	}
 
 })();
