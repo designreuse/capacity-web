@@ -17,10 +17,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class AbstractSeleniumTest {
+abstract class AbstractSeleniumTest {
 
-    protected static WebDriver driver;
-    protected static WebDriverWait wait;
+    static WebDriver driver;
+    static WebDriverWait wait;
 
     @BeforeClass
     public static void before() {
@@ -40,7 +40,7 @@ public abstract class AbstractSeleniumTest {
         driver.quit();
     }
 
-    protected final void clickNavigationAndCheck(String elementToClick, String textToBePresent) {
+    final void clickNavigationAndCheck(String elementToClick, String textToBePresent) {
         // given: a clickable element
         wait.until(ExpectedConditions.elementToBeClickable(By.id(elementToClick)));
 

@@ -45,5 +45,11 @@ public class SeleniumSmokeTest extends AbstractSeleniumTest {
     public void clickRoles() {
         clickNavigationAndCheck("menu_roles", "Roles");
     }
+
+    @Test
+    public void clickUsers() {
+        clickNavigationAndCheck("menu_users", "Users");
+    }
+
 }
 
