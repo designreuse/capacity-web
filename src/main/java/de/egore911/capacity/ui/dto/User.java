@@ -1,11 +1,17 @@
 package de.egore911.capacity.ui.dto;
 
+import de.egore911.capacity.persistence.model.RoleEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class User extends AbstractDto {
 
 	private String name;
 	private String login;
 	private String password;
 	private String email;
+	private List<Integer> roleIds;
 
 	public String getName() {
 		return name;
@@ -39,4 +45,11 @@ public class User extends AbstractDto {
 		this.email = email;
 	}
 
+	public List<Integer> getRoleIds() {
+		return roleIds;
+	}
+
+	public void setRoleIds(List<Integer> roleIds) {
+		this.roleIds = roleIds;
+	}
 }

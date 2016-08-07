@@ -30,6 +30,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -37,6 +38,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 
+import de.egore911.capacity.persistence.dao.RoleDao;
+import de.egore911.capacity.persistence.model.RoleEntity;
+import org.apache.commons.collections4.CollectionUtils;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,8 +137,15 @@ public class StartupListener implements ServletContextListener {
 			.customize(
 				new CustomMapper<User, UserEntity>() {
 					@Override
+					public void mapAtoB(User a, UserEntity b, MappingContext context) {
+						if (CollectionUtils.isNotEmpty(a.getRoleIds())) {
+							b.setRoles(new RoleDao().findByIds(a.getRoleIds()));
+						}
+					}
+					@Override
 					public void mapBtoA(UserEntity a, User b, MappingContext context) {
 						b.setPassword(null);
+						b.setRoleIds(a.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toList()));
 					}
 				})
 			.register();
