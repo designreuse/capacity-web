@@ -25,7 +25,7 @@
       <label class="col-sm-2 control-label" for="control_id_episode">Episode</label>
       <div class="col-sm-10 label-group-content">
         <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{_selectedEpisode.name ? _selectedEpisode.name + '(' + _selectedEpisode.start + ' - ' + _selectedEpisode.end + ')' : 'None'}} <span class="caret"></span></button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{vm._selectedEpisode.name ? vm._selectedEpisode.name + '(' + vm._selectedEpisode.start + ' - ' + vm._selectedEpisode.end + ')' : 'None'}} <span class="caret"></span></button>
           <ul class="dropdown-menu">
             <li><a href ng-click="vm.selectedEpisode('')">None</a></li>
             <li role="separator" class="divider"></li>
@@ -92,14 +92,14 @@
       <tr ng-repeat="row in vm.chartConfig.series">
         <th ng-bind="row.name"></th>
         <td ng-repeat="field in row.data track by $index">{{field | number: 1}}{{units | limitTo: 1}}</th>
-        <th>{{sum(row.data) | number: 1}}{{units | limitTo: 1}}</th>
+        <th>{{vm.sum(row.data) | number: 1}}{{units | limitTo: 1}}</th>
       </tr>
     </tbody>
     <tfoot>
       <tr>
         <th>Sum</th>
-        <td ng-repeat="category in vm.chartConfig.xAxis.categories">{{rowsum($index) | number: 1}}{{units | limitTo: 1}}</th>
-        <th>{{sumsum() | number: 1}}{{units | limitTo: 1}}</th>
+        <td ng-repeat="category in vm.chartConfig.xAxis.categories">{{vm.rowsum($index) | number: 1}}{{units | limitTo: 1}}</th>
+        <th>{{vm.sumsum() | number: 1}}{{units | limitTo: 1}}</th>
       </tr>
     </tfoot>
   </table>
