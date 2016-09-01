@@ -181,7 +181,7 @@ public class CapacityService extends AbstractService {
 		List<AbsenceEntity> absences = employee.getAbsences();
 		for (AbsenceEntity absence : absences) {
 			LocalDate date = absence.getStart();
-			while (date.isBefore(end) && !date.isAfter(absence.getEnd())) {
+			while (!date.isAfter(end) && !date.isAfter(absence.getEnd())) {
 				if (!date.isBefore(start)) {
 					Integer hours = durations.get(date.getDayOfWeek());
 					reductions.put(date, hours != null ? hours : 0);
