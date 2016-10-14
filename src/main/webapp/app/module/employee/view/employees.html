@@ -10,17 +10,23 @@
          <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span></th>
       <th>E-Mail</th>
       <th>Abilities</th>
+      <th ng-show="vm.showContracts()"><span ng-click="vm.order('contract.start')">Contract start</span>
+         <span class="sortorder" ng-show="vm.predicate === 'contract.start'" ng-class="{reverse: vm.reverse}"></span></th>
+      <th ng-show="vm.showContracts()"><span ng-click="vm.order('contract.end')">Contract end</span>
+         <span class="sortorder" ng-show="vm.predicate === 'contract.end'" ng-class="{reverse: vm.reverse}"></span></th>
       <th>Working hours</th>
       <th>Velocity</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="employee in vm.employees | filter: search | orderBy:vm.predicate:vm.reverse">
+    <tr ng-repeat="employee in vm.employees | filter: search | orderBy:vm.predicate:vm.reverse" style="{{vm.getEmployeeStyle(employee)}}">
       <td>{{employee.id}}</td>
       <td><employee-name employee="employee" /></td>
       <td>{{employee.email}}</td>
       <td><ul class="abilities"><li ng-repeat="ability in employee.abilities | orderBy: 'name'" ng-click="vm.searchFilter(ability.name)" style="cursor: pointer;">{{ability.name}}</li></ul></td>
+      <td ng-show="vm.showContracts()" ng-bind="employee.contract.start"></td>
+      <td ng-show="vm.showContracts()" ng-bind="employee.contract.end"></td>
       <td>{{employee.contract.workingHoursPerWeek}} ({{(employee.contract.workingHoursPerWeek / 40) * 100 | number: 0 }}%)</td>
       <td>{{employee.velocity}}%</td>
       <td class="col-sm-1"><button ng-click="vm.clone(employee.id)" class="btn btn-default"><i class="fa fa-clone"></i> Clone</button></td>
