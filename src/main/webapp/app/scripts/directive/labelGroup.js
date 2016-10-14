@@ -30,7 +30,9 @@
 			replace: true,
 			transclude: true,
 			scope: {
-				label: '@'
+				label: '@',
+				valuecolumns: '@',
+				labelcolumns: '@'
 			},
 			link: link
 		};

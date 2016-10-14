@@ -44,9 +44,16 @@
 			</span>
 		</p>
 	</label-group>
-	<label-group label="Vacation (days/year)">
-		<input type="number" class="form-control" ng-model="vm.employee.contract.vacationDaysPerYear" />
-	</label-group>
+	<div class="col-md-6">
+		<label-group label="Vacation (days/year)" labelcolumns="4" valuecolumns="8">
+			<input type="number" class="form-control" ng-model="vm.employee.contract.vacationDaysPerYear" />
+		</label-group>
+	</div>
+	<div class="col-md-6">
+		<label-group label="Calculated vacation in {{vm.currentYear()}}" labelcolumns="4" valuecolumns="8">
+			<input type="text" class="form-control" value="{{vm.calculateDaysForCurrentYear()}}" disabled />
+		</label-group>
+	</div>
 	<h2 class="sub-header">Working Hours</h2>
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10"><div ui-calendar="vm.calendarConfig" ng-model="vm.eventSources"></div></div>

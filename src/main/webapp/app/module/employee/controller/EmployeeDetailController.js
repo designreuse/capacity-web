@@ -10,6 +10,9 @@
 		/* jshint validthis: true */
 		var vm = this;
 
+		vm.calculateDaysForCurrentYear = calculateDaysForCurrentYear;
+		vm.currentYear = currentYear;
+
 		vm.datepicker = {
 			startOpened: false,
 			endOpened: false
@@ -193,5 +196,25 @@
 			slotLabelFormat: 'HH:mm'
 		};
 
+		function calculateDaysForCurrentYear() {
+			var days = 365;
+			if (!vm.employee || !vm.employee.contract) {
+				return '';
+			}
+			var startAffected = !!vm.employee.contract.start && moment(vm.employee.contract.start).year() == moment().year();
+			var endAffected = !!vm.employee.contract.end && moment(vm.employee.contract.end).year() == moment().year();
+			if (startAffected) {
+				days += moment().date(1).month(0).diff(moment(vm.employee.contract.start), 'days');
+			}
+			if (endAffected) {
+				days -= moment().day(31).month(11).diff(moment(vm.employee.contract.end), 'days');
+			}
+
+			return Math.round(10 * vm.employee.contract.vacationDaysPerYear * (days / 365)) / 10;
+		}
+
+		function currentYear() {
+			return moment().year();
+		}
 	}
 })();
