@@ -1,11 +1,14 @@
 package de.egore911.capacity.ui.rest;
 
+import java.time.LocalDate;
+
 import javax.ws.rs.Path;
 
 import org.apache.shiro.subject.Subject;
 
 import de.egore911.capacity.persistence.dao.EmployeeDao;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
+import de.egore911.capacity.persistence.model.Permission;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.ui.dto.Employee;
 
@@ -24,7 +27,12 @@ public class EmployeeService extends AbstractResourceService<Employee, EmployeeE
 
 	@Override
 	protected EmployeeSelector getSelector(Subject subject) {
-		return new EmployeeSelector();
+		EmployeeSelector employeeSelector = new EmployeeSelector();
+		if (!subject.isPermitted(Permission.VIEW_WITHOUT_CONTRACT.name())) {
+			LocalDate date = LocalDate.now();
+			employeeSelector.withActiveContract(date, date);
+		}
+		return employeeSelector;
 	}
 
 	@Override

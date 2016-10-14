@@ -30,5 +30,7 @@ public enum Permission {
 	ADMIN_USERS,
 	/** Capacity */
 	SHOW_CAPACITY,
-	ADMIN_CAPACITY
+	ADMIN_CAPACITY,
+	/** Employees */
+	VIEW_WITHOUT_CONTRACT
 }
