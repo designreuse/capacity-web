@@ -1,8 +1,5 @@
 package de.egore911.capacity.ui.dto;
 
-import de.egore911.capacity.persistence.model.RoleEntity;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class User extends AbstractDto {
