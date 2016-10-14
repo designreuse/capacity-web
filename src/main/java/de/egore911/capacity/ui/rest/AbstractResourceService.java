@@ -14,6 +14,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.shiro.subject.Subject;
+import org.secnod.shiro.jaxrs.Auth;
+
 import de.egore911.capacity.persistence.model.IntegerDbObject;
 import de.egore911.capacity.persistence.selector.AbstractResourceSelector;
 import de.egore911.capacity.ui.dto.AbstractDto;
@@ -27,13 +30,13 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 	
 	protected abstract Class<T> getDtoClass();
 	protected abstract Class<U> getEntityClass();
-	protected abstract AbstractResourceSelector<U> getSelector();
+	protected abstract AbstractResourceSelector<U> getSelector(Subject subject);
 	protected abstract AbstractDao<U> getDao();
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<T> getAll() {
-		return getMapper().mapAsList(getSelector().findAll(), getDtoClass());
+	public List<T> getAll(@Auth Subject subject) {
+		return getMapper().mapAsList(getSelector(subject).findAll(), getDtoClass());
 	}
 
 	@POST
@@ -52,17 +55,17 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public T getById(@PathParam("id") Integer id) {
+	public T getById(@PathParam("id") Integer id, @Auth Subject subject) {
 		if (id == null) {
 			throw new NullArgumentException("id");
 		}
-		return getMapper().map(getSelector().withId(id).find(), getDtoClass());
+		return getMapper().map(getSelector(subject).withId(id).find(), getDtoClass());
 	}
 
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void update(@PathParam("id") @Nonnull Integer id, T t) {
+	public void update(@PathParam("id") @Nonnull Integer id, T t, @Auth Subject subject) {
 		if (t == null) {
 			throw new NullArgumentException("t");
 		}
@@ -72,7 +75,7 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 		EntityManager em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
 		try {
-			U entity = getSelector().withId(id).find();
+			U entity = getSelector(subject).withId(id).find();
 			if (entity == null) {
 				throw new NotFoundException("Could not find t with ID " + id);
 			}
@@ -89,11 +92,11 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 
 	@DELETE
 	@Path("/{id}")
-	public void delete(@PathParam("id") @Nonnull Integer id) {
+	public void delete(@PathParam("id") @Nonnull Integer id, @Auth Subject subject) {
 		EntityManager em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
 		try {
-			U entity = getSelector().withId(id).find();
+			U entity = getSelector(subject).withId(id).find();
 			if (entity == null) {
 				throw new BadArgumentException("Entity with ID " + id + " does not exist");
 			}

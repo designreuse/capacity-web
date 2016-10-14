@@ -10,6 +10,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.shiro.subject.Subject;
+
 import de.egore911.capacity.persistence.dao.IcalImportDao;
 import de.egore911.capacity.persistence.model.IcalImportEntity;
 import de.egore911.capacity.persistence.selector.IcalImportSelector;
@@ -36,7 +38,7 @@ public class IcalImportService extends AbstractResourceService<IcalImport, IcalI
 	}
 
 	@Override
-	protected IcalImportSelector getSelector() {
+	protected IcalImportSelector getSelector(Subject subject) {
 		return new IcalImportSelector();
 	}
 

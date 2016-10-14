@@ -10,6 +10,8 @@ import de.egore911.capacity.ui.dto.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.crypto.hash.Sha1Hash;
+import org.apache.shiro.subject.Subject;
+import org.secnod.shiro.jaxrs.Auth;
 
 @Path("user")
 public class UserService extends AbstractResourceService<User, UserEntity> {
@@ -25,7 +27,7 @@ public class UserService extends AbstractResourceService<User, UserEntity> {
 	}
 
 	@Override
-	protected UserSelector getSelector() {
+	protected UserSelector getSelector(Subject subject) {
 		return new UserSelector();
 	}
 
@@ -41,9 +43,9 @@ public class UserService extends AbstractResourceService<User, UserEntity> {
 	}
 
 	@Override
-	public void update(@Nonnull Integer id, User user) {
+	public void update(@Nonnull Integer id, User user, @Auth Subject subject) {
 		hashPassword(user);
-		super.update(id, user);
+		super.update(id, user, subject);
 	}
 
 	private void hashPassword(User user) {

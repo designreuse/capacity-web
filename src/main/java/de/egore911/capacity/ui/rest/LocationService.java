@@ -7,6 +7,8 @@ import de.egore911.capacity.ui.dto.Location;
 
 import javax.ws.rs.Path;
 
+import org.apache.shiro.subject.Subject;
+
 @Path("location")
 public class LocationService extends AbstractResourceService<Location, LocationEntity> {
 
@@ -21,7 +23,7 @@ public class LocationService extends AbstractResourceService<Location, LocationE
 	}
 
 	@Override
-	protected LocationSelector getSelector() {
+	protected LocationSelector getSelector(Subject subject) {
 		return new LocationSelector();
 	}
 

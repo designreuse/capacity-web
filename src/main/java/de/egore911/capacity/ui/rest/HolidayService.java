@@ -2,6 +2,8 @@ package de.egore911.capacity.ui.rest;
 
 import javax.ws.rs.Path;
 
+import org.apache.shiro.subject.Subject;
+
 import de.egore911.capacity.persistence.dao.HolidayDao;
 import de.egore911.capacity.persistence.model.HolidayEntity;
 import de.egore911.capacity.persistence.selector.HolidaySelector;
@@ -21,7 +23,7 @@ public class HolidayService extends AbstractResourceService<Holiday, HolidayEnti
 	}
 
 	@Override
-	protected HolidaySelector getSelector() {
+	protected HolidaySelector getSelector(Subject subject) {
 		return new HolidaySelector();
 	}
 

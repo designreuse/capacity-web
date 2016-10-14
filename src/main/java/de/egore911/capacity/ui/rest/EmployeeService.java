@@ -2,6 +2,8 @@ package de.egore911.capacity.ui.rest;
 
 import javax.ws.rs.Path;
 
+import org.apache.shiro.subject.Subject;
+
 import de.egore911.capacity.persistence.dao.EmployeeDao;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
@@ -21,7 +23,7 @@ public class EmployeeService extends AbstractResourceService<Employee, EmployeeE
 	}
 
 	@Override
-	protected EmployeeSelector getSelector() {
+	protected EmployeeSelector getSelector(Subject subject) {
 		return new EmployeeSelector();
 	}
 

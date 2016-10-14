@@ -2,6 +2,8 @@ package de.egore911.capacity.ui.rest;
 
 import javax.ws.rs.Path;
 
+import org.apache.shiro.subject.Subject;
+
 import de.egore911.capacity.persistence.dao.AbsenceDao;
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.selector.AbsenceSelector;
@@ -21,7 +23,7 @@ public class AbsenceService extends AbstractResourceService<Absence, AbsenceEnti
 	}
 
 	@Override
-	protected AbsenceSelector getSelector() {
+	protected AbsenceSelector getSelector(Subject subject) {
 		return new AbsenceSelector();
 	}
 

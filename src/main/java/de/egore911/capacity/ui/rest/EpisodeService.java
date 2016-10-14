@@ -2,6 +2,8 @@ package de.egore911.capacity.ui.rest;
 
 import javax.ws.rs.Path;
 
+import org.apache.shiro.subject.Subject;
+
 import de.egore911.capacity.persistence.dao.EpisodeDao;
 import de.egore911.capacity.persistence.model.EpisodeEntity;
 import de.egore911.capacity.persistence.selector.EpisodeSelector;
@@ -21,7 +23,7 @@ public class EpisodeService extends AbstractResourceService<Episode, EpisodeEnti
 	}
 
 	@Override
-	protected EpisodeSelector getSelector() {
+	protected EpisodeSelector getSelector(Subject subject) {
 		return new EpisodeSelector();
 	}
 

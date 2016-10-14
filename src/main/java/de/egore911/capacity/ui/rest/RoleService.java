@@ -2,6 +2,8 @@ package de.egore911.capacity.ui.rest;
 
 import javax.ws.rs.Path;
 
+import org.apache.shiro.subject.Subject;
+
 import de.egore911.capacity.persistence.dao.RoleDao;
 import de.egore911.capacity.persistence.model.RoleEntity;
 import de.egore911.capacity.persistence.selector.RoleSelector;
@@ -21,7 +23,7 @@ public class RoleService extends AbstractResourceService<Role, RoleEntity> {
 	}
 
 	@Override
-	protected RoleSelector getSelector() {
+	protected RoleSelector getSelector(Subject subject) {
 		return new RoleSelector();
 	}
 
