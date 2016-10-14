@@ -12,6 +12,7 @@
       <th>Abilities</th>
       <th>Working hours</th>
       <th>Velocity</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -22,6 +23,7 @@
       <td><ul class="abilities"><li ng-repeat="ability in employee.abilities | orderBy: 'name'" ng-click="vm.searchFilter(ability.name)" style="cursor: pointer;">{{ability.name}}</li></ul></td>
       <td>{{employee.contract.workingHoursPerWeek}} ({{(employee.contract.workingHoursPerWeek / 40) * 100 | number: 0 }}%)</td>
       <td>{{employee.velocity}}%</td>
+      <td class="col-sm-1"><button ng-click="vm.clone(employee.id)" class="btn btn-default"><i class="fa fa-clone"></i> Clone</button></td>
     </tr>
   </tbody>
 </table>

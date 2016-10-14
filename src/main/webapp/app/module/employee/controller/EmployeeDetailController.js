@@ -60,6 +60,7 @@
 				});
 			};
 		} else {
+			var isClone = $location.path().slice(0, '/employees/clone'.length) == '/employees/clone';
 			vm.employee = {};
 			Employee.get({id: $route.current.params.id}, function(employee) {
 				vm.employee = employee;
@@ -70,13 +71,26 @@
 				if (vm.employee.contract.end) {
 					vm.employee.contract.end = new Date(vm.employee.contract.end);
 				}
+				if (isClone) {
+					vm.employee.name = 'Clone of ' + vm.employee.name;
+					vm.employee.id = undefined;
+				}
 			});
-			vm.save = function() {
-				prepareDto();
-				vm.employee.$update(function() {
-					$location.path('/employees');
-				});
-			};
+			if (isClone) {
+				vm.save = function() {
+					prepareDto();
+					vm.employee.$save(function() {
+						$location.path('/employees');
+					});
+				};
+			} else {
+				vm.save = function() {
+					prepareDto();
+					vm.employee.$update(function() {
+						$location.path('/employees');
+					});
+				};
+			}
 		}
 
 		vm.loadAbilities = function($query) {

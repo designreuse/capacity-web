@@ -28,5 +28,9 @@
 		vm.searchFilter = function(string) {
 			$rootScope.search = string;
 		};
+
+		vm.clone = function(id) {
+			$location.path('/employees/clone/'+id);
+		};
 	}
 })();

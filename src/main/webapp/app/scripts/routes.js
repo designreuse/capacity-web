@@ -31,6 +31,7 @@
 
 		addRoute('/employees', 'app/module/employee/view/employees.html', 'EmployeeListController');
 		addRoute('/employees/:id', 'app/module/employee/view/employee.html', 'EmployeeDetailController');
+		addRoute('/employees/clone/:id', 'app/module/employee/view/employee.html', 'EmployeeDetailController');
 
 		addRoute('/calendar', 'app/module/calendar/view/calendar.html', 'CalendarController');
 
