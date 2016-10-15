@@ -14,11 +14,41 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.UnavailableSecurityManagerException;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.support.SubjectThreadState;
+import org.apache.shiro.util.LifecycleUtils;
+import org.apache.shiro.util.ThreadState;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.egore911.capacity.ui.dto.AbstractDto;
+import org.mockito.Mockito;
 
 public abstract class AbstractCRUDTest<T extends AbstractDto> extends AbstractUiTest {
+
+	private static ThreadState subjectThreadState;
+
+	@BeforeClass
+	public static void beforeClass_AbstractCRUDTest() {
+		subjectThreadState = new SubjectThreadState(Mockito.mock(Subject.class));
+		subjectThreadState.bind();
+	}
+
+	@AfterClass
+	public static void afterClass_AbstractCRUDTest() {
+		subjectThreadState.clear();
+		try {
+			SecurityManager securityManager = SecurityUtils.getSecurityManager();
+			LifecycleUtils.destroy(securityManager);
+		} catch (UnavailableSecurityManagerException e) {
+			// Ok, see https://shiro.apache.org/testing.html
+		}
+		SecurityUtils.setSecurityManager(null);
+	}
 
 	protected abstract T createFixture();
 
