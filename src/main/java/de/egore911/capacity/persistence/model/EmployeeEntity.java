@@ -8,10 +8,13 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.BatchSize;
 
 @Entity(name = "Employee")
 @Table(name = "employee")
@@ -44,7 +47,8 @@ public class EmployeeEntity extends IntegerDbObject {
 		this.email = email;
 	}
 
-	@ElementCollection
+	@BatchSize(size = 10)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "ability", joinColumns = @JoinColumn(name = "employee_id") )
 	public Set<AbilityEntity> getAbilities() {
 		return abilities;
