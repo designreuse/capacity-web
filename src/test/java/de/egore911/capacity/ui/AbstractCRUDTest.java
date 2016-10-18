@@ -25,6 +25,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.egore911.capacity.persistence.model.Permission;
 import de.egore911.capacity.ui.dto.AbstractDto;
 import org.mockito.Mockito;
 
@@ -34,7 +35,9 @@ public abstract class AbstractCRUDTest<T extends AbstractDto> extends AbstractUi
 
 	@BeforeClass
 	public static void beforeClass_AbstractCRUDTest() {
-		subjectThreadState = new SubjectThreadState(Mockito.mock(Subject.class));
+		Subject subject = Mockito.mock(Subject.class);
+		Mockito.when(subject.isPermitted(Mockito.eq(Permission.ADMIN_ICAL_IMPORTS.name()))).thenReturn(true);
+		subjectThreadState = new SubjectThreadState(subject);
 		subjectThreadState.bind();
 	}
 

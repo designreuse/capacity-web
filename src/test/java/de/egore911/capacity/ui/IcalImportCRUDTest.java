@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.ws.rs.core.GenericType;
 
 import de.egore911.capacity.ui.dto.IcalImport;
+import de.egore911.capacity.ui.dto.IcalImport.Auth;
 
 public class IcalImportCRUDTest extends AbstractCRUDTest<IcalImport> {
 
@@ -17,6 +18,7 @@ public class IcalImportCRUDTest extends AbstractCRUDTest<IcalImport> {
 		IcalImport fixture = new IcalImport();
 		fixture.setName(UUID.randomUUID().toString());
 		fixture.setUrl(UUID.randomUUID().toString());
+		fixture.setAuth(Auth.NONE);
 		return fixture;
 	}
 
