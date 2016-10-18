@@ -16,5 +16,26 @@
 			<input type="text" class="form-control" ng-model="vm.icalImport.url" />
 		</p>
 	</label-group>
+	<h2>Authentication</h2>
+	<label-group label="No authentication">
+		<p>
+			<input type="radio" ng-model="vm.icalImport.auth" ng-value="'NONE'">
+		</p>
+	</label-group>
+	<label-group label="HTTP Basic Auth">
+		<p>
+			<input type="radio" ng-model="vm.icalImport.auth" ng-value="'BASIC'">
+		</p>
+	</label-group>
+	<label-group ng-show="vm.icalImport.auth == 'BASIC'" label="Username">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.icalImport.username" />
+		</p>
+	</label-group>
+	<label-group ng-show="vm.icalImport.auth == 'BASIC'" label="Password">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.icalImport.password" />
+		</p>
+	</label-group>
 	<button type="submit" ng-click="vm.save()" class="btn btn-default"><i class="fa fa-floppy-o"></i> Save</button>
 </form>
