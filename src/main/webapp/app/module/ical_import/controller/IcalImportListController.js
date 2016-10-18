@@ -112,14 +112,40 @@
 		};
 	}
 
+	ConfirmDeleteController.$inject = ['$uibModalInstance'];
+
+	function ConfirmDeleteController($uibModalInstance) {
+		/* jshint validthis: true */
+		var vm = this;
+
+		vm.title = 'Really delete?';
+		vm.message = 'Do you want to delete the ICAL import?';
+		vm.confirmButtons = [ { value: 'remove', label: 'Remove' } ];
+		vm.cancelButtons = [ { value: 'cancel', label: 'Cancel' } ];
+
+		vm.ok = function(value) {
+			$uibModalInstance.close(value);
+		};
+
+		vm.cancel = function(value) {
+			$uibModalInstance.dismiss(value);
+		};
+	}
+	
+
 	IcalImportListController.$inject = ['$location', '$rootScope', '$http', '$uibModal', 'IcalImport'];
 
 	function IcalImportListController($location, $rootScope, $http, $uibModal, IcalImport) {
 		/* jshint validthis: true */
 		var vm = this;
 
-		IcalImport.query(function(icalImports) {
-			vm.icalImports = icalImports;
+		vm.permissions = [];
+
+		$http.get('rest/permissions/my').then(function(response) {
+			vm.permissions = response.data;
+			IcalImport.query(function(icalImports) {
+				vm.icalImports = icalImports;
+			});
 		});
 
 		vm.add = function() {
@@ -132,6 +158,9 @@
 			vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
 			vm.predicate = predicate;
 		};
+		
+		vm.remove = remove;
+		vm.showDeleteButton = showDeleteButton;
 
 		vm.searchFilter = function(string) {
 			$rootScope.search = string;
@@ -164,5 +193,27 @@
 
 			});
 		};
+
+		function remove(id) {
+			var modalInstanceRemove = $uibModal.open({
+				templateUrl: 'app/views/modalDialog.html',
+				backdrop: 'static',
+				controller: ConfirmDeleteController,
+				controllerAs: 'vm'
+			});
+			modalInstanceRemove.result.then(function() {
+				IcalImport.delete({id: id}, function() {
+					IcalImport.query(function(icalImports) {
+						vm.icalImports = icalImports;
+					});
+				});
+			});
+
+		}
+
+		function showDeleteButton() {
+			return vm.permissions.indexOf('ADMIN_ICAL_IMPORTS');
+		}
+
 	}
 })();

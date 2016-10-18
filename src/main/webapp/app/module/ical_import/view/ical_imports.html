@@ -17,10 +17,13 @@
   <tbody>
     <tr ng-repeat="icalImport in vm.icalImports | filter: search | orderBy:vm.predicate:vm.reverse">
       <td class="col-sm-1">{{icalImport.id}}</td>
-      <td class="col-sm-3"><a href="#ical_imports/{{icalImport.id}}" ng-bind="icalImport.name"></a></td>
-      <td class="col-sm-6">{{icalImport.url}}</td>
-      <td class="col-sm-6">{{icalImport.lastImported}}</td>
-      <td class="col-sm-1"><button ng-click="vm.import(icalImport.id)" class="btn btn-default"><i class="fa fa-cloud-download"></i> Import</button></td>
+      <td class="col-sm-2"><a href="#ical_imports/{{icalImport.id}}" ng-bind="icalImport.name"></a></td>
+      <td class="col-sm-4">{{icalImport.url}}</td>
+      <td class="col-sm-3">{{icalImport.lastImported}}</td>
+      <td class="col-sm-2">
+        <button ng-click="vm.import(icalImport.id)" class="btn btn-default"><i class="fa fa-cloud-download"></i> Import</button>
+        <button ng-show="vm.showDeleteButton" ng-click="vm.remove(icalImport.id)" class="btn btn-default"><i class="fa fa-trash"></i> Remove</button>
+       </td>
     </tr>
   </tbody>
 </table>
