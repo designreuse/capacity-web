@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ import de.egore911.capacity.persistence.dao.AbsenceDao;
 import de.egore911.capacity.persistence.model.AbsenceEntity;
 import de.egore911.capacity.persistence.model.EmployeeEntity;
 import de.egore911.capacity.persistence.model.IcalImportEntity;
+import de.egore911.capacity.persistence.model.IcalImportEntity.Auth;
 import de.egore911.capacity.persistence.selector.EmployeeSelector;
 import de.egore911.capacity.ui.dto.ImportResult;
 import de.egore911.capacity.ui.dto.Progress;
@@ -41,10 +43,9 @@ public class IcalImporter {
 	private static final Logger LOG = LoggerFactory.getLogger(IcalImporter.class);
 
 	public void importIcal(@Nonnull IcalImportEntity icalImport, @Nonnull Progress<ImportResult> progress) {
-		String url = icalImport.getUrl();
 		ImportResult result = new ImportResult();
 		try {
-			Calendar calendar = loadCalendar(progress, url);
+			Calendar calendar = loadCalendar(progress, icalImport);
 
 			EntityManager em = EntityManagerUtil.getEntityManager();
 			em.getTransaction().begin();
@@ -149,11 +150,16 @@ public class IcalImporter {
 		}
 	}
 
-	private Calendar loadCalendar(Progress<ImportResult> progress, String url)
+	private Calendar loadCalendar(Progress<ImportResult> progress, IcalImportEntity icalImport)
 			throws IOException, ParserException {
 		progress.setMessage("Downloading calendar");
-		URL validUrl = new URL(url);
+		URL validUrl = new URL(icalImport.getUrl());
 		URLConnection connection = validUrl.openConnection();
+
+		if (icalImport.getAuth() == Auth.BASIC) {
+			String encoded = Base64.getEncoder().encodeToString((icalImport.getUsername() + ":" + icalImport.getPassword()).getBytes());
+			connection.setRequestProperty("Authorization", "Basic " + encoded);
+		}
 
 		if (connection instanceof HttpURLConnection) {
 			int responseCode = ((HttpURLConnection) connection).getResponseCode();
