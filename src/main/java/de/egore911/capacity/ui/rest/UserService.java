@@ -37,9 +37,9 @@ public class UserService extends AbstractResourceService<User, UserEntity> {
 	}
 
 	@Override
-	public User create(User user) {
+	public User create(User user, @Auth Subject subject) {
 		hashPassword(user);
-		return super.create(user);
+		return super.create(user, subject);
 	}
 
 	@Override

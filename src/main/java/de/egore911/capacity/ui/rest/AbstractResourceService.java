@@ -42,7 +42,7 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public T create(T t) {
+	public T create(T t, @Auth Subject subject) {
 		if (t == null) {
 			throw new NullArgumentException("t");
 		}
