@@ -144,19 +144,23 @@ public class IcalImporter {
 				}
 			}
 
+			progress.setSuccess(true);
 			progress.setMessage("Import completed");
 
 		} catch (MalformedURLException e) {
 			progress.setSuccess(false);
 			progress.setMessage(e.getMessage());
 			throw new BadArgumentException("Not a valid URL");
+		} catch (BadStateException e) {
+			progress.setSuccess(false);
+			throw e;
 		} catch (IOException | ParserException | RuntimeException e) {
 			progress.setSuccess(false);
 			progress.setMessage(e.getMessage());
 			throw new BadStateException(e.getMessage());
 		} finally {
-			progress.setCompleted(true);
 			progress.setResult(result);
+			progress.setCompleted(true);
 		}
 	}
 
@@ -174,6 +178,7 @@ public class IcalImporter {
 		if (connection instanceof HttpURLConnection) {
 			int responseCode = ((HttpURLConnection) connection).getResponseCode();
 			if (responseCode != 200) {
+				progress.setMessage("Could not load data from URL, got HTTP code " + responseCode);
 				throw new BadStateException("Got HTTP status " + responseCode + ", expected 200");
 			}
 		}

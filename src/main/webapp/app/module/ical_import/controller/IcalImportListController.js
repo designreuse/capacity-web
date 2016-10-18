@@ -24,6 +24,26 @@
 		};
 	}
 
+	ImportFailedController.$inject = ['$uibModalInstance', 'progress'];
+
+	function ImportFailedController($uibModalInstance, progress) {
+		/* jshint validthis: true */
+		var vm = this;
+
+		vm.title = 'Import failed';
+		vm.message = progress.message;
+		vm.confirmButtons = [ { value: 'ok', label: 'OK' } ];
+		vm.cancelButtons = [ ];
+
+		vm.ok = function(value) {
+			$uibModalInstance.close(value);
+		};
+
+		vm.cancel = function(value) {
+			$uibModalInstance.dismiss(value);
+		};
+	}
+
 	ProgressController.$inject = ['$uibModalInstance', 'response', 'ws', '$uibModal', '$rootScope', 'IcalImport'];
 
 	function ProgressController($uibModalInstance, response, ws, $uibModal, $rootScope, IcalImport) {
@@ -41,11 +61,13 @@
 
 		ws.onmessage = function(event) {
 			var newProgress = JSON.parse(event.data);
+			vm.progress.result = newProgress.result;
 			vm.progress.value = newProgress.value;
 			vm.progress.max = newProgress.max ? newProgress.max : 1;
 			vm.progress.message = newProgress.message;
-			vm.progress.result = newProgress.result;
-			if (vm.progress.result) {
+			vm.progress.completed = newProgress.completed;
+			vm.progress.success = newProgress.success;
+			if (vm.progress.completed) {
 				vm.ok('ok');
 			}
 			$rootScope.$apply();
@@ -58,21 +80,33 @@
 		vm.ok = function(value) {
 			$uibModalInstance.close(value);
 
-			if (vm.progress.result) {
-				var modalInstanceCompleted = $uibModal.open({
-					templateUrl: 'app/views/modalDialog.html',
-					backdrop: 'static',
-					controller: CompletedController,
-					controllerAs: 'vm',
-					resolve: {
-						progress: vm.progress
-					}
-				});
-				modalInstanceCompleted.result.then(function() {
-					IcalImport.query(function(icalImports) {
-						vm.icalImports = icalImports;
+			if (vm.progress.completed) {
+				if (vm.progress.success) {
+					var modalInstanceCompleted = $uibModal.open({
+						templateUrl: 'app/views/modalDialog.html',
+						backdrop: 'static',
+						controller: CompletedController,
+						controllerAs: 'vm',
+						resolve: {
+							progress: vm.progress
+						}
 					});
-				});
+					modalInstanceCompleted.result.then(function() {
+						IcalImport.query(function(icalImports) {
+							vm.icalImports = icalImports;
+						});
+					});
+				} else {
+					var modalInstanceCompleted = $uibModal.open({
+						templateUrl: 'app/views/modalDialog.html',
+						backdrop: 'static',
+						controller: ImportFailedController,
+						controllerAs: 'vm',
+						resolve: {
+							progress: vm.progress
+						}
+					});
+				}
 			}
 
 		};
