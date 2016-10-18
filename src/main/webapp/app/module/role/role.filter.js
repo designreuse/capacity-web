@@ -14,6 +14,8 @@
 			case 'SHOW_CAPACITY': return 'Show capacity';
 			case 'ADMIN_CAPACITY': return 'Administrate capacity';
 			case 'VIEW_WITHOUT_CONTRACT': return 'View employees with inactive contracts';
+			case 'SHOW_ICAL_IMPORTS': return 'Show ICAL imports';
+			case 'ADMIN_ICAL_IMPORTS': return 'Administrate ICAL imports';
 			}
 			return input;
 		};
