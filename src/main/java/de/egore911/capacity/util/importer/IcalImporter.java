@@ -10,7 +10,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -49,6 +52,8 @@ public class IcalImporter {
 
 			EntityManager em = EntityManagerUtil.getEntityManager();
 			em.getTransaction().begin();
+			
+			Map<String, List<EmployeeEntity>> employeeLookup = new HashMap<>();
 			try {
 				progress.setMessage("Importing events");
 				ComponentList<CalendarComponent> components = calendar.getComponents("VEVENT");
@@ -77,48 +82,53 @@ public class IcalImporter {
 						email = email.substring("mailto:".length());
 					}
 					email = email.toLowerCase();
-					EmployeeEntity employee = new EmployeeSelector().withEmail(email).find();
-					if (employee == null) {
+					List<EmployeeEntity> employees = employeeLookup.get(email);
+					if (employees == null) {
+						employees = new EmployeeSelector().withEmail(email).findAll();
+						employeeLookup.put(email, employees);
+					}
+					if (employees.isEmpty()) {
 						LOG.warn("Employee with e-mail " + email + " not found, skipping");
 						result.skip();
 						progress.setValue(++i);
 						continue;
 					}
-					AbsenceEntity absence = null;
-					for (AbsenceEntity existingAbsence : employee.getAbsences()) {
-						if (uid.equals(existingAbsence.getExternalId()) && existingAbsence.getIcalImport() != null && existingAbsence.getIcalImport().getId().equals(icalImport.getId())) {
-							absence = existingAbsence;
-							break;
+					for (EmployeeEntity employee : employees) {
+						AbsenceEntity absence = null;
+						for (AbsenceEntity existingAbsence : employee.getAbsences()) {
+							if (uid.equals(existingAbsence.getExternalId()) && existingAbsence.getIcalImport() != null && existingAbsence.getIcalImport().getId().equals(icalImport.getId())) {
+								absence = existingAbsence;
+								break;
+							}
 						}
+						if (absence == null) {
+							absence = new AbsenceEntity();
+							employee.getAbsences().add(absence);
+							absence.setEmployee(employee);
+							absence.setExternalId(uid);
+							absence.setIcalImport(icalImport);
+						}
+	
+						Property summaryProperty = component.getProperty("SUMMARY");
+						String reason = summaryProperty != null ? summaryProperty.getValue() : "Unnamed";
+						absence.setReason(reason);
+						try {
+							absence.setStart(LocalDate.parse(component.getProperty("DTSTART").getValue(), DateTimeFormatter.BASIC_ISO_DATE));
+							absence.setEnd(LocalDate.parse(component.getProperty("DTEND").getValue(), DateTimeFormatter.BASIC_ISO_DATE).minusDays(1));
+						} catch (DateTimeParseException e) {
+							// TODO We don't handle vacations for half days
+							result.skip();
+							progress.setValue(++i);
+							continue;
+						}
+						if (absence.getId() != null) {
+							result.update();
+						} else {
+							result.create();
+						}
+						absence = absenceDao.save(absence);
+						absenceIds.add(absence.getId());
 					}
-					if (absence == null) {
-						absence = new AbsenceEntity();
-						employee.getAbsences().add(absence);
-						absence.setEmployee(employee);
-						absence.setExternalId(uid);
-						absence.setIcalImport(icalImport);
-					}
-
-					Property summaryProperty = component.getProperty("SUMMARY");
-					String reason = summaryProperty != null ? summaryProperty.getValue() : "Unnamed";
-					absence.setReason(reason);
-					try {
-						absence.setStart(LocalDate.parse(component.getProperty("DTSTART").getValue(), DateTimeFormatter.BASIC_ISO_DATE));
-						absence.setEnd(LocalDate.parse(component.getProperty("DTEND").getValue(), DateTimeFormatter.BASIC_ISO_DATE).minusDays(1));
-					} catch (DateTimeParseException e) {
-						// TODO We don't handle vacations for half days
-						result.skip();
-						e.printStackTrace();
-						progress.setValue(++i);
-						continue;
-					}
-					if (absence.getId() != null) {
-						result.update();
-					} else {
-						result.create();
-					}
-					absence = absenceDao.save(absence);
-					absenceIds.add(absence.getId());
 					progress.setValue(++i);
 				}
 
